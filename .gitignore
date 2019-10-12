@@ -1,2 +1,3 @@
 gorsvp
 *.swp
+.env

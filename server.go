@@ -1,27 +1,47 @@
 package main
 
 import (
-  "net/http"
-  "github.com/labstack/echo/v4"
-  "github.com/labstack/echo/v4/middleware"
+    "fmt"
+    "net/http"
+    "os"
+
+    "github.com/elkrammer/gorsvp/internal/config"
+
+    "github.com/jinzhu/gorm"
+    _ "github.com/jinzhu/gorm/dialects/postgres"
+    "github.com/labstack/echo/v4"
+    "github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-  // Echo instance
-  e := echo.New()
+    // load config variables from .env file
+    config.LoadEnv()
 
-  // Middleware
-  e.Use(middleware.Logger())
-  e.Use(middleware.Recover())
+    // Echo instance
+    e := echo.New()
 
-  // Routes
-  e.GET("/", hello)
+    // Middleware
+    e.Use(middleware.Logger())
+    e.Use(middleware.Recover())
 
-  // Start server
-  e.Logger.Fatal(e.Start(":8080"))
+    // Create database connection
+    conn_str := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+                    os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"),
+                    os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))
+    db, err := gorm.Open("postgres", conn_str)
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    // Routes
+    e.GET("/", hello)
+
+    // Start server
+    e.Logger.Fatal(e.Start(":8080"))
 }
 
 // Handler
 func hello(c echo.Context) error {
-  return c.String(http.StatusOK, "Hello, World!")
+    return c.String(http.StatusOK, "Hello, World!")
 }
