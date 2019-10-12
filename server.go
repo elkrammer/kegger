@@ -5,6 +5,7 @@ import (
     "net/http"
     "os"
 
+    "github.com/elkrammer/gorsvp/model"
     "github.com/elkrammer/gorsvp/internal/config"
 
     "github.com/jinzhu/gorm"
@@ -33,6 +34,9 @@ func main() {
         panic(err)
     }
     defer db.Close()
+
+    // Migrate schema
+    db.AutoMigrate(model.Guest{})
 
     // Routes
     e.GET("/", hello)
