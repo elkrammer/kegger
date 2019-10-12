@@ -18,14 +18,14 @@ func main() {
     // load config variables from .env file
     config.LoadEnv()
 
-    // Echo instance
+    // echo instance
     e := echo.New()
 
     // Middleware
     e.Use(middleware.Logger())
     e.Use(middleware.Recover())
 
-    // Create database connection
+    // create db connection
     conn_str := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
                     os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"),
                     os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))
@@ -35,13 +35,14 @@ func main() {
     }
     defer db.Close()
 
-    // Migrate schema
+    // migrate schema
     db.AutoMigrate(model.Guest{})
+    db.AutoMigrate(model.Party{})
 
-    // Routes
+    // routes
     e.GET("/", hello)
 
-    // Start server
+    // start server
     e.Logger.Fatal(e.Start(":8080"))
 }
 

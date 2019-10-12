@@ -1,13 +1,10 @@
 package model
 
-import (
-    "time"
-)
-
 type Guest struct {
-        ID          uint        `json:"id" gorm:"primary_key"`
-        Name        string      `json:"name"`
-        Type        string      `json:"type"`
-        CreatedAt   time.Time   `json:"createdAt"`
-        UpdatedAt   time.Time   `json:"updatedAt"`
+        Party               []Party     `gorm:"foreignkey:GuestRefer"`
+        GuestID             uint        `json:"guestId" gorm:"primary_key"`
+        FirstName           string      `json:"firstName"`
+        LastName            string      `json:"lastName"`
+        Email               string      `json:"email"`
+        IsAttending         bool        `json:"isAttending"`
 }
