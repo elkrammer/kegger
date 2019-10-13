@@ -12,5 +12,4 @@ func main() {
 
     // start server
     e.Logger.Fatal(e.Start(":8080"))
-
 }

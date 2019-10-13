@@ -2,7 +2,7 @@ package api
 
 import (
     "net/http"
-    //"fmt"
+    // "fmt"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
@@ -31,6 +31,14 @@ func CreateParty(c echo.Context) error {
     party := model.Party{}
     if err := c.Bind(&party); err != nil {
         return err
+    }
+
+    if party.Name == "" {
+        return echo.NewHTTPError(http.StatusBadRequest, "Missing field Name")
+    }
+
+    if len(party.Guests) == 0 {
+        return echo.NewHTTPError(http.StatusBadRequest, "Missing field Guests. You must include at least one Guest")
     }
 
     db.Create(&party)
