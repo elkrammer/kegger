@@ -7,8 +7,10 @@ import (
 
 func main() {
     db.Init()
+
     e := route.Init()
 
     // start server
     e.Logger.Fatal(e.Start(":8080"))
+
 }

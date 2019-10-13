@@ -1,8 +1,8 @@
 package db
 
 import (
-	"fmt"
-	"os"
+    "fmt"
+    "os"
     "github.com/elkrammer/gorsvp/internal/config"
     "github.com/elkrammer/gorsvp/model"
     "github.com/jinzhu/gorm"
@@ -16,16 +16,16 @@ func Init() {
     // load config variables from .env file
     config.LoadEnv()
     conn_str := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))
-    db, err := gorm.Open("postgres", conn_str)
+    db, err = gorm.Open("postgres", conn_str)
 
-    // enable debugging
+    // db debugging
     db.LogMode(true)
 
     if err != nil {
         panic(err)
     }
 
-    defer db.Close()
+    //defer db.Close()
 
     // migrate schema
     db.AutoMigrate(model.Guest{})
@@ -34,5 +34,5 @@ func Init() {
 }
 
 func DbManager() *gorm.DB {
-	return db
+    return db
 }
