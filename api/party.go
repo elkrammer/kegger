@@ -12,9 +12,16 @@ import (
 
 func GetParties(c echo.Context) error {
     db := db.DbManager()
-
+    party := model.Party{}
     parties := []model.Party{}
-    db.Find(&parties)
+
+    if err := db.Find(&parties).Error; err != nil {
+        return err
+    }
+
+    if db.Find(&party).RecordNotFound() {
+        return echo.NewHTTPError(http.StatusNotFound, "No parties found")
+    }
 
     return c.JSON(http.StatusOK, parties)
 }
