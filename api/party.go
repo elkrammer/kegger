@@ -25,3 +25,16 @@ func GetParties(c echo.Context) error {
 
     return c.JSON(http.StatusOK, parties)
 }
+
+func CreateParty(c echo.Context) error {
+    db := db.DbManager()
+    party := model.Party{}
+    if err := c.Bind(&party); err != nil {
+        return err
+    }
+
+    db.Create(&party)
+
+    return c.JSON(http.StatusCreated, party)
+}
+

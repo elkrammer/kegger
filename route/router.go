@@ -15,8 +15,8 @@ func Init() *echo.Echo {
     e.Use(middleware.Recover())
 
     // Routes
-	e.GET("/", api.Home)
-	e.GET("/parties", api.GetParties)
+	e.GET("/", api.GetParties)
+	e.POST("/", api.CreateParty)
 
 	return e
 }
