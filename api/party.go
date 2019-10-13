@@ -2,7 +2,7 @@ package api
 
 import (
     "net/http"
-    // "fmt"
+     "fmt"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
@@ -33,7 +33,12 @@ func GetParty(c echo.Context) error {
     db := db.DbManager()
     party := model.Party{}
 
-    if err := db.First(&party, id).Error; err != nil {
+    if db.First(&party, id).RecordNotFound() {
+        err := fmt.Sprintf("Party with ID: %s not found", id)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    if err := db.Preload("Guests").First(&party, id).Error; err != nil {
         return err
     }
 
