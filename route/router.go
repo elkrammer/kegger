@@ -8,15 +8,16 @@ import (
 )
 
 func Init() *echo.Echo {
-	e := echo.New()
+    e := echo.New()
 
     // Middleware
     e.Use(middleware.Logger())
     e.Use(middleware.Recover())
 
     // Routes
-	e.GET("/", api.GetParties)
-	e.POST("/", api.CreateParty)
+    e.GET("/", api.GetParties)
+    e.GET("/:id", api.GetParty)
+    e.POST("/", api.CreateParty)
 
-	return e
+    return e
 }

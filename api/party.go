@@ -10,12 +10,13 @@ import (
     "github.com/labstack/echo"
 )
 
+// GET - get all parties
 func GetParties(c echo.Context) error {
     db := db.DbManager()
     party := model.Party{}
     parties := []model.Party{}
 
-    if err := db.Find(&parties).Error; err != nil {
+    if err := db.Preload("Guests").Find(&parties).Error; err != nil {
         return err
     }
 
@@ -26,6 +27,20 @@ func GetParties(c echo.Context) error {
     return c.JSON(http.StatusOK, parties)
 }
 
+// GET - get individual party
+func GetParty(c echo.Context) error {
+    id := c.Param("id")
+    db := db.DbManager()
+    party := model.Party{}
+
+    if err := db.First(&party, id).Error; err != nil {
+        return err
+    }
+
+    return c.JSON(http.StatusOK, party)
+}
+
+// POST - create new party
 func CreateParty(c echo.Context) error {
     db := db.DbManager()
     party := model.Party{}
@@ -33,6 +48,7 @@ func CreateParty(c echo.Context) error {
         return err
     }
 
+    // request validations
     if party.Name == "" {
         return echo.NewHTTPError(http.StatusBadRequest, "Missing field Name")
     }
