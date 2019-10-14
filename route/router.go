@@ -23,9 +23,9 @@ func Init() *echo.Echo {
 
     // Guest Routes
     e.GET("/guest/:id", api.GetGuest)
-    //e.POST("/guest", api.CreateGuest)
-    //e.PUT("/guest/:id", api.UpdateGuest)
-    //e.DELETE("/guest/:id", api.DeleteGuest)
+    e.POST("/guest", api.CreateGuest)
+    e.PUT("/guest/:id", api.UpdateGuest)
+    e.DELETE("/guest/:id", api.DeleteGuest)
 
     return e
 }
