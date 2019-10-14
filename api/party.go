@@ -2,7 +2,7 @@ package api
 
 import (
     "net/http"
-     "fmt"
+    "fmt"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
@@ -67,3 +67,29 @@ func CreateParty(c echo.Context) error {
     return c.JSON(http.StatusCreated, party)
 }
 
+// PUT - update party
+func UpdateParty(c echo.Context) error {
+    id := c.Param("id")
+    db := db.DbManager()
+
+    party := new(model.Party)
+
+    // check if records exists
+    if db.First(&party, id).RecordNotFound() {
+        err := fmt.Sprintf("Party with ID: %s not found", id)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    // check for errors
+    if err := db.First(&party, id).Error; err != nil {
+        return err
+    }
+
+    // bind request to model
+    if err := c.Bind(party); err != nil {
+        return c.JSON(http.StatusBadRequest, party)
+    }
+
+    db.Save(&party)
+    return c.JSON(http.StatusOK, party)
+}

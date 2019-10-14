@@ -16,8 +16,9 @@ func Init() *echo.Echo {
 
     // Routes
     e.GET("/", api.GetParties)
-    e.GET("/:id", api.GetParty)
     e.POST("/", api.CreateParty)
+    e.GET("/:id", api.GetParty)
+    e.PUT("/:id", api.UpdateParty)
 
     return e
 }
