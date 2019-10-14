@@ -14,12 +14,18 @@ func Init() *echo.Echo {
     e.Use(middleware.Logger())
     e.Use(middleware.Recover())
 
-    // Routes
-    e.GET("/", api.GetParties)
-    e.POST("/", api.CreateParty)
-    e.GET("/:id", api.GetParty)
-    e.PUT("/:id", api.UpdateParty)
-    e.DELETE("/:id", api.DeleteParty)
+    // Party Routes
+    e.GET("/party", api.GetParties)
+    e.POST("/party", api.CreateParty)
+    e.GET("/party/:id", api.GetParty)
+    e.PUT("/party/:id", api.UpdateParty)
+    e.DELETE("/party/:id", api.DeleteParty)
+
+    // Guest Routes
+    e.GET("/guest/:id", api.GetGuest)
+    //e.POST("/guest", api.CreateGuest)
+    //e.PUT("/guest/:id", api.UpdateGuest)
+    //e.DELETE("/guest/:id", api.DeleteGuest)
 
     return e
 }

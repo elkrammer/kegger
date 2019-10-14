@@ -37,7 +37,7 @@ func GetParty(c echo.Context) error {
     party := model.Party{}
 
     if db.First(&party, id).RecordNotFound() {
-        err := fmt.Sprintf("Party with ID: %s not found", id)
+        err := fmt.Sprintf("Party with ID: %v not found", id)
         return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
@@ -79,7 +79,7 @@ func UpdateParty(c echo.Context) error {
 
     // check if records exists
     if db.First(&party, id).RecordNotFound() {
-        err := fmt.Sprintf("Party with ID: %s not found", id)
+        err := fmt.Sprintf("Party with ID: %v not found", id)
         return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
@@ -105,7 +105,7 @@ func DeleteParty(c echo.Context) error {
 
     // check if record exists
     if db.First(&party, id).RecordNotFound() {
-        err := fmt.Sprintf("Party with ID: %s not found", id)
+        err := fmt.Sprintf("Party with ID: %v not found", id)
         return c.JSON(http.StatusBadRequest, err)
     }
 
