@@ -3,12 +3,15 @@ package api
 import (
     "net/http"
     "fmt"
+    "strconv"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
 
     "github.com/labstack/echo"
 )
+
+type H map[string]interface{}
 
 // GET - get all parties
 func GetParties(c echo.Context) error {
@@ -29,7 +32,7 @@ func GetParties(c echo.Context) error {
 
 // GET - get individual party
 func GetParty(c echo.Context) error {
-    id := c.Param("id")
+    id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
     party := model.Party{}
 
@@ -69,7 +72,7 @@ func CreateParty(c echo.Context) error {
 
 // PUT - update party
 func UpdateParty(c echo.Context) error {
-    id := c.Param("id")
+    id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
 
     party := new(model.Party)
@@ -92,4 +95,24 @@ func UpdateParty(c echo.Context) error {
 
     db.Save(&party)
     return c.JSON(http.StatusOK, party)
+}
+
+// DELETE - delete party
+func DeleteParty(c echo.Context) error {
+    id, _ := strconv.Atoi(c.Param("id"))
+    db := db.DbManager()
+    party := new(model.Party)
+
+    // check if record exists
+    if db.First(&party, id).RecordNotFound() {
+        err := fmt.Sprintf("Party with ID: %s not found", id)
+        return c.JSON(http.StatusBadRequest, err)
+    }
+
+    db.Delete(&party)
+
+    return c.JSON(http.StatusOK, H{
+        "deleted": id,
+    })
+
 }

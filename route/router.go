@@ -19,6 +19,7 @@ func Init() *echo.Echo {
     e.POST("/", api.CreateParty)
     e.GET("/:id", api.GetParty)
     e.PUT("/:id", api.UpdateParty)
+    e.DELETE("/:id", api.DeleteParty)
 
     return e
 }
