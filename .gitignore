@@ -1,3 +1,5 @@
 gorsvp
+gorsvp-cmd
 *.swp
 .env
+
