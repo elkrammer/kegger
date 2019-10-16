@@ -2,29 +2,24 @@ package main
 
 import (
     "fmt"
-    "os"
     "log"
-    "golang.org/x/crypto/bcrypt"
+    "os"
     "strconv"
 
     "github.com/elkrammer/gorsvp/db"
+    "github.com/elkrammer/gorsvp/internal/helper"
     "github.com/elkrammer/gorsvp/model"
 
-    "github.com/urfave/cli"
     "github.com/olekukonko/tablewriter"
+    "github.com/urfave/cli"
 )
 
 var app = cli.NewApp()
 
-func HashPassword(password string) (string, error) {
-    bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-    return string(bytes), err
-}
-
 func createAdminUser(name, email, password string) {
     db.Init()
     db := db.DbManager()
-    password, _ = HashPassword(password)
+    password, _ = helper.HashPassword(password)
     user := model.User{
         Name: name,
         Email: email,
