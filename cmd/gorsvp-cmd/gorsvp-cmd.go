@@ -5,11 +5,13 @@ import (
     "os"
     "log"
     "golang.org/x/crypto/bcrypt"
+    "strconv"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
 
     "github.com/urfave/cli"
+    "github.com/olekukonko/tablewriter"
 )
 
 var app = cli.NewApp()
@@ -32,6 +34,34 @@ func createAdminUser(name, email, password string) {
     fmt.Sprintf("admin user %v created successfully", email)
 }
 
+func listAdminUsers() {
+    db.Init()
+    db := db.DbManager()
+    user := model.User{}
+    users := []model.User{}
+
+    if err := db.Find(&users).Error; err != nil {
+        fmt.Println(err)
+    }
+
+    if db.Find(&user).RecordNotFound() {
+        fmt.Println("no admin users found")
+    }
+
+    fmt.Println("Admin User List")
+    table := tablewriter.NewWriter(os.Stdout)
+    table.SetHeader([]string{"#", "Name", "Email"})
+
+    for i := 1; i < len(users); i++ {
+        index := strconv.Itoa(i)
+        line := []string{index, users[i].Name, users[i].Email}
+        table.Append(line)
+    }
+
+    table.Render()
+
+}
+
 func deleteAdminUser() {
     fmt.Println("delete admin user")
 }
@@ -43,6 +73,15 @@ func commands() {
             Aliases: []string{"a"},
             Usage:   "gorsvp-cmd admin --help" ,
             Subcommands: []cli.Command{
+                {
+                    Name:    "list",
+                    Aliases: []string{"l"},
+                    Usage:   "List existing administrator users",
+                    Action: func(c *cli.Context) error {
+                        listAdminUsers()
+                        return nil
+                    },
+                },
                 {
                     Name:    "add",
                     Aliases: []string{"a"},
