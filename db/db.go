@@ -30,6 +30,7 @@ func Init() {
     // migrate schema
     db.AutoMigrate(model.Guest{})
     db.AutoMigrate(model.Party{})
+    db.AutoMigrate(model.User{})
     db.Model(model.Guest{}).AddForeignKey("party_refer", "parties(id)", "CASCADE", "CASCADE") // (foreign_key, destination_table, ONDELETE, ONUPDATE)
 
 }

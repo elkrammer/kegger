@@ -1,15 +1,15 @@
 package main
 
 import (
-    "github.com/elkrammer/gorsvp/db"
-    "github.com/elkrammer/gorsvp/route"
+  "github.com/elkrammer/gorsvp/db"
+  "github.com/elkrammer/gorsvp/route"
 )
 
 func main() {
-    db.Init()
+  db.Init()
 
-    e := route.Init()
+  e := route.Init()
 
-    // start server
-    e.Logger.Fatal(e.Start(":8080"))
+  // start server
+  e.Logger.Fatal(e.Start(":8080"))
 }

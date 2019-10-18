@@ -1,31 +1,51 @@
 package route
 
 import (
-    "github.com/elkrammer/gorsvp/api"
+  "os"
 
-    "github.com/labstack/echo"
-    "github.com/labstack/echo/middleware"
+  "github.com/elkrammer/gorsvp/api"
+
+  "github.com/dgrijalva/jwt-go"
+  "github.com/labstack/echo"
+  "github.com/labstack/echo/middleware"
 )
 
+type jwtClaim struct {
+  Name  string `json:"name"`
+  jwt.StandardClaims
+}
+
 func Init() *echo.Echo {
-    e := echo.New()
+  e := echo.New()
 
-    // Middleware
-    e.Use(middleware.Logger())
-    e.Use(middleware.Recover())
+  // Middleware
+  e.Use(middleware.Logger())
+  e.Use(middleware.Recover())
 
-    // Party Routes
-    e.GET("/party", api.GetParties)
-    e.POST("/party", api.CreateParty)
-    e.GET("/party/:id", api.GetParty)
-    e.PUT("/party/:id", api.UpdateParty)
-    e.DELETE("/party/:id", api.DeleteParty)
+  // Authentication
+  e.POST("/login", api.UserLogin)
+  e.POST("/token", api.GenRefreshToken)
 
-    // Guest Routes
-    e.GET("/guest/:id", api.GetGuest)
-    e.POST("/guest", api.CreateGuest)
-    e.PUT("/guest/:id", api.UpdateGuest)
-    e.DELETE("/guest/:id", api.DeleteGuest)
+  // Restricted routes
+  r := e.Group("/api")
+  config := middleware.JWTConfig{
+    Claims:     &jwtClaim{},
+    SigningKey: []byte(os.Getenv("JWT_SECRET")),
+  }
+	r.Use(middleware.JWTWithConfig(config))
 
-    return e
+  // Party Routes
+  r.GET("/party", api.GetParties)
+  r.POST("/party", api.CreateParty)
+  r.GET("/party/:id", api.GetParty)
+  r.PUT("/party/:id", api.UpdateParty)
+  r.DELETE("/party/:id", api.DeleteParty)
+
+  // Guest Routes
+  r.GET("/guest/:id", api.GetGuest)
+  r.POST("/guest", api.CreateGuest)
+  r.PUT("/guest/:id", api.UpdateGuest)
+  r.DELETE("/guest/:id", api.DeleteGuest)
+
+  return e
 }
