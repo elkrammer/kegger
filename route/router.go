@@ -21,6 +21,10 @@ func Init() *echo.Echo {
     // Middleware
     e.Use(middleware.Logger())
     e.Use(middleware.Recover())
+    e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+        AllowOrigins: []string{"*"},
+        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+    }))
 
     // Authentication
     e.POST("/login", api.UserLogin)

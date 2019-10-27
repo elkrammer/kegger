@@ -14,19 +14,25 @@ import (
     "github.com/labstack/echo"
 )
 
+// POST Request
 func UserLogin(c echo.Context) error {
-    username := c.FormValue("username")
-    password := c.FormValue("password")
+    db := db.DbManager()
+    user := new(model.User)
 
-    if username == "" || password == "" {
+    // bind request to model
+    if err := c.Bind(user); err != nil {
+        return c.JSON(http.StatusBadRequest, user)
+    }
+
+    email := user.Email
+    password := user.Password
+
+    if email == "" || password == "" {
         return c.JSON(http.StatusBadRequest, "Missing username / password")
     }
 
-    db := db.DbManager()
-    user := model.User{}
-
-    if err := db.Where("email = ?", username).First(&user).Error; err != nil {
-        return err
+    if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+        return echo.NewHTTPError(http.StatusNotFound, "Invalid login")
     }
 
     // compare password hash
