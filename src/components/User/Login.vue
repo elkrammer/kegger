@@ -4,7 +4,7 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-            <h1 class="title">Wingdings - RSVP Manager</h1>
+            <img src="@/assets/logo.png" alt="WingDing Logo" />
             <form class="box" v-on:submit.prevent autocomplete="off">
 
               <div class="form-group"
@@ -72,6 +72,7 @@
 
 <script>
   import { required, email } from "vuelidate/lib/validators";
+
   export default {
     name: "login",
     data() {
@@ -85,7 +86,6 @@
     },
     methods: {
       async submit() {
-
         if (this.$v.$invalid) {
           this.$v.$touch();
           return;
