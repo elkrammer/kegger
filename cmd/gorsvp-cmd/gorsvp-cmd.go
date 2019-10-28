@@ -19,11 +19,16 @@ var app = cli.NewApp()
 func createAdminUser(name, email, password string) {
     db.Init()
     db := db.DbManager()
-    password, _ = helper.HashPassword(password)
+    hash, err := helper.HashPassword(password)
+    if err != nil {
+        fmt.Sprintf("error hashing password: %v", err)
+        return
+    }
+
     user := model.User{
         Name: name,
         Email: email,
-        Password: password,
+        Password: hash,
     }
     db.Create(&user)
     fmt.Sprintf("admin user %v created successfully", email)

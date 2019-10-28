@@ -17,28 +17,27 @@ import (
 // POST Request
 func UserLogin(c echo.Context) error {
     db := db.DbManager()
+    userCreds := new(model.User)
     user := new(model.User)
 
     // bind request to model
-    if err := c.Bind(user); err != nil {
+    if err := c.Bind(userCreds); err != nil {
         return c.JSON(http.StatusBadRequest, user)
     }
 
-    email := user.Email
-    password := user.Password
-
-    if email == "" || password == "" {
+    if userCreds.Email == "" || userCreds.Password == "" {
         return c.JSON(http.StatusBadRequest, "Missing username / password")
     }
 
-    if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+    if err := db.Where("email = ?", userCreds.Email).First(&user).Error; err != nil {
         return echo.NewHTTPError(http.StatusNotFound, "Invalid login")
     }
 
     // compare password hash
-    hashed, _ := helper.HashPassword(password)
-    match := helper.CheckPasswordHash(password, hashed)
+    match := helper.CheckPasswordHash(userCreds.Password, user.Password)
+
     if match {
+        fmt.Println("matched!")
         tokens, err := jwttoken.GenerateTokenPair()
         if err != nil {
             return err
