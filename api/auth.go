@@ -37,8 +37,7 @@ func UserLogin(c echo.Context) error {
     match := helper.CheckPasswordHash(userCreds.Password, user.Password)
 
     if match {
-        fmt.Println("matched!")
-        tokens, err := jwttoken.GenerateTokenPair()
+        tokens, err := jwttoken.GenerateTokenPair(user.Email)
         if err != nil {
             return err
         }
@@ -78,7 +77,7 @@ func GenRefreshToken(c echo.Context) error {
     }
 
     if int(claims["sub"].(float64)) == 1 {
-        newTokenPair, err := jwttoken.GenerateTokenPair()
+        newTokenPair, err := jwttoken.GenerateTokenPair(claims["username"].(string))
         if err != nil {
             return err
         }

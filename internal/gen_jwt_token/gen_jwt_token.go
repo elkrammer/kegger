@@ -6,11 +6,12 @@ import (
   "github.com/dgrijalva/jwt-go"
 )
 
-func GenerateTokenPair() (map[string]string, error) {
+func GenerateTokenPair(username string) (map[string]string, error) {
   token := jwt.New(jwt.SigningMethodHS256)
   claims := token.Claims.(jwt.MapClaims)
   claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
   claims["sub"] = 1
+  claims["username"] = username
 
   secret := os.Getenv("JWT_SECRET")
 
