@@ -7,11 +7,6 @@
             <img src="@/assets/logo.png" alt="WingDing Logo" />
             <form class="box" v-on:submit.prevent autocomplete="off">
 
-              <div class="form-group"
-                   v-bind:class="{ 'form-group--error': $v.credentials.email.$error,
-                                   'form-group--success': !$v.credentials.email.$invalid && $v.credentials.email.$dirty}"
-                   />
-
                 <div class="field">
                   <label for="" class="label">Email</label>
                   <div class="control has-icons-left">
@@ -23,14 +18,9 @@
                     <span class="icon is-small is-left">
                       <i class="fa fa-envelope"></i>
                     </span>
-                  </div>
-                </div>
+                    <div v-if="submitted && !$v.credentials.email.required" class="invalid-feedback">Email is required</div>
 
-                <div
-                  class="form-group__message"
-                  v-if="$v.credentials.email.$error"
-                  >
-                  Please enter your email.
+                  </div>
                 </div>
 
                   <div class="field">
@@ -45,10 +35,6 @@
                         <i class="fa fa-lock"></i>
                       </span>
                     </div>
-                  </div>
-
-                  <div class="form-group__message" v-if="$v.credentials.password.$error">
-                    Please enter your password.
                   </div>
 
                   <div class="field">
@@ -81,7 +67,7 @@
           email: "",
           password: ""
         },
-        pending: false
+        submitted: false
       };
     },
     methods: {
@@ -91,7 +77,7 @@
           return;
         }
 
-        this.pending = true;
+        this.submitted = true;
 
         const credentials = {
           email: this.credentials.email,
@@ -107,7 +93,7 @@
         } catch (error) {
           console.log("Invalid login");
         } finally {
-          this.pending = false;
+          this.submitted = false;
         }
       }
     },

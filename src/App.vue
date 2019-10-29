@@ -25,7 +25,7 @@ export default {
 @import "~bulma/sass/utilities/_all";
 // bulma customizations go here
 
-  // import Bulma and Buefy styles
+// import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>

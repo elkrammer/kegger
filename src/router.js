@@ -3,7 +3,7 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import HelloWorld from "@/components/HelloWorld.vue";
+import Home from "@/components/Home.vue";
 import Login from "@/components/User/Login.vue";
 
 const router = new Router({
@@ -17,7 +17,7 @@ const router = new Router({
     },
     {
       path: "/home",
-      component: HelloWorld,
+      component: Home,
       name: "home",
       meta: { title: "Home", requiresAuth: true }
     },

@@ -101,7 +101,7 @@ const user = {
     async setUserAndTokens({ commit }, data) {
       try {
         let decoded = jwtDecode(data.accessToken);
-        commit(SET_USER, decoded.data);
+        commit(SET_USER, decoded.username);
         commit(STORE_ACCESS_TOKEN, data.accessToken);
         commit(STORE_REFRESH_TOKEN, data.refreshToken);
       } catch (error) {
