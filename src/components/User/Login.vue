@@ -5,69 +5,74 @@
         <div class="columns is-centered">
           <div class="column is-5-tablet is-4-desktop is-3-widescreen">
             <img src="@/assets/logo.png" alt="WingDing Logo" />
+
+            <b-message v-if="errors.length" :auto-close=true :duration="8000" type="is-danger">
+              <ul>
+                <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+              </ul>
+            </b-message>
+
             <form class="box" v-on:submit.prevent autocomplete="off">
 
-                <div class="field">
-                  <label for="" class="label">Email</label>
-                  <div class="control has-icons-left">
-                    <input type="email"
+              <b-field label="Email">
+                <div class="control has-icons-left">
+                  <b-input type="email"
                            placeholder="e.g. john@doe.com"
-                           class="input"
-                           v-model.trim="credentials.email"
+                           v-model.trim="email"
+                           @input="delayTouch($v.email)"
                            required>
-                    <span class="icon is-small is-left">
-                      <i class="fa fa-envelope"></i>
-                    </span>
-                    <div v-if="submitted && !$v.credentials.email.required" class="invalid-feedback">Email is required</div>
-
-                  </div>
+                  </b-input>
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-envelope"></i>
+                  </span>
                 </div>
+              </b-field>
 
-                  <div class="field">
-                    <label for="" class="label">Password</label>
-                    <div class="control has-icons-left">
-                      <input type="password"
-                             placeholder="*******"
-                             class="input"
-                             v-model.trim="credentials.password"
-                             required>
-                      <span class="icon is-small is-left">
-                        <i class="fa fa-lock"></i>
-                      </span>
-                    </div>
-                  </div>
+              <b-field label="Password">
+                <div class="control has-icons-left">
+                  <b-input type="password"
+                         placeholder="*******"
+                         v-model.trim="password"
+                         required>
+                  </b-input>
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-lock"></i>
+                  </span>
+                </div>
+              </b-field>
 
-                  <div class="field">
-                    <label for="" class="checkbox">
-                      <input type="checkbox">
-                      Remember me
-                    </label>
-                  </div>
-                  <div class="field">
-                    <button v-on:click="submit()" class="button is-success">
-                      Login
-                    </button>
-                  </div>
-            </form>
+              <div class="field">
+                <label for="" class="checkbox">
+                  <input type="checkbox">
+                  Remember me
+                </label>
               </div>
+              <div class="field">
+                <button v-on:click="submit()" class="button is-success">
+                  Login
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+    </div>
   </section>
 </template>
 
 <script>
   import { required, email } from "vuelidate/lib/validators";
 
+  const touchMap = new WeakMap()
+
   export default {
     name: "login",
     data() {
       return {
-        credentials: {
-          email: "",
-          password: ""
-        },
-        submitted: false
+        email: "",
+        password: "",
+        submitted: false,
+        errors: [],
       };
     },
     methods: {
@@ -78,30 +83,34 @@
         }
 
         this.submitted = true;
-
         const credentials = {
-          email: this.credentials.email,
-          password: this.credentials.password
+          email: this.email,
+          password: this.password
         };
 
         try {
           await this.$store.dispatch("user/userLogin", credentials);
-          this.credentials.email= "";
-          this.credentials.password = "";
+          this.email= "";
+          this.password = "";
           this.$v.$reset();
           this.$router.push({ name: "home" });
         } catch (error) {
-          console.log("Invalid login");
+          this.errors.push("Invalid Login Credentials");
         } finally {
           this.submitted = false;
         }
+      },
+      delayTouch($v) {
+        $v.$reset()
+        if (touchMap.has($v)) {
+          clearTimeout(touchMap.get($v));
+        }
+        touchMap.set($v, setTimeout($v.$touch, 1000))
       }
     },
     validations: {
-      credentials: {
-        email: { required, email },
-        password: { required }
-      }
+      email: { required, email },
+      password: { required },
     }
   };
 </script>
