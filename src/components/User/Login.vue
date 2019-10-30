@@ -6,10 +6,8 @@
           <div class="column is-5-tablet is-4-desktop is-3-widescreen">
             <img src="@/assets/logo.png" alt="WingDing Logo" />
 
-            <b-message v-if="errors.length" :auto-close=true :duration="8000" type="is-danger">
-              <ul>
-                <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-              </ul>
+            <b-message v-if="loginError" auto-close :duration="5000" type="is-danger">
+              {{ loginError }}
             </b-message>
 
             <form class="box" v-on:submit.prevent autocomplete="off">
@@ -31,9 +29,9 @@
               <b-field label="Password">
                 <div class="control has-icons-left">
                   <b-input type="password"
-                         placeholder="*******"
-                         v-model.trim="password"
-                         required>
+                           placeholder="*******"
+                           v-model.trim="password"
+                           required>
                   </b-input>
                   <span class="icon is-small is-left">
                     <i class="fa fa-lock"></i>
@@ -42,7 +40,7 @@
               </b-field>
 
               <div class="field">
-                <label for="" class="checkbox">
+                <label for="checkbox" class="checkbox">
                   <input type="checkbox">
                   Remember me
                 </label>
@@ -72,7 +70,7 @@
         email: "",
         password: "",
         submitted: false,
-        errors: [],
+        loginError: "",
       };
     },
     methods: {
@@ -82,6 +80,7 @@
           return;
         }
 
+        this.loginError = "";
         this.submitted = true;
         const credentials = {
           email: this.email,
@@ -95,7 +94,7 @@
           this.$v.$reset();
           this.$router.push({ name: "home" });
         } catch (error) {
-          this.errors.push("Invalid Login Credentials");
+          this.loginError = "Invalid Login Credentials";
         } finally {
           this.submitted = false;
         }
