@@ -2,14 +2,13 @@
 // Set your colors
 $primary: #F7F4F5;
 $primary-invert: findColorInvert($primary);
-$secondary: #8A6E6E;
+$secondary: #CE5A27;
 $third: #90919E;
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
 
-$light-background: #AAA8A9;
-$dark-background: #342E38;
-
+$light-background: $white;
+$blue-background: #406abf;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
@@ -26,6 +25,10 @@ $colors: (
 );
 
 $body-background-color: $light-background;
-$navbar-item-active-color: $secondary;
-$navbar-background-color: $dark-background;
-$text: $primary;
+$navbar-item-color: $white;
+$navbar-item-hover-color: $secondary;
+$navbar-item-hover-background-color: transparent;
+$navbar-item-active-color: $white;
+$navbar-item-active-background-color: #3960ac;
+$navbar-background-color: $blue-background;
+$text: #2c3e50;

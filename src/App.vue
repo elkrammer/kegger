@@ -6,19 +6,19 @@
 </template>
 
 <script>
-import NavBar from "@/components/Layout/NavBar";
+  import NavBar from "@/components/Layout/NavBar";
 
-export default {
-  name: "app",
-  components: {
-    NavBar,
-  },
-  computed: {
-    showNavBar() {
-      return this.$route.name !== 'login';
+  export default {
+    name: "app",
+    components: {
+      NavBar,
+    },
+    computed: {
+      showNavBar() {
+        return this.$route.name !== 'login';
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss">

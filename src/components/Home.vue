@@ -1,9 +1,12 @@
 <template>
-  <div class="hello">
-    <p>
-    you are now logged in!
-    </p>
-  </div>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Home</h1>
+      <div>
+        blah blah blah
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
