@@ -22,10 +22,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~bulma/sass/utilities/_all";
-// bulma customizations go here
-
-// import Bulma and Buefy styles
+@import "variables";
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>

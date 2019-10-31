@@ -1,0 +1,31 @@
+@import "~bulma/sass/utilities/_all";
+// Set your colors
+$primary: #F7F4F5;
+$primary-invert: findColorInvert($primary);
+$secondary: #8A6E6E;
+$third: #90919E;
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+
+$light-background: #AAA8A9;
+$dark-background: #342E38;
+
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+    "twitter": ($twitter, $twitter-invert)
+);
+
+$body-background-color: $light-background;
+$navbar-item-active-color: $secondary;
+$navbar-background-color: $dark-background;
+$text: $primary;
