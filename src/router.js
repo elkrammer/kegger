@@ -5,6 +5,7 @@ Vue.use(Router);
 
 import Home from "@/components/Home.vue";
 import Login from "@/components/User/Login.vue";
+import ListParties from "@/components/Parties/ListParties.vue";
 
 const router = new Router({
   mode: "history",
@@ -21,6 +22,12 @@ const router = new Router({
       component: Home,
       name: "home",
       meta: { title: "Home", requiresAuth: true }
+    },
+    {
+      path: "/parties",
+      component: ListParties,
+      name: "listparties",
+      meta: { title: "List Parties", requiresAuth: true }
     },
     {
       path: "*",

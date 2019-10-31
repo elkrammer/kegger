@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <h1 class="title">Home</h1>
+      <h1 class="title">Parties</h1>
       <div>
         blah blah blah
       </div>
@@ -9,8 +9,11 @@
   </section>
 </template>
 
-<script>
+ <script>
   export default {
-    name: 'home',
+    name: 'listparties',
   }
-</script>
+ </script>
+
+<style lang="scss">
+</style>

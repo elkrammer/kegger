@@ -15,7 +15,7 @@
         <b-icon pack="fas" icon="home"></b-icon>
         <span class="item-text">Home</span>
       </b-navbar-item>
-      <b-navbar-item tag="router-link" :to="{ name: 'parties' }">
+      <b-navbar-item tag="router-link" :to="{ name: 'listparties' }">
         <b-icon pack="fas" icon="users"></b-icon>
         <span class="item-text">Parties</span>
       </b-navbar-item>
