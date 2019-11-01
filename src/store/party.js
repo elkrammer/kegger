@@ -14,8 +14,8 @@ const party = {
   },
   mutations: {
     GET_PARTIES(state, data) {
-      state.parties = state.parties.concat(data);
-    }
+      state.parties = data;
+    },
   },
   getters: {
     parties(state) {

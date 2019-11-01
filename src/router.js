@@ -26,7 +26,7 @@ const router = new Router({
     {
       path: "/parties",
       component: ListParties,
-      name: "listparties",
+      name: "list_parties",
       meta: { title: "List Parties", requiresAuth: true }
     },
     {
