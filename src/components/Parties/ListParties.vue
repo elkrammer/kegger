@@ -9,6 +9,7 @@
         hoverable
         detailed
         show-detail-icon
+        custom-detail-row
         detail-key="Id"
         >
         <template slot-scope="props">
@@ -17,26 +18,39 @@
             {{ props.row.name }}
           </b-table-column>
 
-          <b-table-column field="invitationOpened" label="Invite Seen?" sortable>
-            <b-icon pack="fas"
-                    :icon="props.row.invitationOpened === true ? 'thumbs-up' : 'thumbs-down'">
-            </b-icon>
-          </b-table-column>
+        <b-table-column field="invitationOpened" label="Invite Seen?" sortable>
+          <b-icon pack="fas"
+                  :icon="props.row.invitationOpened === true ? 'thumbs-up' : 'thumbs-down'">
+          </b-icon>
+        </b-table-column>
 
-          <b-table-column field="isAttending" label="Attending" sortable>
-            <b-icon pack="fas"
-                    :icon="props.row.isAttending === true ? 'thumbs-up' : 'thumbs-down'">
-            </b-icon>
-          </b-table-column>
+        <b-table-column field="isAttending" label="Attending" sortable>
+          <b-icon pack="fas"
+                  :icon="props.row.isAttending === true ? 'thumbs-up' : 'thumbs-down'">
+          </b-icon>
+        </b-table-column>
 
-          <b-table-column field="comments" label="Comments" sortable>
-            {{ props.row.comments }}
-          </b-table-column>
+        <b-table-column field="comments" label="Comments" sortable>
+          {{ props.row.comments }}
+        </b-table-column>
 
         </template>
 
         <template slot="detail" slot-scope="props">
-          <p> {{ props.row.name }} </p>
+          <tr v-for="guest in props.row.Guests" :key="guest.Id">
+            <td></td>
+            <td style="padding-left: 30px;">{{ guest.firstName }} {{ guest.lastName }}</td>
+            <td>
+              <!-- TODO: Fix me in model! :) -->
+              <b-icon icon="thumbs-down"></b-icon>
+            </td>
+            <td>
+              <b-icon pack="fas"
+                      :icon="guest.isAttending === true ? 'thumbs-up' : 'thumbs-down'">
+              </b-icon>
+            </td>
+            <td></td>
+          </tr>
         </template>
 
       </b-table>
@@ -48,7 +62,6 @@
 
 <script>
   import { mapGetters } from "vuex";
-
 
   export default {
     name: 'list_parties',
