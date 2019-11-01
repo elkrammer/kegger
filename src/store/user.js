@@ -4,7 +4,6 @@ import jwtDecode from "jwt-decode";
 import axios from "@/common/axios";
 import store from "@/store/index";
 import router from "@/router";
-import { setAuthorizationHeader } from "@/common/utilities";
 
 Vue.use(Vuex);
 
@@ -18,6 +17,7 @@ async function getAuthToken() {
       authTokenRequest = null;
     });
   }
+  return authTokenRequest;
 }
 
 async function logoutOfApplication() {
@@ -27,7 +27,8 @@ async function logoutOfApplication() {
 
 // axios interceptor that will handle expired tokens
 axios.interceptors.response.use(undefined, async error => {
-  if (error.response.status === 401 && error.response.data.message === "TOKEN_EXPIRED" && !error.config.__isRetryRequest) {
+
+  if (error.response.status === 401 && error.response.data.message === "invalid or expired jwt" && !error.config.__isRetryRequest) {
     try {
       let response = await getAuthToken();
       await store.dispatch("user/setUserAndTokens", {
@@ -45,7 +46,7 @@ axios.interceptors.response.use(undefined, async error => {
   }
 
   // handle user that isn't correctly logged in
-  if (error.response.status === 401 && error.response.data.message === "AUTHENTICATION_ERROR") {
+  if (error.response.status === 401 && error.response.data.message != "invalid or expired jwt") {
     logoutOfApplication();
     return Promise.reject(error);
   }
@@ -105,7 +106,7 @@ const user = {
         commit(STORE_ACCESS_TOKEN, data.accessToken);
         commit(STORE_REFRESH_TOKEN, data.refreshToken);
       } catch (error) {
-        return Promise.reject(error.response ? error.response : error);
+        return Promise.reject(error);
       }
     },
     async userLogin({ dispatch}, credentials) {
@@ -119,25 +120,23 @@ const user = {
           refreshToken: response.data.refresh_token
         });
       } catch (error) {
-        return Promise.reject(error.response ? error.response : error);
+        return Promise.reject(error);
       }
     },
-    async refreshUserTokens({ getters, rootGetters }) {
+    async refreshUserTokens({ getters }) {
       try {
-        setAuthorizationHeader(rootGetters["user/accessToken"]);
         return await axios.post("/token", {
-          username: getters.user.username,
-          refreshToken: getters.refreshToken
+          refresh_token: getters.refreshToken
         });
       } catch (error) {
-        return Promise.reject(error.response ? error.response : error);
+        return Promise.reject(error);
       }
     },
     async userLogout({ commit }) {
       try {
         commit(LOGOUT_USER);
       } catch (error) {
-        return Promise.reject(error.response ? error.response : error);
+        return Promise.reject(error);
       }
     }
   }
