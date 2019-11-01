@@ -52,20 +52,18 @@ func GenRefreshToken(c echo.Context) error {
     }
 
     tokenReq := tokenReqBody{}
+    c.Bind(&tokenReq)
+
     db := db.DbManager()
     user := model.User{}
 
-    c.Bind(&tokenReq)
-    if err := c.Bind(&tokenReq); err != nil {
-        return echo.NewHTTPError(http.StatusBadRequest, "request body invalid")
-    }
-
+    signature := []byte(os.Getenv("JWT_SECRET"))
     token, err := jwt.Parse(tokenReq.RefreshToken, func(token *jwt.Token) (interface{}, error) {
         // validate the algorithm is our expected type:
         if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
             return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
         }
-        return []byte(os.Getenv("JWT_TOKEN")), nil
+        return signature, nil
     })
 
     if err != nil {
