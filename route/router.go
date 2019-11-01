@@ -11,7 +11,8 @@ import (
 )
 
 type jwtClaim struct {
-    Name  string `json:"name"`
+    Username  string `json:"username"`
+    UserID    uint `json:"sub"`
     jwt.StandardClaims
 }
 
@@ -23,7 +24,9 @@ func Init() *echo.Echo {
     e.Use(middleware.Recover())
     e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
         AllowOrigins: []string{"*"},
-        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAcceptEncoding, echo.HeaderAuthorization, echo.HeaderAccept},
+        AllowCredentials: true,
+        AllowMethods: []string{echo.OPTIONS, echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
     }))
 
     // Authentication

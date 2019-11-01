@@ -37,7 +37,7 @@ func UserLogin(c echo.Context) error {
     match := helper.CheckPasswordHash(userCreds.Password, user.Password)
 
     if match {
-        tokens, err := jwttoken.GenerateTokenPair(user.Email)
+        tokens, err := jwttoken.GenerateTokenPair(user.ID, user.Email)
         if err != nil {
             return err
         }
@@ -50,7 +50,11 @@ func GenRefreshToken(c echo.Context) error {
     type tokenReqBody struct {
         RefreshToken string `json:"refresh_token"`
     }
+
     tokenReq := tokenReqBody{}
+    db := db.DbManager()
+    user := model.User{}
+
     c.Bind(&tokenReq)
     if err := c.Bind(&tokenReq); err != nil {
         return echo.NewHTTPError(http.StatusBadRequest, "request body invalid")
@@ -76,8 +80,13 @@ func GenRefreshToken(c echo.Context) error {
         return echo.NewHTTPError(http.StatusBadRequest, "refresh token invalid")
     }
 
-    if int(claims["sub"].(float64)) == 1 {
-        newTokenPair, err := jwttoken.GenerateTokenPair(claims["username"].(string))
+    id := uint(claims["sub"].(float64))
+    if err := db.First(&user, id).Error; err != nil {
+        return err
+    }
+
+    if id == user.ID {
+        newTokenPair, err := jwttoken.GenerateTokenPair(id, claims["username"].(string))
         if err != nil {
             return err
         }
