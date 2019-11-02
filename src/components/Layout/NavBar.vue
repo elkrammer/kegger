@@ -16,12 +16,22 @@
         <span class="item-text">Home</span>
       </b-navbar-item>
       <b-navbar-item tag="router-link" :to="{ name: 'list_parties' }">
-        <b-icon pack="fas" icon="users"></b-icon>
+        <b-icon pack="fas" icon="sitemap"></b-icon>
         <span class="item-text">Parties</span>
+      </b-navbar-item>
+      <b-navbar-item tag="router-link" :to="{ name: 'guests' }">
+        <b-icon pack="fas" icon="users"></b-icon>
+        <span class="item-text">Guests</span>
       </b-navbar-item>
     </template>
 
     <template slot="end">
+      <b-navbar-item tag="router-link" :to="{  name: 'settings' }">
+        <div class="buttons">
+          <b-button type="is-warning">Settings</b-button>
+        </div>
+      </b-navbar-item>
+
       <b-navbar-item>
         <div class="buttons">
           <b-button @click="logout" type="is-link">Log out</b-button>
