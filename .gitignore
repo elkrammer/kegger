@@ -3,3 +3,4 @@ gorsvp-cmd
 *.swp
 .env
 tmp
+db/migrations/009999_test_data.up.sql
