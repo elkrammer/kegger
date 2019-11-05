@@ -36,11 +36,13 @@ func RunMigrations() {
 
     m, err := migrate.New("file://db/migrations", connectionString)
     if err != nil {
-        log.Fatal(err)
+		log.Fatalf("migration failed... %v", err)
     }
-    if err := m.Up(); err != nil {
-        log.Fatal(err)
+
+    if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatalf("an error occurred while syncing the database.. %v", err)
     }
+
 }
 
 func DbManager() *sqlx.DB {
