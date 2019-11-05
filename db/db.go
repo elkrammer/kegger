@@ -3,38 +3,30 @@ package db
 import (
     "fmt"
     "os"
+    _ "github.com/jackc/pgx/stdlib"
+    "github.com/jmoiron/sqlx"
     "github.com/elkrammer/gorsvp/internal/config"
-    "github.com/elkrammer/gorsvp/model"
-    "github.com/jinzhu/gorm"
-    _ "github.com/jinzhu/gorm/dialects/postgres"
+    //    "github.com/elkrammer/gorsvp/model"
 )
 
-var db *gorm.DB
+var db *sqlx.DB
 var err error
 
 func Init() {
     // load config variables from .env file
     config.LoadEnv()
-    conn_str := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))
-    db, err = gorm.Open("postgres", conn_str)
+    connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 
-    // db debugging
-    db.LogMode(true)
-
+    db = sqlx.MustConnect("pgx", connectionString)
+    err = db.Ping()
     if err != nil {
-        panic(err)
+        fmt.Println("Failed to connect to database: " + connectionString)
     }
-
-    //defer db.Close()
-
-    // migrate schema
-    db.AutoMigrate(model.Guest{})
-    db.AutoMigrate(model.Party{})
-    db.AutoMigrate(model.User{})
-    db.Model(model.Guest{}).AddForeignKey("party_refer", "parties(id)", "CASCADE", "CASCADE") // (foreign_key, destination_table, ONDELETE, ONUPDATE)
-
 }
 
-func DbManager() *gorm.DB {
+func DbManager() *sqlx.DB {
+    if db == nil {
+        panic("Failed to get DB Connection")
+    }
     return db
 }
