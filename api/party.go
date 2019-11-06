@@ -3,7 +3,8 @@ package api
 import (
     "net/http"
     "fmt"
-    "strconv"
+    "encoding/json"
+    //"strconv"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
@@ -17,18 +18,55 @@ type H map[string]interface{}
 func GetParties(c echo.Context) error {
     db := db.DbManager()
     party := model.Party{}
-    parties := []model.Party{}
+    parties := []model.PartyResponse{}
 
-    if err := db.Preload("Guests").Find(&parties).Error; err != nil {
-        return err
+    query := `
+    SELECT
+    parties.*,
+    users.name as host_name,
+    (SELECT json_agg(row_to_json(guests))
+    FROM guests
+    WHERE guests.party_refer = parties.id) AS guests
+    FROM parties
+    INNER JOIN users ON parties.host_id = users.id`
+
+    rows, err := db.Queryx(query)
+
+    if err != nil {
+        return echo.NewHTTPError(http.StatusNotFound, "No parties found")
     }
 
-    if db.Find(&party).RecordNotFound() {
-        return echo.NewHTTPError(http.StatusNotFound, "No parties found")
+    for rows.Next() {
+        err = rows.StructScan(&party)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        guest := []model.Guest{}
+        err := json.Unmarshal([]byte(party.Guests), &guest)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        // TODO: this is fucking ugly. find out a better way to do it.
+        p := model.PartyResponse{}
+        p.ID = party.ID
+        p.Name = party.Name
+        p.InvitationId = party.InvitationId
+        p.InvitationOpened = party.InvitationOpened
+        p.IsAttending = party.IsAttending
+        p.HostName = party.HostName
+        p.Comments = party.Comments
+        p.Guests = guest
+
+        parties = append(parties, p)
+
     }
 
     return c.JSON(http.StatusOK, parties)
 }
+
+/*
 
 // GET - get individual party
 func GetParty(c echo.Context) error {
@@ -116,3 +154,5 @@ func DeleteParty(c echo.Context) error {
     })
 
 }
+
+*/

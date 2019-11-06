@@ -27,7 +27,6 @@ func UserLogin(c echo.Context) error {
     User := new(model.User)
     query := "SELECT id, email, password FROM users WHERE email = $1"
     err := db.QueryRowx(query, request.Email).StructScan(User)
-    fmt.Println(User)
 
     if err != nil {
         return echo.NewHTTPError(http.StatusNotFound, "Invalid login")

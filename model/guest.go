@@ -1,10 +1,10 @@
 package model
 
 type Guest struct {
-        PartyRefer          uint
-        ID                  uint        `json:"Id" gorm:"primary_key"`
-        FirstName           string      `json:"firstName"`
-        LastName            string      `json:"lastName"`
+        PartyRefer          int         `json:"party_refer"`
+        ID                  int         `json:"id"`
+        FirstName           string      `json:"first_name"`
+        LastName            string      `json:"last_name"`
         Email               string      `json:"email"`
-        IsAttending         bool        `json:"isAttending"`
+        IsAttending         bool        `json:"is_attending"`
 }
