@@ -4,7 +4,7 @@ import (
     "net/http"
     "fmt"
     "encoding/json"
-    //"strconv"
+    "strconv"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
@@ -66,25 +66,58 @@ func GetParties(c echo.Context) error {
     return c.JSON(http.StatusOK, parties)
 }
 
-/*
-
-// GET - get individual party
+// GET - get an individual party
 func GetParty(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
     party := model.Party{}
 
-    if db.First(&party, id).RecordNotFound() {
+    query := `
+    SELECT
+    parties.*,
+    users.name as host_name,
+    (SELECT json_agg(row_to_json(guests))
+    FROM guests
+    WHERE guests.party_refer = parties.id) AS guests
+    FROM parties
+    INNER JOIN users ON parties.host_id = users.id
+    WHERE parties.id = $1`
+
+    rows, err := db.Queryx(query, id)
+
+    if err != nil {
         err := fmt.Sprintf("Party with ID: %v not found", id)
         return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
-    if err := db.Preload("Guests").First(&party, id).Error; err != nil {
-        return err
+    p := model.PartyResponse{}
+    for rows.Next() {
+        err = rows.StructScan(&party)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        guest := []model.Guest{}
+        err := json.Unmarshal([]byte(party.Guests), &guest)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        // TODO: this is fucking ugly. find out a better way to do it.
+        p.ID = party.ID
+        p.Name = party.Name
+        p.InvitationId = party.InvitationId
+        p.InvitationOpened = party.InvitationOpened
+        p.IsAttending = party.IsAttending
+        p.HostName = party.HostName
+        p.Comments = party.Comments
+        p.Guests = guest
     }
 
-    return c.JSON(http.StatusOK, party)
+    return c.JSON(http.StatusOK, p)
 }
+
+/*
 
 // POST - create new party
 func CreateParty(c echo.Context) error {
