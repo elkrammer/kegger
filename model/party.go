@@ -20,7 +20,6 @@ type Party struct {
 type PartyResponse struct {
         ID                  uint        `db:"id"`
         Name                string      `db:"name"`
-        HostId              *uint       `db:"host_id"`
         InvitationId        *uint       `db:"invitation_id"`
         InvitationSent      *time.Time  `db:"invitation_sent"`
         InvitationOpened    *time.Time  `db:"invitation_opened"`
