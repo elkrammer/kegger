@@ -60,7 +60,6 @@ func GetParties(c echo.Context) error {
         p.Guests = guest
 
         parties = append(parties, p)
-
     }
 
     return c.JSON(http.StatusOK, parties)
@@ -155,29 +154,33 @@ func CreateParty(c echo.Context) error {
         INSERT INTO guests
         (party_refer, first_name, last_name, email, is_attending)
         VALUES($1, $2, $3, $4, $5);`
-        db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending)
+        _, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending)
+        if err != nil {
+            fmt.Println("error inserting guest record: ", q)
+            fmt.Println(err)
+        }
     }
+
+    // TODO: need to return a PartyResponse struct instead of the "broken" party struct
 
     return c.JSON(http.StatusCreated, party)
 }
 
-/*
 // PUT - update party
 func UpdateParty(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
 
-    party := new(model.Party)
+    party := new(model.PartyRequest)
 
+    var recordId uint
     // check if records exists
-    if db.First(&party, id).RecordNotFound() {
+    query := `SELECT id FROM parties WHERE id = $1`
+    err := db.QueryRow(query, id).Scan(&recordId)
+
+    if err != nil && recordId == 0 {
         err := fmt.Sprintf("Party with ID: %v not found", id)
         return echo.NewHTTPError(http.StatusNotFound, err)
-    }
-
-    // check for errors
-    if err := db.First(&party, id).Error; err != nil {
-        return err
     }
 
     // bind request to model
@@ -185,7 +188,30 @@ func UpdateParty(c echo.Context) error {
         return c.JSON(http.StatusBadRequest, party)
     }
 
-    db.Save(&party)
+    query = `
+    UPDATE parties
+    SET "name"=$1, invitation_id=$2, invitation_sent=$3, invitation_opened=$4, is_attending=$5, "comments"=$6, host_id=$7
+    WHERE id=$8;`
+    _, err = db.Exec(query, party.Name, party.InvitationId, party.InvitationSent, party.InvitationOpened, party.IsAttending, party.Comments, party.HostId, id)
+
+    if err != nil {
+        fmt.Println("error updating party record: ", query)
+        fmt.Println(err)
+    }
+
+    //  update all guests as per the request
+    for _, guest := range party.Guests {
+        q := `
+        UPDATE guests
+        SET party_refer=$1, first_name=$2, last_name=$3, email=$4, is_attending=$5
+        WHERE id=$6;`
+        _, err := db.Exec(q, id, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.ID)
+        if err != nil {
+            fmt.Println("error updating guest record: ", q)
+            fmt.Println(err)
+        }
+    }
+
     return c.JSON(http.StatusOK, party)
 }
 
@@ -193,20 +219,27 @@ func UpdateParty(c echo.Context) error {
 func DeleteParty(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
-    party := new(model.Party)
 
-    // check if record exists
-    if db.First(&party, id).RecordNotFound() {
+    var recordId uint
+    // check if records exists
+    query := `SELECT id FROM parties WHERE id = $1`
+    err := db.QueryRow(query, id).Scan(&recordId)
+
+    if err != nil && recordId == 0 {
         err := fmt.Sprintf("Party with ID: %v not found", id)
-        return c.JSON(http.StatusBadRequest, err)
+        return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
-    db.Delete(&party)
+    // delete record
+    query = `DELETE FROM parties WHERE id = $1`
+    _, err = db.Exec(query, id)
+
+    if err != nil {
+        fmt.Println("error deleting party record: ", query)
+        fmt.Println(err)
+    }
 
     return c.JSON(http.StatusOK, H{
         "deleted": id,
     })
-
 }
-
-*/
