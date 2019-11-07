@@ -28,3 +28,15 @@ type PartyResponse struct {
         Guests              []Guest
         Comments            string      `db:"comments"`
 }
+
+type PartyRequest struct {
+        ID                  uint        `db:"id"`
+        Name                string      `db:"name"`
+        InvitationId        *uint       `db:"invitation_id"`
+        InvitationSent      *time.Time  `db:"invitation_sent"`
+        InvitationOpened    *time.Time  `db:"invitation_opened"`
+        IsAttending         bool        `db:"is_attending"`
+        HostId              *uint       `db:"host_id"`
+        Guests              []Guest
+        Comments            string      `db:"comments"`
+}

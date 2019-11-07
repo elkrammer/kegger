@@ -103,7 +103,7 @@ func GetParty(c echo.Context) error {
             fmt.Println(err)
         }
 
-        // TODO: this is fucking ugly. find out a better way to do it.
+        // TODO: this is kinda ugly. find out a better way to do it.
         p.ID = party.ID
         p.Name = party.Name
         p.InvitationId = party.InvitationId
@@ -117,12 +117,10 @@ func GetParty(c echo.Context) error {
     return c.JSON(http.StatusOK, p)
 }
 
-/*
-
 // POST - create new party
 func CreateParty(c echo.Context) error {
+    party := model.PartyRequest{}
     db := db.DbManager()
-    party := model.Party{}
     if err := c.Bind(&party); err != nil {
         return err
     }
@@ -136,11 +134,34 @@ func CreateParty(c echo.Context) error {
         return echo.NewHTTPError(http.StatusBadRequest, "Missing field Guests. You must include at least one Guest")
     }
 
-    db.Create(&party)
+    // insert party struct into db
+    // TODO: figure out a more elegant way to do this
+    var pid uint
+    query := `
+    INSERT INTO parties
+    ("name", invitation_id, invitation_sent, invitation_opened, is_attending, "comments", host_id)
+    VALUES($1, $2, $3, $4, $5, $6, $7)
+    RETURNING id`
+    err := db.QueryRow(query, party.Name, party.InvitationId, party.InvitationSent, party.InvitationOpened, party.IsAttending, party.Comments, party.HostId).Scan(&pid)
+
+    if err != nil {
+        fmt.Println("error inserting party record: ", query)
+        fmt.Println(err)
+    }
+
+    // insert all guests in the request into the guests table
+    for _, guest := range party.Guests {
+        q := `
+        INSERT INTO guests
+        (party_refer, first_name, last_name, email, is_attending)
+        VALUES($1, $2, $3, $4, $5);`
+        db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending)
+    }
 
     return c.JSON(http.StatusCreated, party)
 }
 
+/*
 // PUT - update party
 func UpdateParty(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
