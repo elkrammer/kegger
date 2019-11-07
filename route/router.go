@@ -47,10 +47,10 @@ func Init() *echo.Echo {
     r.GET("/party/:id", api.GetParty)
     r.PUT("/party/:id", api.UpdateParty)
     r.DELETE("/party/:id", api.DeleteParty)
-    /*
 
     // Guest Routes
     r.GET("/guest/:id", api.GetGuest)
+    /*
     r.POST("/guest", api.CreateGuest)
     r.PUT("/guest/:id", api.UpdateGuest)
     r.DELETE("/guest/:id", api.DeleteGuest)

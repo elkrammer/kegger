@@ -15,19 +15,32 @@ import (
 func GetGuest(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
-    guest := model.Guest{}
 
-    if db.First(&guest, id).RecordNotFound() {
+    query := `
+    SELECT guests.*, parties.name as party_name
+    FROM guests
+    INNER JOIN parties ON guests.party_refer = parties.id
+    where parties.id = $1`
+
+    rows, err := db.Queryx(query, id)
+
+    if err != nil {
         err := fmt.Sprintf("Guest with ID: %v not found", id)
         return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
-    if err := db.First(&guest, id).Error; err != nil {
-        return err
+    g := model.GuestResponse{}
+    for rows.Next() {
+        err = rows.StructScan(&g)
+        if err != nil {
+            fmt.Println(err)
+        }
     }
 
-    return c.JSON(http.StatusOK, guest)
+    return c.JSON(http.StatusOK, g)
 }
+
+/*
 
 // POST - create individual guest
 func CreateGuest(c echo.Context) error {
@@ -106,3 +119,6 @@ func DeleteGuest(c echo.Context) error {
         "deleted": id,
     })
 }
+
+*/
+
