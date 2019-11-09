@@ -40,7 +40,6 @@ func GetGuest(c echo.Context) error {
     return c.JSON(http.StatusOK, g)
 }
 
-/*
 
 // POST - create individual guest
 func CreateGuest(c echo.Context) error {
@@ -49,7 +48,8 @@ func CreateGuest(c echo.Context) error {
 
     // bind request to model
     if err := c.Bind(guest); err != nil {
-        return c.JSON(http.StatusBadRequest, guest)
+        msg := fmt.Sprintf("Invalid request body. %s", err)
+        return c.JSON(http.StatusBadRequest, msg)
     }
 
     // request validations
@@ -69,11 +69,22 @@ func CreateGuest(c echo.Context) error {
         return echo.NewHTTPError(http.StatusBadRequest, "Missing PartyRefer field containing party id")
     }
 
-    db.Create(&guest)
+    fmt.Println(guest)
+
+    // insert guest struct into db
+    query := `
+    INSERT INTO guests
+    (first_name, last_name, email, is_attending, party_refer)
+    VALUES($1, $2, $3, $4, $5)`
+    err := db.QueryRow(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer)
+
+    if err != nil {
+        fmt.Println("error inserting guest record: ", query)
+        fmt.Println(err)
+    }
 
     return c.JSON(http.StatusOK, guest)
 }
-
 
 // PUT - update individual guest
 func UpdateGuest(c echo.Context) error {
@@ -81,22 +92,32 @@ func UpdateGuest(c echo.Context) error {
     db := db.DbManager()
     guest := new(model.Guest)
 
-    if db.First(&guest, id).RecordNotFound() {
+    // check if records exists
+    var recordId uint
+    query := `SELECT id FROM guests WHERE id = $1`
+    err := db.QueryRow(query, id).Scan(&recordId)
+
+    if err != nil && recordId == 0 {
         err := fmt.Sprintf("Guest with ID: %v not found", id)
         return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
-    // check for errors
-    if err := db.First(&guest, id).Error; err != nil {
-        return err
-    }
-
     // bind request to model
     if err := c.Bind(guest); err != nil {
-        return c.JSON(http.StatusBadRequest, guest)
+        msg := fmt.Sprintf("Invalid request body. %s", err)
+        return c.JSON(http.StatusBadRequest, msg)
     }
 
-    db.Save(&guest)
+    query = `
+    UPDATE guests
+    SET first_name=$1, last_name=$2, email=$3, is_attending=$4, party_refer=$5
+    WHERE id=$6;`
+    _, err = db.Exec(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer, id)
+
+    if err != nil {
+        fmt.Println("error updating party record: ", query)
+        fmt.Println(err)
+    }
 
     return c.JSON(http.StatusOK, guest)
 }
@@ -105,20 +126,27 @@ func UpdateGuest(c echo.Context) error {
 func DeleteGuest(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
-    guest := new(model.Guest)
 
-    // check if record exists
-    if db.First(&guest, id).RecordNotFound() {
-        err := fmt.Sprintf("Party with ID: %v not found", id)
-        return c.JSON(http.StatusBadRequest, err)
+    // check if records exists
+    var recordId uint
+    query := `SELECT id FROM guests WHERE id = $1`
+    err := db.QueryRow(query, id).Scan(&recordId)
+
+    if err != nil && recordId == 0 {
+        err := fmt.Sprintf("Guest with ID: %v not found", id)
+        return echo.NewHTTPError(http.StatusNotFound, err)
     }
 
-    db.Delete(&guest)
+    // delete record
+    query = `DELETE FROM guests WHERE id = $1`
+    _, err = db.Exec(query, id)
+
+    if err != nil {
+        fmt.Println("error deleting guest record: ", query)
+        fmt.Println(err)
+    }
 
     return c.JSON(http.StatusOK, H{
         "deleted": id,
     })
 }
-
-*/
-

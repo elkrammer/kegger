@@ -121,7 +121,8 @@ func CreateParty(c echo.Context) error {
     party := model.PartyRequest{}
     db := db.DbManager()
     if err := c.Bind(&party); err != nil {
-        return err
+        msg := fmt.Sprintf("Invalid request body. %s", err)
+        return c.JSON(http.StatusBadRequest, msg)
     }
 
     // request validations
@@ -173,8 +174,8 @@ func UpdateParty(c echo.Context) error {
 
     party := new(model.PartyRequest)
 
-    var recordId uint
     // check if records exists
+    var recordId uint
     query := `SELECT id FROM parties WHERE id = $1`
     err := db.QueryRow(query, id).Scan(&recordId)
 
@@ -220,8 +221,8 @@ func DeleteParty(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
 
-    var recordId uint
     // check if records exists
+    var recordId uint
     query := `SELECT id FROM parties WHERE id = $1`
     err := db.QueryRow(query, id).Scan(&recordId)
 
