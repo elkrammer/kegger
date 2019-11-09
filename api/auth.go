@@ -17,27 +17,26 @@ import (
 // POST Request
 func UserLogin(c echo.Context) error {
     db := db.DbManager()
-    userCreds := new(model.User)
-    user := new(model.User)
+    request := new(model.User)
 
     // bind request to model
-    if err := c.Bind(userCreds); err != nil {
-        return c.JSON(http.StatusBadRequest, user)
+    if err := c.Bind(request); err != nil {
+        return c.JSON(http.StatusBadRequest, err)
     }
 
-    if userCreds.Email == "" || userCreds.Password == "" {
-        return c.JSON(http.StatusBadRequest, "Missing username / password")
-    }
+    User := new(model.User)
+    query := "SELECT id, email, password FROM users WHERE email = $1"
+    err := db.QueryRowx(query, request.Email).StructScan(User)
 
-    if err := db.Where("email = ?", userCreds.Email).First(&user).Error; err != nil {
+    if err != nil {
         return echo.NewHTTPError(http.StatusNotFound, "Invalid login")
     }
 
     // compare password hash
-    match := helper.CheckPasswordHash(userCreds.Password, user.Password)
+    match := helper.CheckPasswordHash(request.Password, User.Password)
 
     if match {
-        tokens, err := jwttoken.GenerateTokenPair(user.ID, user.Email)
+        tokens, err := jwttoken.GenerateTokenPair(User.ID, User.Email)
         if err != nil {
             return err
         }
@@ -55,7 +54,6 @@ func GenRefreshToken(c echo.Context) error {
     c.Bind(&tokenReq)
 
     db := db.DbManager()
-    user := model.User{}
 
     signature := []byte(os.Getenv("JWT_SECRET"))
     token, err := jwt.Parse(tokenReq.RefreshToken, func(token *jwt.Token) (interface{}, error) {
@@ -78,18 +76,22 @@ func GenRefreshToken(c echo.Context) error {
         return echo.NewHTTPError(http.StatusBadRequest, "refresh token invalid")
     }
 
+    var UserId uint
     id := uint(claims["sub"].(float64))
-    if err := db.First(&user, id).Error; err != nil {
+    row := db.QueryRow("SELECT id FROM users WHERE users.id = $1", id)
+    err = row.Scan(&UserId)
+
+    if err != nil {
         return err
     }
 
-    if id == user.ID {
+    if id == UserId {
         newTokenPair, err := jwttoken.GenerateTokenPair(id, claims["username"].(string))
         if err != nil {
             return err
         }
         return c.JSON(http.StatusOK, newTokenPair)
-    } else {
-        return err
     }
+
+    return err
 }

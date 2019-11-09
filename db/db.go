@@ -3,38 +3,51 @@ package db
 import (
     "fmt"
     "os"
+    "log"
     "github.com/elkrammer/gorsvp/internal/config"
-    "github.com/elkrammer/gorsvp/model"
-    "github.com/jinzhu/gorm"
-    _ "github.com/jinzhu/gorm/dialects/postgres"
+    //    "github.com/elkrammer/gorsvp/model"
+    "github.com/golang-migrate/migrate/v4"
+    _ "github.com/golang-migrate/migrate/v4/database/postgres"
+    _ "github.com/golang-migrate/migrate/v4/source/file"
+    "github.com/jmoiron/sqlx"
+    _ "github.com/jackc/pgx/stdlib"
 )
 
-var db *gorm.DB
+var db *sqlx.DB
 var err error
 
 func Init() {
     // load config variables from .env file
     config.LoadEnv()
-    conn_str := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))
-    db, err = gorm.Open("postgres", conn_str)
+    connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 
-    // db debugging
-    db.LogMode(true)
-
+    db = sqlx.MustConnect("pgx", connectionString)
+    err = db.Ping()
     if err != nil {
-        panic(err)
+        fmt.Println("Failed to connect to database: " + connectionString)
     }
 
-    //defer db.Close()
+    RunMigrations()
+}
 
-    // migrate schema
-    db.AutoMigrate(model.Guest{})
-    db.AutoMigrate(model.Party{})
-    db.AutoMigrate(model.User{})
-    db.Model(model.Guest{}).AddForeignKey("party_refer", "parties(id)", "CASCADE", "CASCADE") // (foreign_key, destination_table, ONDELETE, ONUPDATE)
+func RunMigrations() {
+    config.LoadEnv()
+    connectionString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+
+    m, err := migrate.New("file://db/migrations", connectionString)
+    if err != nil {
+		log.Fatalf("migration failed... %v", err)
+    }
+
+    if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatalf("an error occurred while syncing the database.. %v", err)
+    }
 
 }
 
-func DbManager() *gorm.DB {
+func DbManager() *sqlx.DB {
+    if db == nil {
+        panic("Failed to get DB Connection")
+    }
     return db
 }
