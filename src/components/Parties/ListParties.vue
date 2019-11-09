@@ -10,38 +10,67 @@
         detailed
         show-detail-icon
         custom-detail-row
-        detail-key="Id"
+        sort-icon="chevron-up"
+        sort-icon-size="is-small"
+        detail-key="ID"
         >
         <template slot-scope="props">
 
-          <b-table-column field="name" label="Party Name" sortable>
-            {{ props.row.name }}
+          <b-table-column field="Name" label="Party Name" sortable>
+            {{ props.row.Name }}
           </b-table-column>
 
-        <b-table-column field="invitationOpened" label="Invite Seen?" sortable>
-          <b-icon pack="fas"
-                  :icon="props.row.invitationOpened === true ? 'thumbs-up' : 'thumbs-down'">
-          </b-icon>
+        <b-table-column field="HostName" label="Host" sortable>
+          {{ props.row.HostName }}
         </b-table-column>
 
-        <b-table-column field="isAttending" label="Attending" sortable>
-          <b-icon pack="fas"
-                  :icon="props.row.isAttending === true ? 'thumbs-up' : 'thumbs-down'">
-          </b-icon>
+        <b-table-column field="IsAttending" label="Attending" sortable>
+
+          <div class="has-text-success" v-if="props.row.IsAttending === true">
+            <span class="icon-text">Yep</span>
+            <b-icon pack="fas" icon="thumbs-up">
+            </b-icon>
+          </div>
+          <div class="has-text-danger" v-else>
+            <span class="icon-text">Nay</span>
+            <b-icon pack="fas" icon="thumbs-down">
+            </b-icon>
+          </div>
+
         </b-table-column>
 
-        <b-table-column field="comments" label="Comments" sortable>
+        <b-table-column field="InvitationSent" label="Invite Sent" sortable>
+          <div v-if="props.row.InvitationSent !== null">
+            {{ props.row.InvitationSent }}
+          </div>
+          <div v-else>
+            Not Sent
+          </div>
+        </b-table-column>
+
+        <b-table-column field="InvitationOpened" label="Invite Opened" sortable>
+          <div v-if="props.row.InvitationOpened !== null">
+            <div>{{ props.row.InvitationOpened | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
+          </div>
+          <div v-else>
+            Not Opened
+          </div>
+        </b-table-column>
+
+        <b-table-column field="Comments" label="Comments" sortable>
           {{ props.row.comments }}
         </b-table-column>
 
         </template>
 
         <template slot="detail" slot-scope="props">
-          <tr v-for="guest in props.row.Guests" :key="guest.Id">
+          <tr v-for="guest in props.row.Guests" :key="guest.index">
             <td></td>
-            <td style="padding-left: 30px;">{{ guest.firstName }} {{ guest.lastName }}</td>
+            <td style="padding-left: 30px;">{{ guest.first_name }} {{ guest.last_name }}</td>
+            <td></td>
             <td>
               <!-- TODO: Fix me in model! :) -->
+              <span class="icon-text">Nay</span>
               <b-icon icon="thumbs-down"></b-icon>
             </td>
             <td>
@@ -90,9 +119,14 @@
     },
     created() {
       this.loadParties();
-    }
+    },
   };
 </script>
 
 <style lang="scss">
+
+.icon-text {
+  margin-right: 10px;
+}
+
 </style>
