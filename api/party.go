@@ -48,7 +48,7 @@ func GetParties(c echo.Context) error {
             fmt.Println(err)
         }
 
-        // TODO: this is fucking ugly. find out a better way to do it.
+        // TODO: this is fucking ugly. find a better way to do it.
         p := model.PartyResponse{}
         p.ID = party.ID
         p.Name = party.Name
@@ -162,9 +162,51 @@ func CreateParty(c echo.Context) error {
         }
     }
 
-    // TODO: need to return a PartyResponse struct instead of the "broken" party struct
+    // return a PartyResponse with the newly created party
+    query = `
+    SELECT
+    parties.*,
+    users.name as host_name,
+    (SELECT json_agg(row_to_json(guests))
+    FROM guests
+    WHERE guests.party_refer = parties.id) AS guests
+    FROM parties
+    INNER JOIN users ON parties.host_id = users.id
+    WHERE parties.id = $1`
 
-    return c.JSON(http.StatusCreated, party)
+    rows, err := db.Queryx(query, pid)
+
+    if err != nil {
+        err := fmt.Sprintf("Party with ID: %v not found", pid)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    p := model.Party{}
+    r := model.PartyResponse{}
+    for rows.Next() {
+        err = rows.StructScan(&p)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        guest := []model.Guest{}
+        err := json.Unmarshal([]byte(p.Guests), &guest)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        // TODO: this is kinda ugly. find a better way to do it.
+        r.ID = p.ID
+        r.Name = p.Name
+        r.InvitationId = p.InvitationId
+        r.InvitationOpened = p.InvitationOpened
+        r.IsAttending = p.IsAttending
+        r.HostName = p.HostName
+        r.Comments = p.Comments
+        r.Guests = guest
+    }
+
+    return c.JSON(http.StatusCreated, r)
 }
 
 // PUT - update party
