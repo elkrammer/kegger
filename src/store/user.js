@@ -1,3 +1,6 @@
+// this store sets parameters for the current logged in user
+// eg: 'user': {'user': "admin@admin.com", 'acccessToken': "...", 'refreshToken': "..." }
+
 import Vue from "vue";
 import Vuex from "vuex";
 import jwtDecode from "jwt-decode";
@@ -85,7 +88,7 @@ const user = {
       state.refreshToken = null;
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-    }
+    },
   },
   getters: {
     user(state) {
@@ -96,7 +99,7 @@ const user = {
     },
     refreshToken(state) {
       return state.refreshToken;
-    }
+    },
   },
   actions: {
     async setUserAndTokens({ commit }, data) {
@@ -138,8 +141,8 @@ const user = {
       } catch (error) {
         return Promise.reject(error);
       }
-    }
+    },
   }
-}
+};
 
 export default user;

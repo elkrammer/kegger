@@ -3,6 +3,22 @@
     <div class="container">
       <h1 class="title">Parties</h1>
 
+      <section>
+        <div style="margin-bottom: 30px">
+          <b-button @click="modalActive = true" type="is-success">Create New Party</b-button>
+        </div>
+
+        <b-modal
+          :active.sync="modalActive"
+          has-modal-card
+          trap-focus
+          aria-role="dialog"
+          aria-modal>
+          <CreateParty/>
+        </b-modal>
+
+      </section>
+
       <b-table
         :data="parties"
         ref="table"
@@ -91,12 +107,14 @@
 
 <script>
   import { mapGetters } from "vuex";
+  import CreateParty from "@/components/Parties/CreateParty.vue";
 
   export default {
     name: 'list_parties',
+    components: { CreateParty },
     data() {
       return {
-        showDetailIcon: true,
+        modalActive: false,
       };
     },
     methods: {
