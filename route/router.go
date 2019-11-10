@@ -54,5 +54,8 @@ func Init() *echo.Echo {
     r.PUT("/guest/:id", api.UpdateGuest)
     r.DELETE("/guest/:id", api.DeleteGuest)
 
+    // User Routes
+    r.GET("/user", api.GetUsers)
+
     return e
 }
