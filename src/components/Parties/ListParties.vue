@@ -80,7 +80,7 @@
         </template>
 
         <template slot="detail" slot-scope="props">
-          <tr v-for="guest in props.row.Guests" :key="guest.index">
+          <tr v-for="guest in props.row.Guests" :key="guest.id">
             <td></td>
             <td style="padding-left: 30px;">{{ guest.first_name }} {{ guest.last_name }}</td>
             <td></td>

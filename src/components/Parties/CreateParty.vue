@@ -114,9 +114,8 @@
       },
       async createParty() {
         try {
-          const response = await this.$store.dispatch("party/createParty", this.formProps);
-          await this.$store.dispatch("party/addPartyToStack", response.data);
-          return response.data;
+          await this.$store.dispatch("party/createParty", this.formProps);
+          this.$parent.close();
         } catch (error) {
           console.log(error);
         }
@@ -130,7 +129,7 @@
     },
     computed: {
       ...mapGetters({
-        users: "users/users"
+        users: "users/users",
       }),
     },
     created() {
