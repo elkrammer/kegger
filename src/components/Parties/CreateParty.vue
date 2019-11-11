@@ -1,5 +1,5 @@
 <template>
-  <form v-on:submit.prevent action="">
+  <form v-on:submit.prevent>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Create New Party</p>
@@ -32,7 +32,7 @@
             <b-field label="First Name">
               <b-input
                 placeholder="First Name"
-                v-model="guest.first_name"
+                v-model="formProps.guest.first_name"
                 required>
               </b-input>
             </b-field>
@@ -40,7 +40,7 @@
             <b-field label="Last Name">
               <b-input
                 placeholder="Last Name"
-                v-model="guest.last_name"
+                v-model="formProps.guest.last_name"
                 required>
               </b-input>
             </b-field>
@@ -48,14 +48,16 @@
             <b-field label="Email">
               <b-input
                 placeholder="Email"
-                v-model="guest.email"
+                v-model.trim="formProps.guest.email"
                 required>
               </b-input>
             </b-field>
 
             <b-field>
               <p class="control">
-              <button style="margin-top: 32px" class="button is-success" @click="addGuest()">Add Guest</button>
+              <button style="margin-top: 32px"
+                      class="button is-success"
+                      @click="addGuest()">Add Guest</button>
               </p>
             </b-field>
 
@@ -63,9 +65,10 @@
 
           <div v-if="formProps.guests.length >0">
             <ul>
-              <li v-for="(guest, index) in formProps.guests" :key="index">
+              <li class="guest" v-for="(guest, index) in formProps.guests" :key="index">
                 <b-icon icon="user"></b-icon>
-                {{ guest.first_name }} {{ guest.last_name }}
+                {{ guest.first_name }} {{ guest.last_name }} - {{ guest.email }}
+                <b-button @click="deleteGuest(index)" type="is-danger" icon-right="trash-alt" size="is-small" />
               </li>
             </ul>
           </div>
@@ -77,7 +80,7 @@
 
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" @click="createParty()">Create</button>
+        <button class="button is-success" :disabled="$v.$invalid" @click="createParty()">Create</button>
         <button class="button" @click="$parent.close()">Close</button>
       </footer>
     </div>
@@ -86,6 +89,8 @@
 
 <script>
   import { mapGetters } from "vuex";
+  import { required, minLength, requiredUnless} from "vuelidate/lib/validators";
+
   export default {
     name: 'create_party',
     data() {
@@ -95,12 +100,13 @@
           host_id: null,
           comments: '',
           guests: [],
+          guest: {
+            first_name: '',
+            last_name: '',
+            email: '',
+          },
         },
-        guest: {
-          first_name: '',
-          last_name: '',
-          email: '',
-        },
+        submitted: false,
       }
     },
     methods: {
@@ -113,6 +119,14 @@
         }
       },
       async createParty() {
+        this.submitted = true;
+
+        this.$v.$touch();
+        if (this.$v.$invalid) {
+          this.$v.$touch();
+          return;
+        }
+
         try {
           await this.$store.dispatch("party/createParty", this.formProps);
           this.$parent.close();
@@ -121,25 +135,62 @@
         }
       },
       addGuest() {
-        this.formProps.guests.push({...this.guest});
-        this.guest.first_name = '';
-        this.guest.last_name= '';
-        this.guest.email = '';
+        if (this.$v.formProps.guest.first_name.$invalid ||
+          this.$v.formProps.guest.last_name.$invalid ||
+          this.$v.formProps.guest.email.$invalid) {
+          return;
+        }
+        this.formProps.guests.push({ ...this.formProps.guest });
+        //this.formProps.guests.push(this.formProps.guest);
+        this.formProps.guest.first_name = '';
+        this.formProps.guest.last_name= '';
+        this.formProps.guest.email = '';
+      },
+      deleteGuest(index) {
+        this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);
+      },
+    },
+    validations: {
+      formProps: {
+        name: { required },
+        host_id: { required },
+        guests: {
+          required,
+          minLength: minLength(1),
+        },
+        guest: {
+          first_name: requiredUnless('hasGuests'),
+          last_name: requiredUnless('hasGuests'),
+          email: requiredUnless('hasGuests'),
+        },
       }
     },
     computed: {
       ...mapGetters({
         users: "users/users",
       }),
+      hasGuests() {
+        if (this.formProps.guests.length > 0) {
+          console.log("validation passed so chill?");
+          return true;
+        } else {
+          return false;
+        }
+      }
     },
     created() {
       this.getHosts();
     },
-  }
+  };
 </script>
 
 <style lang="scss">
 .guests {
   background-color: #fffaff;
 }
+
+.guest {
+  margin-top: 10px;
+}
+
 </style>
