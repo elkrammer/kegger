@@ -4,8 +4,10 @@
       <h1 class="title">Parties</h1>
 
       <section>
-        <div style="margin-bottom: 30px">
+        <div style="margin-bottom: 30px" class="buttons">
           <b-button @click="modalActive = true" type="is-success">Create New Party</b-button>
+          <b-button @click="deleteActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
+          <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 100px;" type="is-warning">Unselect</b-button>
         </div>
 
         <b-modal
@@ -17,6 +19,15 @@
           <CreateParty/>
         </b-modal>
 
+        <b-modal
+          :active.sync="deleteActive"
+          has-modal-card
+          trap-focus
+          aria-role="dialog"
+          aria-modal>
+          <DeleteParty v-if="selected !== null" :party_id="selected.ID" :party_name="selected.Name"/>
+        </b-modal>
+
       </section>
 
       <b-table
@@ -26,6 +37,7 @@
         detailed
         show-detail-icon
         custom-detail-row
+        :selected.sync="selected"
         sort-icon="chevron-up"
         sort-icon-size="is-small"
         detail-key="ID"
@@ -108,13 +120,16 @@
 <script>
   import { mapGetters } from "vuex";
   import CreateParty from "@/components/Parties/CreateParty.vue";
+  import DeleteParty from "@/components/Parties/DeleteParty.vue";
 
   export default {
     name: 'list_parties',
-    components: { CreateParty },
+    components: { CreateParty, DeleteParty },
     data() {
       return {
         modalActive: false,
+        deleteActive: false,
+        selected: null,
       };
     },
     methods: {
@@ -128,7 +143,10 @@
       },
       toggle(row) {
         this.$refs.table.toggleDetails(row)
-      }
+      },
+      unSelect() {
+        this.selected = null;
+      },
     },
     computed: {
       ...mapGetters({

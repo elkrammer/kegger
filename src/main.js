@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate';
 import Buefy from 'buefy'
 import VueFilterDateFormat from 'vue-filter-date-format';
-import VueFilterDateParse from 'vue-filter-date-parse'
+import VueFilterDateParse from 'vue-filter-date-parse';
+
 import App from './App.vue'
 import router from './router';
 import store from './store';

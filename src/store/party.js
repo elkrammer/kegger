@@ -7,6 +7,7 @@ import { setAuthorizationHeader } from "@/common/utilities";
 
 const GET_PARTIES = "GET_PARTIES";
 const ADD_PARTY = "ADD_PARTY";
+const DELETE_PARTY = "DELETE_PARTY"
 
 const party = {
   namespaced: true,
@@ -19,6 +20,10 @@ const party = {
     },
     ADD_PARTY(state, data) {
       state.parties.push(data);
+    },
+    DELETE_PARTY(state, index) {
+      const itemId = state.parties.find(party => party.id === index);
+      state.parties.splice(state.parties.indexOf(itemId), 1);
     },
   },
   getters: {
@@ -52,7 +57,18 @@ const party = {
         return Promise.reject(error);
       }
     },
+    async deleteParty({ commit, rootGetters }, index) {
+      try {
+        console.log("ASDASD");
+        setAuthorizationHeader(rootGetters["user/accessToken"]);
+        const response = await axios.delete("/api/party/" + index);
+        commit(DELETE_PARTY, index);
+        return response.data;
+      } catch(error) {
+        return Promise.reject(error);
+      }
+    },
   },
-}
+};
 
 export default party;
