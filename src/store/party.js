@@ -5,21 +5,30 @@ Vue.use(Vuex);
 import axios from "@/common/axios";
 import { setAuthorizationHeader } from "@/common/utilities";
 
+const GET_PARTY = "GET_PARTY";
 const GET_PARTIES = "GET_PARTIES";
 const ADD_PARTY = "ADD_PARTY";
-const DELETE_PARTY = "DELETE_PARTY"
+const EDIT_PARTY = "EDIT_PARTY";
+const DELETE_PARTY = "DELETE_PARTY";
 
 const party = {
   namespaced: true,
   state: {
-    parties: []
+    parties: [],
   },
   mutations: {
+    GET_PARTY(state, data) {
+      state.party = data;
+    },
     GET_PARTIES(state, data) {
       state.parties = data;
     },
     ADD_PARTY(state, data) {
       state.parties.push(data);
+    },
+    EDIT_PARTY(state, data) {
+      const itemId = state.parties.find(party => party.id === data.ID);
+      Vue.set(state.parties, itemId, data)
     },
     DELETE_PARTY(state, index) {
       const itemId = state.parties.find(party => party.id === index);
@@ -32,6 +41,16 @@ const party = {
     }
   },
   actions: {
+    async getParty({ commit, rootGetters }, index) {
+      try {
+        setAuthorizationHeader(rootGetters["user/accessToken"]);
+        const response = await axios.get("/api/party/" + index);
+        commit(GET_PARTY, response.data);
+        return response.data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async getParties({ commit, rootGetters }) {
       try {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
@@ -57,9 +76,18 @@ const party = {
         return Promise.reject(error);
       }
     },
+    async editParty({ commit, rootGetters }, data) {
+      try{
+        setAuthorizationHeader(rootGetters["user/accessToken"]);
+        const response = await axios.put("/api/party/" + data.ID, data);
+        commit(EDIT_PARTY, response.data);
+        return response.data;
+      } catch(error) {
+        return Promise.reject(error);
+      }
+    },
     async deleteParty({ commit, rootGetters }, index) {
       try {
-        console.log("ASDASD");
         setAuthorizationHeader(rootGetters["user/accessToken"]);
         const response = await axios.delete("/api/party/" + index);
         commit(DELETE_PARTY, index);

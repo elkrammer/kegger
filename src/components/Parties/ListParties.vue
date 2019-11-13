@@ -5,18 +5,28 @@
 
       <section>
         <div style="margin-bottom: 30px" class="buttons">
-          <b-button @click="modalActive = true" type="is-success">Create New Party</b-button>
+          <b-button @click="createActive = true" type="is-success">Create New Party</b-button>
+          <b-button @click="editActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
           <b-button @click="deleteActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
           <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 100px;" type="is-warning">Unselect</b-button>
         </div>
 
         <b-modal
-          :active.sync="modalActive"
+          :active.sync="createActive"
           has-modal-card
           trap-focus
           aria-role="dialog"
           aria-modal>
           <CreateParty/>
+        </b-modal>
+
+        <b-modal
+          :active.sync="editActive"
+          has-modal-card
+          trap-focus
+          aria-role="dialog"
+          aria-modal>
+          <EditParty v-if="selected !== null" :party_id="selected.ID"/>
         </b-modal>
 
         <b-modal
@@ -120,14 +130,16 @@
 <script>
   import { mapGetters } from "vuex";
   import CreateParty from "@/components/Parties/CreateParty.vue";
+  import EditParty from "@/components/Parties/EditParty.vue";
   import DeleteParty from "@/components/Parties/DeleteParty.vue";
 
   export default {
     name: 'list_parties',
-    components: { CreateParty, DeleteParty },
+    components: { CreateParty, EditParty, DeleteParty },
     data() {
       return {
-        modalActive: false,
+        createActive: false,
+        editActive: false,
         deleteActive: false,
         selected: null,
       };
