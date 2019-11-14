@@ -18,4 +18,5 @@ require (
 	github.com/shopspring/decimal v0.0.0-20191009025716-f1972eb1d1f5 // indirect
 	github.com/urfave/cli v1.22.1
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
+	gopkg.in/guregu/null.v3 v3.4.0
 )
