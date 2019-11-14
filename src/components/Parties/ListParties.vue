@@ -48,6 +48,7 @@
         show-detail-icon
         custom-detail-row
         :selected.sync="selected"
+        default-sort="Name"
         sort-icon="chevron-up"
         sort-icon-size="is-small"
         detail-key="ID"
