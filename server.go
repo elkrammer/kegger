@@ -11,5 +11,5 @@ func main() {
   e := route.Init()
 
   // start server
-  e.Logger.Fatal(e.Start(":8080"))
+  e.Logger.Fatal(e.Start(":4040"))
 }

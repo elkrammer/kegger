@@ -52,6 +52,7 @@ func GetParties(c echo.Context) error {
         p := model.PartyResponse{}
         p.ID = party.ID
         p.Name = party.Name
+        p.HostId = party.HostId
         p.InvitationId = party.InvitationId
         p.InvitationOpened = party.InvitationOpened
         p.IsAttending = party.IsAttending
@@ -105,6 +106,7 @@ func GetParty(c echo.Context) error {
         // TODO: this is kinda ugly. find out a better way to do it.
         p.ID = party.ID
         p.Name = party.Name
+        p.HostId = party.HostId
         p.InvitationId = party.InvitationId
         p.InvitationOpened = party.InvitationOpened
         p.IsAttending = party.IsAttending
@@ -255,7 +257,51 @@ func UpdateParty(c echo.Context) error {
         }
     }
 
-    return c.JSON(http.StatusOK, party)
+    // return a PartyResponse
+    query = `
+    SELECT
+    parties.*,
+    users.name as host_name,
+    (SELECT json_agg(row_to_json(guests))
+    FROM guests
+    WHERE guests.party_refer = parties.id) AS guests
+    FROM parties
+    INNER JOIN users ON parties.host_id = users.id
+    WHERE parties.id = $1`
+
+    rows, err := db.Queryx(query, recordId)
+
+    if err != nil {
+        err := fmt.Sprintf("Party with ID: %v not found", recordId)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    p := model.Party{}
+    r := model.PartyResponse{}
+    for rows.Next() {
+        err = rows.StructScan(&p)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        guest := []model.Guest{}
+        err := json.Unmarshal([]byte(p.Guests), &guest)
+        if err != nil {
+            fmt.Println(err)
+        }
+
+        // TODO: this is kinda ugly. find a better way to do it.
+        r.ID = p.ID
+        r.Name = p.Name
+        r.InvitationId = p.InvitationId
+        r.InvitationOpened = p.InvitationOpened
+        r.IsAttending = p.IsAttending
+        r.HostName = p.HostName
+        r.Comments = p.Comments
+        r.Guests = guest
+    }
+
+    return c.JSON(http.StatusOK, r)
 }
 
 // DELETE - delete party
