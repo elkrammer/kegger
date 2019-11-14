@@ -44,6 +44,7 @@
       async editParty() {
         try {
           await this.$store.dispatch("party/editParty", this.party);
+          this.$parent.close();
         } catch (error) {
           console.log(error);
         }

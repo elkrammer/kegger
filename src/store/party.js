@@ -27,11 +27,11 @@ const party = {
       state.parties.push(data);
     },
     EDIT_PARTY(state, data) {
-      const itemId = state.parties.find(party => party.id === data.ID);
-      Vue.set(state.parties, itemId, data)
+      const itemId = state.parties.findIndex(party => party.ID === data.ID);
+      Vue.set(state.parties, itemId, data);
     },
     DELETE_PARTY(state, index) {
-      const itemId = state.parties.find(party => party.id === index);
+      const itemId = state.parties.find(party => party.ID === index);
       state.parties.splice(state.parties.indexOf(itemId), 1);
     },
   },
