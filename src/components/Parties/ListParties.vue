@@ -5,14 +5,15 @@
 
       <section>
         <div style="margin-bottom: 30px" class="buttons">
-          <b-button @click="createActive = true" type="is-success">Create New Party</b-button>
-          <b-button @click="editActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
-          <b-button @click="deleteActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
+          <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
+          <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
+          <b-button @click="editGuestsActive = true" v-if="selected !== null" type="primary">Edit Guests</b-button>
+          <b-button @click="deletePartyActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
           <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 100px;" type="is-warning">Unselect</b-button>
         </div>
 
         <b-modal
-          :active.sync="createActive"
+          :active.sync="createPartyActive"
           has-modal-card
           trap-focus
           aria-role="dialog"
@@ -21,7 +22,7 @@
         </b-modal>
 
         <b-modal
-          :active.sync="editActive"
+          :active.sync="editPartyActive"
           has-modal-card
           trap-focus
           aria-role="dialog"
@@ -30,7 +31,16 @@
         </b-modal>
 
         <b-modal
-          :active.sync="deleteActive"
+          :active.sync="editGuestsActive"
+          has-modal-card
+          trap-focus
+          aria-role="dialog"
+          aria-modal>
+          <EditGuests v-if="selected !== null" :party_id="selected.ID"/>
+        </b-modal>
+
+        <b-modal
+          :active.sync="deletePartyActive"
           has-modal-card
           trap-focus
           aria-role="dialog"
@@ -132,16 +142,18 @@
   import { mapGetters } from "vuex";
   import CreateParty from "@/components/Parties/CreateParty.vue";
   import EditParty from "@/components/Parties/EditParty.vue";
+  import EditGuests from "@/components/Guests/EditGuests.vue";
   import DeleteParty from "@/components/Parties/DeleteParty.vue";
 
   export default {
     name: 'list_parties',
-    components: { CreateParty, EditParty, DeleteParty },
+    components: { CreateParty, EditParty, DeleteParty, EditGuests },
     data() {
       return {
-        createActive: false,
-        editActive: false,
-        deleteActive: false,
+        createPartyActive: false,
+        editPartyActive: false,
+        deletePartyActive: false,
+        editGuestsActive: false,
         selected: null,
       };
     },

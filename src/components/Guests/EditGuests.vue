@@ -1,0 +1,109 @@
+<template>
+  <form v-on:submit.prevent>
+    <div class="modal-card" style="width: 500px; height: 900px;">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Edit Guests</p>
+      </header>
+      <section class="modal-card-body">
+
+        <div style="margin-bottom: 5px" class="buttons">
+          <b-button @click="addEmptyGuest" type="is-success">Add</b-button>
+        </div>
+
+        <b-collapse
+          class="card"
+          v-for="(guest, index) in guests"
+          :key="index"
+          :open="isOpen == index"
+          @open="isOpen = index">
+          <div
+            slot="trigger"
+            slot-scope="props"
+            class="card-header"
+            role="button">
+            <p class="card-header-title">
+            {{ guest.first_name }} {{ guest.last_name }}
+            </p>
+            <a class="card-header-icon">
+              <b-icon
+                :icon="props.open ? 'caret-up' : 'caret-down'">
+              </b-icon>
+            </a>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <b-field label="First Name">
+                <b-input placeholder="First Name" v-model="guest.first_name"></b-input>
+              </b-field>
+
+              <b-field label="Last Name">
+                <b-input placeholder="Last Name" v-model="guest.last_name"></b-input>
+              </b-field>
+
+              <b-field label="Email">
+                <b-input placeholder="Email" v-model="guest.email"></b-input>
+              </b-field>
+
+              <b-switch v-model="guest.is_attending" type="is-success">Attending?</b-switch>
+
+            </div>
+          </div>
+        </b-collapse>
+
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" @click="editGuests">Save</button>
+        <button class="button" @click="$parent.close()">Close</button>
+      </footer>
+    </div>
+  </form>
+</template>
+
+<script>
+  import { mapGetters } from "vuex";
+  export default {
+    name: 'edit_guest',
+    props: ['party_id'],
+    data() {
+      return {
+        guest: [],
+        isOpen: null,
+      }
+    },
+    methods: {
+      async getGuests() {
+        try {
+          const response = await this.$store.dispatch("guest/getGuests", this.party_id);
+          return response.data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      async editGuests() {
+        try {
+          await this.$store.dispatch("guest/editGuests", this.guests);
+          this.$parent.close();
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      addEmptyGuest() {
+        this.$store.dispatch("guest/addEmptyGuest", this.party_id);
+        this.isOpen = 0;
+      }
+    },
+    computed: {
+      ...mapGetters({
+        guests: "guest/guests",
+      })
+    },
+    getters: {
+      guests(state) {
+        return state.guests;
+      }
+    },
+    created() {
+      this.getGuests();
+    },
+  }
+</script>

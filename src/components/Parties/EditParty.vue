@@ -25,6 +25,10 @@
           </b-select>
         </b-field>
 
+        <b-field label="Comments">
+          <b-input maxlength="200" rows="2" v-model="party.Comments" type="textarea"></b-input>
+        </b-field>
+
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" @click="editParty">Edit</button>
