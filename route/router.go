@@ -50,6 +50,8 @@ func Init() *echo.Echo {
 
     // Guest Routes
     r.POST("/guest", api.CreateGuest)
+    r.GET("/guests/:id", api.GetGuests)
+    r.GET("/guest/:id", api.GetGuest)
     r.GET("/guest/:id", api.GetGuest)
     r.PUT("/guest/:id", api.UpdateGuest)
     r.DELETE("/guest/:id", api.DeleteGuest)

@@ -11,6 +11,36 @@ import (
     "github.com/labstack/echo"
 )
 
+// GET - get guests for a party id
+func GetGuests(c echo.Context) error {
+    id, _ := strconv.Atoi(c.Param("id"))
+    db := db.DbManager()
+
+    query := `
+    SELECT guests.*
+    FROM guests
+    where party_refer = $1`
+
+    rows, err := db.Queryx(query, id)
+
+    if err != nil {
+        err := fmt.Sprintf("Guest with ID: %v not found", id)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    guests := []model.GuestResponse{}
+    for rows.Next() {
+        g := model.GuestResponse{}
+        err = rows.StructScan(&g)
+        if err != nil {
+            fmt.Println(err)
+        }
+        guests = append(guests, g)
+    }
+
+    return c.JSON(http.StatusOK, guests)
+}
+
 // GET - get individual guest
 func GetGuest(c echo.Context) error {
     id, _ := strconv.Atoi(c.Param("id"))
