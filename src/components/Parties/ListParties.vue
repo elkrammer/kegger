@@ -178,6 +178,13 @@
         parties: "party/parties"
       })
     },
+    watch: {
+      editGuestsActive: function (newState) {
+        if (newState == false) {
+          this.loadParties();
+        }
+      }
+    },
     created() {
       this.loadParties();
     },

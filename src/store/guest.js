@@ -88,7 +88,7 @@ const guest = {
     async editGuests({ commit, rootGetters }, data) {
       try{
         setAuthorizationHeader(rootGetters["user/accessToken"]);
-        const response = await axios.put("/api/guest/" + data.ID, data);
+        const response = await axios.put("/api/guest/" + data[0].party_refer, data);
         commit(EDIT_GUESTS, response.data);
         return response.data;
       } catch(error) {
