@@ -7,7 +7,7 @@
         <div style="margin-bottom: 30px" class="buttons">
           <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
           <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
-          <b-button @click="editGuestsActive = true" v-if="selected !== null" type="primary">Edit Guests</b-button>
+          <b-button @click="editGuestsActive = true" v-if="selected !== null" class="is-dark">Edit Guests</b-button>
           <b-button @click="deletePartyActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
           <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 100px;" type="is-warning">Unselect</b-button>
         </div>
@@ -118,15 +118,22 @@
             <td style="padding-left: 30px;">{{ guest.first_name }} {{ guest.last_name }}</td>
             <td></td>
             <td>
-              <!-- TODO: Fix me in model! :) -->
-              <span class="icon-text">Nay</span>
-              <b-icon icon="thumbs-down"></b-icon>
+
+              <div class="has-text-success" v-if="guest.is_attending === true">
+                <span class="icon-text">Yep</span>
+                <b-icon pack="fas" icon="thumbs-up">
+                </b-icon>
+              </div>
+              <div class="has-text-danger" v-else>
+                <span class="icon-text">Nay</span>
+                <b-icon pack="fas" icon="thumbs-down">
+                </b-icon>
+              </div>
             </td>
             <td>
-              <b-icon pack="fas"
-                      :icon="guest.isAttending === true ? 'thumbs-up' : 'thumbs-down'">
-              </b-icon>
+              Invite Sent
             </td>
+            <td>Invite Opened</td>
             <td></td>
           </tr>
         </template>
