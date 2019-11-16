@@ -53,7 +53,7 @@ func Init() *echo.Echo {
     r.GET("/guests/:id", api.GetGuests)
     r.GET("/guest/:id", api.GetGuest)
     r.GET("/guest/:id", api.GetGuest)
-    r.PUT("/guest/:id", api.UpdateGuest)
+    r.PUT("/guest/:id", api.UpdateGuests)
     r.DELETE("/guest/:id", api.DeleteGuest)
 
     // User Routes

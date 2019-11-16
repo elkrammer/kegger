@@ -11,7 +11,7 @@ type Guest struct {
 
 type GuestResponse struct {
         PartyName           string      `json:"party_name" db:"party_name"`
-        PartyRefer          int         `json:"-" db:"party_refer"`
+        PartyRefer          int         `json:"party_refer" db:"party_refer"`
         ID                  int         `json:"id" db:"id"`
         FirstName           string      `json:"first_name" db:"first_name"`
         LastName            string      `json:"last_name" db:"last_name"`

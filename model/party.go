@@ -6,29 +6,29 @@ import (
 )
 
 type Party struct {
-        ID                  uint       `db:"id"`
-        Name                string     `db:"name"`
-        HostId              null.Int   `db:"host_id"`
-        InvitationId        null.Int   `db:"invitation_id"`
-        InvitationSent      null.Time  `db:"invitation_sent"`
-        InvitationOpened    null.Time  `db:"invitation_opened"`
-        IsAttending         null.Bool    `db:"is_attending"`
-        HostName            null.String `db:"host_name"`
+        ID                  uint           `db:"id"`
+        Name                string         `db:"name"`
+        HostId              null.Int       `db:"host_id"`
+        InvitationId        null.Int       `db:"invitation_id"`
+        InvitationSent      null.Time      `db:"invitation_sent"`
+        InvitationOpened    null.Time      `db:"invitation_opened"`
+        IsAttending         null.Bool      `db:"is_attending"`
+        HostName            null.String    `db:"host_name"`
         Guests              string
-        Comments            null.String `db:"comments"`
+        Comments            null.String    `db:"comments"`
 }
 
 type PartyResponse struct {
-        ID                  uint        `db:"id"`
-        Name                string      `db:"name"`
-        InvitationId        null.Int    `db:"invitation_id"`
-        InvitationSent      null.Time   `db:"invitation_sent"`
-        InvitationOpened    null.Time   `db:"invitation_opened"`
-        IsAttending         null.Bool   `db:"is_attending"`
-        HostName            null.String `db:"host_name"`
-        HostId              null.Int    `db:"host_id"`
+        ID                  uint           `db:"id"`
+        Name                string         `db:"name"`
+        InvitationId        null.Int       `db:"invitation_id"`
+        InvitationSent      null.Time      `db:"invitation_sent"`
+        InvitationOpened    null.Time      `db:"invitation_opened"`
+        IsAttending         null.Bool      `db:"is_attending"`
+        HostName            null.String    `db:"host_name"`
+        HostId              null.Int       `db:"host_id"`
         Guests              []Guest
-        Comments            null.String `db:"comments"`
+        Comments            null.String    `db:"comments"`
 }
 
 type PartyRequest struct {

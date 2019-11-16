@@ -116,40 +116,53 @@ func CreateGuest(c echo.Context) error {
     return c.JSON(http.StatusOK, guest)
 }
 
-// PUT - update individual guest
-func UpdateGuest(c echo.Context) error {
-    id, _ := strconv.Atoi(c.Param("id"))
+// PUT - update guests for a party
+func UpdateGuests(c echo.Context) error {
+    party_id, _ := strconv.Atoi(c.Param("id"))
     db := db.DbManager()
-    guest := new(model.Guest)
-
-    // check if records exists
-    var recordId uint
-    query := `SELECT id FROM guests WHERE id = $1`
-    err := db.QueryRow(query, id).Scan(&recordId)
-
-    if err != nil && recordId == 0 {
-        err := fmt.Sprintf("Guest with ID: %v not found", id)
-        return echo.NewHTTPError(http.StatusNotFound, err)
-    }
+    guests := []model.Guest{}
 
     // bind request to model
-    if err := c.Bind(guest); err != nil {
+    if err := c.Bind(&guests); err != nil {
         msg := fmt.Sprintf("Invalid request body. %s", err)
         return c.JSON(http.StatusBadRequest, msg)
     }
 
-    query = `
-    UPDATE guests
-    SET first_name=$1, last_name=$2, email=$3, is_attending=$4, party_refer=$5
-    WHERE id=$6;`
-    _, err = db.Exec(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer, id)
+    //  update all guests as per the request
+    for _, guest := range guests {
 
-    if err != nil {
-        fmt.Println("error updating party record: ", query)
-        fmt.Println(err)
+        // enforce all guests are under the same party id
+        guest.PartyRefer = party_id
+
+        // identify new guests in the request and insert them into the guest table
+        if guest.ID == 0 {
+            // insert guest struct into db
+            query := `
+            INSERT INTO guests
+            (party_refer, first_name, last_name, email, is_attending)
+            VALUES($1, $2, $3, $4, $5)`
+            _, err := db.Exec(query, guest.PartyRefer, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending)
+
+            if err != nil {
+                fmt.Println("error inserting guest record: ", query)
+                fmt.Println(err)
+                break
+            }
+        }
+
+        q := `
+        UPDATE guests
+        SET first_name=$1, last_name=$2, email=$3, is_attending=$4
+        WHERE id=$5;`
+        _, err := db.Exec(q, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.ID)
+        if err != nil {
+            fmt.Println("error updating guest record: ", q)
+            fmt.Println(err)
+            break
+        }
     }
 
-    return c.JSON(http.StatusOK, guest)
+    return c.JSON(http.StatusOK, guests)
 }
 
 // DELETE - delete individual guest
