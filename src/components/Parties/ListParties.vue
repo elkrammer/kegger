@@ -55,6 +55,7 @@
         ref="table"
         hoverable
         detailed
+        paginated
         show-detail-icon
         custom-detail-row
         :selected.sync="selected"
@@ -98,7 +99,7 @@
         </b-table-column>
 
         <b-table-column label="Invite Opened" sortable>
-         &#10240;
+          &#10240;
         </b-table-column>
 
         <b-table-column field="Comments" label="Comments" sortable>
