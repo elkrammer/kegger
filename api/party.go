@@ -6,9 +6,11 @@ import (
     "encoding/json"
     "strconv"
 
+
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
 
+    "github.com/segmentio/ksuid"
     "github.com/labstack/echo"
 )
 
@@ -53,9 +55,6 @@ func GetParties(c echo.Context) error {
         p.ID = party.ID
         p.Name = party.Name
         p.HostId = party.HostId
-        p.InvitationId = party.InvitationId
-        p.InvitationOpened = party.InvitationOpened
-        p.IsAttending = party.IsAttending
         p.HostName = party.HostName
         p.Comments = party.Comments
         p.Guests = guest
@@ -107,9 +106,6 @@ func GetParty(c echo.Context) error {
         p.ID = party.ID
         p.Name = party.Name
         p.HostId = party.HostId
-        p.InvitationId = party.InvitationId
-        p.InvitationOpened = party.InvitationOpened
-        p.IsAttending = party.IsAttending
         p.HostName = party.HostName
         p.Comments = party.Comments
         p.Guests = guest
@@ -141,10 +137,10 @@ func CreateParty(c echo.Context) error {
     var pid uint
     query := `
     INSERT INTO parties
-    ("name", invitation_id, invitation_sent, invitation_opened, is_attending, "comments", host_id)
-    VALUES($1, $2, $3, $4, $5, $6, $7)
+    ("name", host_id, "comments")
+    VALUES($1, $2, $3)
     RETURNING id`
-    err := db.QueryRow(query, party.Name, party.InvitationId, party.InvitationSent, party.InvitationOpened, party.IsAttending, party.Comments, party.HostId).Scan(&pid)
+    err := db.QueryRow(query, party.Name, party.HostId, party.Comments).Scan(&pid)
 
     if err != nil {
         fmt.Println("error inserting party record: ", query)
@@ -153,11 +149,12 @@ func CreateParty(c echo.Context) error {
 
     // insert all guests in the request into the guests table
     for _, guest := range party.Guests {
+        invitationId := ksuid.New()
         q := `
         INSERT INTO guests
-        (party_refer, first_name, last_name, email, is_attending)
-        VALUES($1, $2, $3, $4, $5);`
-        _, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending)
+        (party_refer, first_name, last_name, email, is_attending, invitation_id)
+        VALUES($1, $2, $3, $4, $5, $6);`
+        _, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId)
         if err != nil {
             fmt.Println("error inserting guest record: ", q)
             fmt.Println(err)
@@ -200,9 +197,6 @@ func CreateParty(c echo.Context) error {
         // TODO: this is kinda ugly. find a better way to do it.
         r.ID = p.ID
         r.Name = p.Name
-        r.InvitationId = p.InvitationId
-        r.InvitationOpened = p.InvitationOpened
-        r.IsAttending = p.IsAttending
         r.HostName = p.HostName
         r.Comments = p.Comments
         r.Guests = guest
@@ -235,9 +229,9 @@ func UpdateParty(c echo.Context) error {
 
     query = `
     UPDATE parties
-    SET "name"=$1, invitation_id=$2, invitation_sent=$3, invitation_opened=$4, is_attending=$5, "comments"=$6, host_id=$7
-    WHERE id=$8;`
-    _, err = db.Exec(query, party.Name, party.InvitationId, party.InvitationSent, party.InvitationOpened, party.IsAttending, party.Comments, party.HostId, id)
+    SET "name"=$1, "comments"=$2, host_id=$3
+    WHERE id=$4;`
+    _, err = db.Exec(query, party.Name, party.Comments, party.HostId, id)
 
     if err != nil {
         fmt.Println("error updating party record: ", query)
@@ -293,9 +287,6 @@ func UpdateParty(c echo.Context) error {
         // TODO: this is kinda ugly. find a better way to do it.
         r.ID = p.ID
         r.Name = p.Name
-        r.InvitationId = p.InvitationId
-        r.InvitationOpened = p.InvitationOpened
-        r.IsAttending = p.IsAttending
         r.HostName = p.HostName
         r.Comments = p.Comments
         r.Guests = guest

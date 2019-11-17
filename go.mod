@@ -15,6 +15,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/mattn/go-sqlite3 v1.11.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.1
+	github.com/segmentio/ksuid v1.0.2
 	github.com/shopspring/decimal v0.0.0-20191009025716-f1972eb1d1f5 // indirect
 	github.com/urfave/cli v1.22.1
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4

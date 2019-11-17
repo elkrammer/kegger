@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
 	"name" text NULL,
 	email text NULL,
 	"password" text NULL,
-	host_refer int4 NULL,
 	CONSTRAINT users_email_key UNIQUE (email),
 	CONSTRAINT users_pkey PRIMARY KEY (id)
 );
-CREATE UNIQUE INDEX uix_users_email ON public.users USING btree (email);
+CREATE UNIQUE INDEX IF NOT EXISTS uix_users_email ON public.users USING btree (email);

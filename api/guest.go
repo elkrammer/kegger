@@ -8,6 +8,7 @@ import (
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
 
+    "github.com/segmentio/ksuid"
     "github.com/labstack/echo"
 )
 
@@ -102,11 +103,12 @@ func CreateGuest(c echo.Context) error {
     fmt.Println(guest)
 
     // insert guest struct into db
+    invitationId := ksuid.New()
     query := `
     INSERT INTO guests
-    (first_name, last_name, email, is_attending, party_refer)
-    VALUES($1, $2, $3, $4, $5)`
-    err := db.QueryRow(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer)
+    (first_name, last_name, email, is_attending, party_refer, invitation_id)
+    VALUES($1, $2, $3, $4, $5, $6)`
+    err := db.QueryRow(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer, invitationId)
 
     if err != nil {
         fmt.Println("error inserting guest record: ", query)

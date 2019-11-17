@@ -1,7 +1,6 @@
 package model
 
 import (
-    "time"
     "gopkg.in/guregu/null.v3"
 )
 
@@ -9,36 +8,25 @@ type Party struct {
         ID                  uint           `db:"id"`
         Name                string         `db:"name"`
         HostId              null.Int       `db:"host_id"`
-        InvitationId        null.Int       `db:"invitation_id"`
-        InvitationSent      null.Time      `db:"invitation_sent"`
-        InvitationOpened    null.Time      `db:"invitation_opened"`
-        IsAttending         null.Bool      `db:"is_attending"`
         HostName            null.String    `db:"host_name"`
         Guests              string
         Comments            null.String    `db:"comments"`
 }
 
 type PartyResponse struct {
-        ID                  uint           `db:"id"`
-        Name                string         `db:"name"`
-        InvitationId        null.Int       `db:"invitation_id"`
-        InvitationSent      null.Time      `db:"invitation_sent"`
-        InvitationOpened    null.Time      `db:"invitation_opened"`
-        IsAttending         null.Bool      `db:"is_attending"`
-        HostName            null.String    `db:"host_name"`
-        HostId              null.Int       `db:"host_id"`
+        ID                  uint           `json:"id" db:"id"`
+        Name                string         `json:"name" db:"name"`
+        HostId              null.Int       `json:"host_id" db:"host_id"`
+        HostName            null.String    `json:"host_name" db:"host_name"`
         Guests              []Guest
-        Comments            null.String    `db:"comments"`
+        Comments            null.String    `json:"comments" db:"comments"`
 }
 
 type PartyRequest struct {
-        ID                  uint        `db:"id"`
-        Name                string      `db:"name"`
-        InvitationId        *uint       `db:"invitation_id"`
-        InvitationSent      *time.Time  `db:"invitation_sent"`
-        InvitationOpened    *time.Time  `db:"invitation_opened"`
-        IsAttending         bool        `db:"is_attending"`
-        HostId              *uint       `db:"host_id"`
+        ID                  uint        `json:"id" db:"id"`
+        Name                string      `json:"name" db:"name"`
+        HostId              *uint       `json:"host_id" db:"host_id"`
+        IsAttending         bool        `json:"is_attending" db:"is_attending"`
         Guests              []Guest
-        Comments            string      `db:"comments"`
+        Comments            string      `json:"comments" db:"comments"`
 }
