@@ -58,6 +58,9 @@
               <button style="margin-top: 32px"
                       class="button is-success"
                       @click="addGuest()">Add Guest</button>
+              <button style="margin-top: 32px; margin-left: 15px;"
+                      class="button is-warning"
+                      @click="setTBDGuest()">TBD</button>
               </p>
             </b-field>
 
@@ -149,6 +152,11 @@
       deleteGuest(index) {
         this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);
       },
+      setTBDGuest() {
+        this.formProps.guest.first_name = 'TBD';
+        this.formProps.guest.last_name= 'TBD';
+        this.formProps.guest.email = 'not_known_yet@tbd.com';
+      }
     },
     validations: {
       formProps: {
