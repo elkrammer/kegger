@@ -27,7 +27,7 @@
           trap-focus
           aria-role="dialog"
           aria-modal>
-          <EditParty v-if="selected !== null" :party_id="selected.ID"/>
+          <EditParty v-if="selected !== null" :party_id="selected.id"/>
         </b-modal>
 
         <b-modal
@@ -36,7 +36,7 @@
           trap-focus
           aria-role="dialog"
           aria-modal>
-          <EditGuests v-if="selected !== null" :party_id="selected.ID"/>
+          <EditGuests v-if="selected !== null" :party_id="selected.id"/>
         </b-modal>
 
         <b-modal
@@ -45,7 +45,7 @@
           trap-focus
           aria-role="dialog"
           aria-modal>
-          <DeleteParty v-if="selected !== null" :party_id="selected.ID" :party_name="selected.Name"/>
+          <DeleteParty v-if="selected !== null" :party_id="selected.id" :party_name="selected.name"/>
         </b-modal>
 
       </section>
@@ -61,49 +61,44 @@
         default-sort="Name"
         sort-icon="chevron-up"
         sort-icon-size="is-small"
-        detail-key="ID"
+        detail-key="id"
         >
         <template slot-scope="props">
 
           <b-table-column field="Name" label="Party Name" sortable>
-            {{ props.row.Name }}
+            {{ props.row.name }}
           </b-table-column>
 
         <b-table-column field="HostName" label="Host" sortable>
-          {{ props.row.HostName }}
+          {{ props.row.host_name }}
         </b-table-column>
 
-        <b-table-column field="IsAttending" label="Attending" sortable>
-
-          <div class="has-text-success" v-if="props.row.IsAttending === true">
+        <b-table-column field="isPartyAttending" label="Attending" visible sortable>
+          <div class="has-text-success" v-if="props.row.isPartyAttending === 'true'">
             <span class="icon-text">Yep</span>
             <b-icon pack="fas" icon="thumbs-up">
             </b-icon>
           </div>
-          <div class="has-text-danger" v-else>
+
+          <div class="has-text-warning" v-if="props.row.isPartyAttending === 'partial'">
+            <span class="icon-text">Partial</span>
+            <b-icon pack="fas" icon="exclamation-triangle">
+            </b-icon>
+          </div>
+
+          <div class="has-text-danger" v-if="props.row.isPartyAttending === 'false'">
             <span class="icon-text">Nay</span>
             <b-icon pack="fas" icon="thumbs-down">
             </b-icon>
           </div>
-
         </b-table-column>
 
-        <b-table-column field="InvitationSent" label="Invite Sent" sortable>
-          <div v-if="props.row.InvitationSent !== null">
-            {{ props.row.InvitationSent }}
-          </div>
-          <div v-else>
-            Not Sent
-          </div>
+        <b-table-column label="Invite Sent" sortable>
+          &#10240;
         </b-table-column>
 
-        <b-table-column field="InvitationOpened" label="Invite Opened" sortable>
-          <div v-if="props.row.InvitationOpened !== null">
-            <div>{{ props.row.InvitationOpened | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
-          </div>
-          <div v-else>
-            Not Opened
-          </div>
+        <b-table-column label="Invite Opened" sortable>
+         &#10240;
         </b-table-column>
 
         <b-table-column field="Comments" label="Comments" sortable>
@@ -113,7 +108,7 @@
         </template>
 
         <template slot="detail" slot-scope="props">
-          <tr v-for="guest in props.row.Guests" :key="guest.id">
+          <tr v-for="guest in props.row.Guests" :key=" 'A' + guest.id">
             <td></td>
             <td style="padding-left: 30px;">{{ guest.first_name }} {{ guest.last_name }}</td>
             <td></td>
@@ -131,9 +126,13 @@
               </div>
             </td>
             <td>
-              Invite Sent
+              <div v-if="guest.invitation_sent">
+                <div>{{ guest.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
+              </div>
             </td>
-            <td>Invite Opened</td>
+            <td>
+              {{ guest.invitation_opened }}
+            </td>
             <td></td>
           </tr>
         </template>
@@ -162,6 +161,7 @@
         deletePartyActive: false,
         editGuestsActive: false,
         selected: null,
+        isPartyAttending: null,
       };
     },
     methods: {

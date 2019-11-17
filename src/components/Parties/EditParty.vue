@@ -8,13 +8,13 @@
         <b-field label="Party Name">
           <b-input
             placeholder="Party Name"
-            v-model="party.Name"
+            v-model="party.name"
             required>
           </b-input>
         </b-field>
 
         <b-field label="Host">
-          <b-select placeholder="Select Host" v-model="party.HostId">
+          <b-select placeholder="Select Host" v-model="party.host_id">
             <option
               v-for="user in users"
               :value="user.id"
@@ -26,7 +26,7 @@
         </b-field>
 
         <b-field label="Comments">
-          <b-input maxlength="200" rows="2" v-model="party.Comments" type="textarea"></b-input>
+          <b-input maxlength="200" rows="2" v-model="party.comments" type="textarea"></b-input>
         </b-field>
 
       </section>

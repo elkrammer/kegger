@@ -75,8 +75,8 @@ const guest = {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
         const response = await axios.post("/api/guest", {
           name: data.name,
-          HostId: data.host_id,
-          Comments: data.comments,
+          host_id: data.host_id,
+          comments: data.comments,
           Guests: data.guests,
         });
         commit(ADD_GUEST, response.data);
