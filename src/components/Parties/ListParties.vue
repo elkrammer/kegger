@@ -4,14 +4,6 @@
       <h1 class="title">Parties</h1>
 
       <section>
-        <div style="margin-bottom: 30px" class="buttons">
-          <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
-          <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
-          <b-button @click="editGuestsActive = true" v-if="selected !== null" class="is-dark">Edit Guests</b-button>
-          <b-button @click="deletePartyActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
-          <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 100px;" type="is-warning">Unselect</b-button>
-        </div>
-
         <b-modal
           :active.sync="createPartyActive"
           has-modal-card
@@ -48,10 +40,29 @@
           <DeleteParty v-if="selected !== null" :party_id="selected.id" :party_name="selected.name"/>
         </b-modal>
 
+        <div style="margin-bottom: 30px" class="buttons">
+          <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
+          <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
+          <b-button @click="editGuestsActive = true" v-if="selected !== null" class="is-dark">Edit Guests</b-button>
+          <b-button @click="deletePartyActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
+        </div>
+
       </section>
 
+      <div class="columns">
+        <div class="column is-half">
+          <b-field>
+            <b-input placeholder="Party Name" v-model="search" icon="search"></b-input>
+            <p class="control">
+            <b-button @click="search = ''" v-if="search !== ''" type="is-warning">Clear</b-button>
+            <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
+            </p>
+          </b-field>
+        </div>
+      </div>
+
       <b-table
-        :data="parties"
+        :data="filteredPartyList"
         ref="table"
         hoverable
         detailed
@@ -60,6 +71,7 @@
         custom-detail-row
         :selected.sync="selected"
         default-sort="Name"
+        default-sort-direction="asc"
         sort-icon="chevron-up"
         sort-icon-size="is-small"
         detail-key="id"
@@ -163,6 +175,7 @@
         editGuestsActive: false,
         selected: null,
         isPartyAttending: null,
+        search: '',
       };
     },
     methods: {
@@ -184,7 +197,12 @@
     computed: {
       ...mapGetters({
         parties: "party/parties"
-      })
+      }),
+      filteredPartyList() {
+        return this.parties.filter(party => {
+          return party.name.toLowerCase().includes(this.search.toLowerCase())
+        })
+      },
     },
     watch: {
       editGuestsActive: function (newState) {
