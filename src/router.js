@@ -6,7 +6,7 @@ Vue.use(Router);
 import Home from "@/components/Home.vue";
 import Login from "@/components/User/Login.vue";
 import ListParties from "@/components/Parties/ListParties.vue";
-import Guests from "@/components/Guests/Guests.vue";
+import Invites from "@/components/Invites/Invites.vue";
 import Settings from "@/components/Settings/Settings.vue";
 
 const router = new Router({
@@ -32,10 +32,10 @@ const router = new Router({
       meta: { title: "List Parties", requiresAuth: true }
     },
     {
-      path: "/guests",
-      component: Guests,
-      name: "guests",
-      meta: { title: "Guests", requiresAuth: true }
+      path: "/invites",
+      component: Invites,
+      name: "invites",
+      meta: { title: "Invites", requiresAuth: true }
     },
     {
       path: "/settings",

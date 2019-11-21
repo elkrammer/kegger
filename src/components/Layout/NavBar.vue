@@ -19,9 +19,9 @@
         <b-icon pack="fas" icon="sitemap"></b-icon>
         <span class="item-text">Parties</span>
       </b-navbar-item>
-      <b-navbar-item tag="router-link" :to="{ name: 'guests' }">
-        <b-icon pack="fas" icon="users"></b-icon>
-        <span class="item-text">Guests</span>
+      <b-navbar-item tag="router-link" :to="{ name: 'invites' }">
+        <b-icon pack="fas" icon="envelope"></b-icon>
+        <span class="item-text">Invites</span>
       </b-navbar-item>
     </template>
 
