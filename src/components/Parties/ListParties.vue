@@ -1,7 +1,6 @@
 <template>
   <section class="section">
     <div class="container">
-      <h1 class="title">Parties</h1>
 
       <section>
         <b-modal
@@ -39,15 +38,64 @@
           aria-modal>
           <DeleteParty v-if="selected !== null" :party_id="selected.id" :party_name="selected.name"/>
         </b-modal>
+      </section>
 
-        <div style="margin-bottom: 30px" class="buttons">
-          <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
-          <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
-          <b-button @click="editGuestsActive = true" v-if="selected !== null" class="is-dark">Edit Guests</b-button>
-          <b-button @click="deletePartyActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
+      <div class="columns">
+
+        <div class="column">
+          <h1 class="title">Parties</h1>
+          <div style="margin-bottom: 30px" class="buttons">
+            <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
+            <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
+            <b-button @click="editGuestsActive = true" v-if="selected !== null" class="is-dark">Edit Guests</b-button>
+            <b-button @click="deletePartyActive = true" v-if="selected !== null" type="is-danger">Delete Party</b-button>
+          </div>
         </div>
 
-      </section>
+        <div class="column is-two-fifths" v-if="this.parties.length > 0">
+          <div class="box totalsbox">
+            <nav class="level">
+
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Parties</p>
+                  <p class="title">{{ this.parties.length }}</p>
+                </div>
+              </div>
+
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Guests</p>
+                  <p class="title">{{ this.statistics.totalGuests }}</p>
+                </div>
+              </div>
+
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Attending</p>
+                  <p class="title">{{ this.statistics.guestsAttending }}</p>
+                </div>
+              </div>
+
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Pending</p>
+                  <p class="title">{{ this.statistics.guestsPending }}</p>
+                </div>
+              </div>
+
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Not Attending</p>
+                  <p class="title">{{ this.statistics.guestsNotAttending }}</p>
+                </div>
+              </div>
+
+            </nav>
+          </div>
+        </div>
+
+      </div>
 
       <div class="columns">
         <div class="column is-half">
@@ -176,6 +224,12 @@
         selected: null,
         isPartyAttending: null,
         search: '',
+        statistics: {
+          guestsAttending: 0,
+          guestsNotAttending: 0,
+          totalGuests: 0,
+          guestsPending: 0,
+        },
       };
     },
     methods: {
@@ -185,6 +239,21 @@
           return response.data;
         } catch (error) {
           console.log(error);
+        }
+      },
+      generateStatistics() {
+        for (var i = 0; i < this.parties.length; i++) {
+          let guestSize = this.parties[i].Guests.length;
+          this.statistics.totalGuests += guestSize
+          for (var j = 0; j < guestSize; j++) {
+            if (this.parties[i].Guests[j].is_attending) {
+              this.statistics.guestsAttending += 1
+            } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened === null) {
+              this.statistics.guestsPending += 1
+            } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened !== null) {
+              this.statistics.guestsNotAttending += 1
+            }
+          }
         }
       },
       toggle(row) {
@@ -213,14 +282,19 @@
     },
     created() {
       this.loadParties();
+      this.generateStatistics();
     },
   };
 </script>
 
 <style lang="scss">
-
+@import "@/variables";
 .icon-text {
   margin-right: 10px;
+}
+
+.totalsbox {
+  background-color: #f1ffe7;
 }
 
 </style>
