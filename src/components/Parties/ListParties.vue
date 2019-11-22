@@ -154,14 +154,6 @@
           </div>
         </b-table-column>
 
-        <b-table-column label="Invite Sent" sortable>
-          &#10240;
-        </b-table-column>
-
-        <b-table-column label="Invite Opened" sortable>
-          &#10240;
-        </b-table-column>
-
         <b-table-column field="Comments" label="Comments" sortable>
           {{ props.row.comments }}
         </b-table-column>
@@ -185,14 +177,6 @@
                 <b-icon pack="fas" icon="thumbs-down">
                 </b-icon>
               </div>
-            </td>
-            <td>
-              <div v-if="guest.invitation_sent">
-                <div>{{ guest.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
-              </div>
-            </td>
-            <td>
-              {{ guest.invitation_opened }}
             </td>
             <td></td>
           </tr>
@@ -236,6 +220,7 @@
       async loadParties() {
         try {
           const response = await this.$store.dispatch("party/getParties");
+          this.generateStatistics();
           return response.data;
         } catch (error) {
           console.log(error);
@@ -279,10 +264,11 @@
           this.loadParties();
         }
       }
+
+
     },
     created() {
       this.loadParties();
-      this.generateStatistics();
     },
   };
 </script>
