@@ -1,7 +1,21 @@
 <template>
   <section class="section">
     <div class="container">
-      <h1 class="title">Invites</h1>
+
+      <div class="columns">
+
+        <div class="column">
+          <h1 class="title">Invites</h1>
+          <b-field>
+            <div style="margin-bottom: 5px" class="buttons">
+              <b-button :disabled="selected === null" type="is-success">View Invite</b-button>
+              <b-button v-if="selected !== null" type="is-info">Send Invite</b-button>
+              <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
+            </div>
+          </b-field>
+
+        </div>
+      </div>
 
       <b-table
         :data="this.guests"
@@ -10,16 +24,17 @@
         paginated
         default-sort="Name"
         default-sort-direction="asc"
+        :selected.sync="selected"
         sort-icon="chevron-up"
         sort-icon-size="is-small"
         >
         <template slot-scope="props">
 
-          <b-table-column field="Name" label="Guest Name" sortable>
-            {{ props.row.first_name }} {{ props.row.last_name }}
+          <b-table-column field="name" label="Guest Name" searchable sortable>
+            {{ props.row.name }}
           </b-table-column>
 
-        <b-table-column field="Name" label="Party Name" sortable>
+        <b-table-column field="party_name" label="Party Name" searchable sortable>
           {{ props.row.party_name }}
         </b-table-column>
 
@@ -38,9 +53,6 @@
         </template>
       </b-table>
 
-
-
-
     </div>
   </section>
 </template>
@@ -52,6 +64,7 @@
     data() {
       return {
         guests: [],
+        selected: null,
       }
     },
     methods: {
@@ -68,6 +81,9 @@
           for (var j=0; j < this.parties[i].Guests.length; j++) {
             let guest = this.parties[i].Guests[j];
             guest.party_name = this.parties[i].name;
+            guest.name = guest.first_name + ' ' + guest.last_name;
+            delete guest.first_name;
+            delete guest.last_name;
 
             this.guests.push(guest);
           }

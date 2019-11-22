@@ -44,7 +44,7 @@
 
         <div class="column">
           <h1 class="title">Parties</h1>
-          <div style="margin-bottom: 30px" class="buttons">
+          <div style="margin-bottom: 5px" class="buttons">
             <b-button @click="createPartyActive = true" type="is-success">Create New Party</b-button>
             <b-button @click="editPartyActive = true" v-if="selected !== null" type="is-info">Edit Party</b-button>
             <b-button @click="editGuestsActive = true" v-if="selected !== null" class="is-dark">Edit Guests</b-button>
