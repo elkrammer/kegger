@@ -52,12 +52,12 @@ func Init() *echo.Echo {
     r.POST("/guest", api.CreateGuest)
     r.GET("/guests/:id", api.GetGuests)
     r.GET("/guest/:id", api.GetGuest)
-    r.GET("/guest/:id", api.GetGuest)
     r.PUT("/guest/:id", api.UpdateGuests)
     r.DELETE("/guest/:id", api.DeleteGuest)
 
     // User Routes
     r.GET("/user", api.GetUsers)
+    r.GET("/user/:id", api.GetUser)
 
     return e
 }

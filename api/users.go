@@ -3,6 +3,7 @@ package api
 import (
     "net/http"
     "fmt"
+    "strconv"
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
@@ -34,4 +35,27 @@ func GetUsers(c echo.Context) error {
     }
 
     return c.JSON(http.StatusOK, users)
+}
+
+// GET - get individual user
+func GetUser(c echo.Context) error {
+    db := db.DbManager()
+    user := model.UserResponse{}
+    id, _ := strconv.Atoi(c.Param("id"))
+
+    query := `SELECT id, "name", email FROM users WHERE id = $1`
+    rows, err := db.Queryx(query, id)
+
+    if err != nil {
+        err := fmt.Sprintf("User with ID: %v not found", id)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    for rows.Next() {
+        err = rows.StructScan(&user)
+        if err != nil {
+            fmt.Println(err)
+        }
+    }
+    return c.JSON(http.StatusOK, user)
 }
