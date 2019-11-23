@@ -2,13 +2,26 @@
   <section class="section">
     <div class="container">
 
+      <section>
+        <b-modal
+          :active.sync="viewInviteActive"
+          has-modal-card
+          trap-focus
+          aria-role="dialog"
+          aria-modal>
+          <ViewInvite v-if="selected !== null" :guest_id="selected.id" />
+        </b-modal>
+
+      </section>
+
+
       <div class="columns">
 
         <div class="column">
           <h1 class="title">Invites</h1>
           <b-field>
             <div style="margin-bottom: 5px" class="buttons">
-              <b-button :disabled="selected === null" type="is-success">View Invite</b-button>
+              <b-button @click="viewInviteActive = true" :disabled="selected === null" type="is-success">View Invite</b-button>
               <b-button v-if="selected !== null" type="is-info">Send Invite</b-button>
               <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
             </div>
@@ -59,12 +72,16 @@
 
 <script>
   import { mapGetters } from "vuex";
+  import ViewInvite from "@/components/Invites/ViewInvite.vue";
+
   export default {
     name: "invites",
+    components: { ViewInvite },
     data() {
       return {
         guests: [],
         selected: null,
+        viewInviteActive: false,
       }
     },
     methods: {

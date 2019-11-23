@@ -7,7 +7,7 @@
             <b-tab-item label="Manage Users" icon="users">
               <Users />
             </b-tab-item>
-            <b-tab-item label="Foo" icon="dice">
+            <b-tab-item label="Invite Design" icon="envelope">
               foo bar
             </b-tab-item>
         </b-tabs>
