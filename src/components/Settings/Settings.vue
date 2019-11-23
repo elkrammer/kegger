@@ -8,7 +8,7 @@
               <Users />
             </b-tab-item>
             <b-tab-item label="Invite Design" icon="envelope">
-              foo bar
+              <Invite />
             </b-tab-item>
         </b-tabs>
 
@@ -18,9 +18,10 @@
 
 <script>
   import Users from "@/components/Settings/Users.vue";
+  import Invite from "@/components/Settings/Invite.vue";
 
   export default {
     name: "login",
-    components: { Users },
+    components: { Users, Invite },
   }
 </script>
