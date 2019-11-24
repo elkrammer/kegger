@@ -7,6 +7,7 @@ import (
 
     "github.com/elkrammer/gorsvp/db"
     "github.com/elkrammer/gorsvp/model"
+    "github.com/elkrammer/gorsvp/internal/helper"
 
     "github.com/labstack/echo"
 )
@@ -57,5 +58,54 @@ func GetUser(c echo.Context) error {
             fmt.Println(err)
         }
     }
+    return c.JSON(http.StatusOK, user)
+}
+
+func CreateUser(c echo.Context) error {
+    db := db.DbManager()
+    user := model.User{}
+
+    // bind request to model
+    if err := c.Bind(&user); err != nil {
+        msg := fmt.Sprintf("Invalid request body. %s", err)
+        return c.JSON(http.StatusBadRequest, msg)
+    }
+
+    // request validations
+    if user.Name == "" {
+        return echo.NewHTTPError(http.StatusBadRequest, "Missing Name field")
+    }
+
+    if user.Email == "" {
+        return echo.NewHTTPError(http.StatusBadRequest, "Missing Email field")
+    }
+
+    if user.Password == "" {
+        return echo.NewHTTPError(http.StatusBadRequest, "Missing Password field")
+    }
+
+    // check if other record with that email exists
+    var exists bool
+    q := `SELECT EXISTS (SELECT 1 FROM users WHERE email = $1)`
+    err := db.QueryRow(q, user.Email).Scan(&exists)
+
+    fmt.Println(exists)
+    if exists  == true {
+        err := fmt.Sprintf("User with email %s already exists", user.Email)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    hash, _ := helper.HashPassword(user.Password)
+    query := `
+    INSERT INTO users
+    (name, email, password)
+    VALUES($1, $2, $3)`
+    _, err = db.Exec(query, user.Name, user.Email, hash)
+
+    if err != nil {
+        fmt.Println("error inserting user record: ", query)
+        fmt.Println(err)
+    }
+
     return c.JSON(http.StatusOK, user)
 }
