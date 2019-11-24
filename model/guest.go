@@ -13,6 +13,7 @@ type Guest struct {
         InvitationSent      null.Time       `json:"invitation_sent" db:"invitation_sent"`
         InvitationOpened    null.Time       `json:"invitation_opened" db:"invitation_opened"`
         Email               string          `json:"email" db:"email"`
+        PlusOne             bool            `json:"plus_one" db:"plus_one"`
         IsAttending         bool            `json:"is_attending" db:"is_attending"`
 }
 
@@ -26,5 +27,6 @@ type GuestResponse struct {
         InvitationSent      null.Time       `json:"invitation_sent" db:"invitation_sent"`
         InvitationOpened    null.Time       `json:"invitation_opened" db:"invitation_opened"`
         Email               string          `json:"email" db:"email"`
+        PlusOne             bool            `json:"plus_one" db:"plus_one"`
         IsAttending         bool            `json:"is_attending" db:"is_attending"`
 }

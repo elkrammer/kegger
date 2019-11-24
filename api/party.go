@@ -152,9 +152,9 @@ func CreateParty(c echo.Context) error {
         invitationId := ksuid.New()
         q := `
         INSERT INTO guests
-        (party_refer, first_name, last_name, email, is_attending, invitation_id)
-        VALUES($1, $2, $3, $4, $5, $6);`
-        _, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId)
+        (party_refer, first_name, last_name, email, is_attending, invitation_id, plus_one)
+        VALUES($1, $2, $3, $4, $5, $6, $7);`
+        _, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId, guest.PlusOne)
         if err != nil {
             fmt.Println("error inserting guest record: ", q)
             fmt.Println(err)
@@ -242,9 +242,9 @@ func UpdateParty(c echo.Context) error {
     for _, guest := range party.Guests {
         q := `
         UPDATE guests
-        SET party_refer=$1, first_name=$2, last_name=$3, email=$4, is_attending=$5
-        WHERE id=$6;`
-        _, err := db.Exec(q, id, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.ID)
+        SET party_refer=$1, first_name=$2, last_name=$3, email=$4, is_attending=$5, plus_one=$6
+        WHERE id=$7;`
+        _, err := db.Exec(q, id, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PlusOne, guest.ID)
         if err != nil {
             fmt.Println("error updating guest record: ", q)
             fmt.Println(err)

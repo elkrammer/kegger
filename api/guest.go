@@ -100,15 +100,13 @@ func CreateGuest(c echo.Context) error {
         return echo.NewHTTPError(http.StatusBadRequest, "Missing PartyRefer field containing party id")
     }
 
-    fmt.Println(guest)
-
     // insert guest struct into db
     invitationId := ksuid.New()
     query := `
     INSERT INTO guests
-    (first_name, last_name, email, is_attending, party_refer, invitation_id)
-    VALUES($1, $2, $3, $4, $5, $6)`
-    err := db.QueryRow(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer, invitationId)
+    (first_name, last_name, email, is_attending, party_refer, invitation_id, plus_one)
+    VALUES($1, $2, $3, $4, $5, $6, $7)`
+    err := db.QueryRow(query, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.PartyRefer, invitationId, guest.PlusOne)
 
     if err != nil {
         fmt.Println("error inserting guest record: ", query)
@@ -141,9 +139,9 @@ func UpdateGuests(c echo.Context) error {
             // insert guest struct into db
             query := `
             INSERT INTO guests
-            (party_refer, first_name, last_name, email, is_attending)
+            (party_refer, first_name, last_name, email, plus_one, is_attending)
             VALUES($1, $2, $3, $4, $5)`
-            _, err := db.Exec(query, guest.PartyRefer, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending)
+            _, err := db.Exec(query, guest.PartyRefer, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending)
 
             if err != nil {
                 fmt.Println("error inserting guest record: ", query)
@@ -154,9 +152,9 @@ func UpdateGuests(c echo.Context) error {
 
         q := `
         UPDATE guests
-        SET first_name=$1, last_name=$2, email=$3, is_attending=$4
-        WHERE id=$5;`
-        _, err := db.Exec(q, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, guest.ID)
+        SET first_name=$1, last_name=$2, email=$3, plus_one=$4, is_attending=$5
+        WHERE id=$6;`
+        _, err := db.Exec(q, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending, guest.ID)
         if err != nil {
             fmt.Println("error updating guest record: ", q)
             fmt.Println(err)
