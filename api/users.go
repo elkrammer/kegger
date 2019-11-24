@@ -109,3 +109,31 @@ func CreateUser(c echo.Context) error {
 
     return c.JSON(http.StatusOK, user)
 }
+
+func DeleteUser(c echo.Context) error {
+    id, _ := strconv.Atoi(c.Param("id"))
+    db := db.DbManager()
+
+    // check if records exists
+    var recordId uint
+    query := `SELECT id FROM users WHERE id = $1`
+    err := db.QueryRow(query, id).Scan(&recordId)
+
+    if err != nil && recordId == 0 {
+        err := fmt.Sprintf("User with ID: %v not found", id)
+        return echo.NewHTTPError(http.StatusNotFound, err)
+    }
+
+    // delete record
+    query = `DELETE FROM users WHERE id = $1`
+    _, err = db.Exec(query, id)
+
+    if err != nil {
+        fmt.Println("error deleting user record: ", query)
+        fmt.Println(err)
+    }
+
+    return c.JSON(http.StatusOK, H{
+        "deleted": id,
+    })
+}

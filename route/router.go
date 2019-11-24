@@ -59,6 +59,7 @@ func Init() *echo.Echo {
     r.POST("/user", api.CreateUser)
     r.GET("/user", api.GetUsers)
     r.GET("/user/:id", api.GetUser)
+    r.DELETE("/user/:id", api.DeleteUser)
 
     return e
 }
