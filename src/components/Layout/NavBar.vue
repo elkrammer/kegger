@@ -2,7 +2,7 @@
   <b-navbar shadow>
 
     <template slot="brand">
-      <b-navbar-item to="/">
+      <b-navbar-item tag="router-link" :to="{ path: '/parties' }">
         <img
           src="@/assets/logo-small.png"
           alt="WingDing Logo"
@@ -11,10 +11,6 @@
     </template>
 
     <template slot="start">
-      <b-navbar-item tag="router-link" :to="{ name: 'home' }">
-        <b-icon pack="fas" icon="home"></b-icon>
-        <span class="item-text">Home</span>
-      </b-navbar-item>
       <b-navbar-item tag="router-link" :to="{ name: 'list_parties' }">
         <b-icon pack="fas" icon="sitemap"></b-icon>
         <span class="item-text">Parties</span>

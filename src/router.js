@@ -3,7 +3,6 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import Home from "@/components/Home.vue";
 import Login from "@/components/User/Login.vue";
 import ListParties from "@/components/Parties/ListParties.vue";
 import Invites from "@/components/Invites/Invites.vue";
@@ -18,12 +17,6 @@ const router = new Router({
       component: Login,
       name: "login",
       meta: { title: "Login" }
-    },
-    {
-      path: "/home",
-      component: Home,
-      name: "home",
-      meta: { title: "Home", requiresAuth: true }
     },
     {
       path: "/parties",

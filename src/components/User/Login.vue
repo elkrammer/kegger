@@ -92,7 +92,7 @@
           this.email= "";
           this.password = "";
           this.$v.$reset();
-          this.$router.push({ name: "home" });
+          this.$router.push({ name: "list_parties" });
         } catch (error) {
           this.loginError = "Invalid Login Credentials";
         } finally {

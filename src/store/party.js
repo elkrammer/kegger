@@ -53,8 +53,8 @@ const party = {
       }
     },
     ADD_PARTY(state, data) {
-      state.parties.push(data);
       Vue.set(data, 'isPartyAttending', "false")
+      state.parties.push(data);
     },
     EDIT_PARTY(state, data) {
       const itemId = state.parties.findIndex(party => party.id === data.id);
