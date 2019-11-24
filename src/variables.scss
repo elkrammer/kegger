@@ -6,6 +6,8 @@ $secondary: #CE5A27;
 $third: #90919E;
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
+$active: #7957d5;
+$active-invert: findColorInvert($active);
 
 $light-background: $white;
 $blue-background: #406abf;
@@ -21,7 +23,8 @@ $colors: (
     "success": ($success, $success-invert),
     "warning": ($warning, $warning-invert),
     "danger": ($danger, $danger-invert),
-    "twitter": ($twitter, $twitter-invert)
+    "twitter": ($twitter, $twitter-invert),
+    "active": ($active, $active-invert),
 );
 
 $body-background-color: $light-background;

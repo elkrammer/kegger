@@ -5,29 +5,32 @@
         <p class="modal-card-title">Create New Party</p>
       </header>
       <section class="modal-card-body">
-        <b-field label="Party Name">
-          <b-input
-            placeholder="Party Name"
-            v-model="formProps.name"
-            required>
-          </b-input>
-        </b-field>
 
-        <b-field label="Host">
-          <b-select placeholder="Select Host" v-model="formProps.host_id">
-            <option
-              v-for="user in users"
-              :value="user.id"
-              :key="user.id"
-              :v-bind:value="user.id">
-            {{ user.name }}
-            </option>
-          </b-select>
-        </b-field>
+        <div class="field is-grouped">
+          <b-field label="Party Name">
+            <b-input
+              placeholder="Party Name"
+              v-model="formProps.name"
+              required>
+            </b-input>
+          </b-field>
 
-        <div class="guests">
-          <b-field label="Guests"></b-field>
-          <b-field grouped group-multiline>
+          <b-field label="Host">
+            <b-select placeholder="Select Host" v-model="formProps.host_id">
+              <option
+                v-for="user in users"
+                :value="user.id"
+                :key="user.id"
+                :v-bind:value="user.id">
+              {{ user.name }}
+              </option>
+            </b-select>
+          </b-field>
+        </div>
+
+        <div class="columns">
+          <div class="column guests is-two-fifths">
+            <b-field label="Guests"></b-field>
 
             <b-field label="First Name">
               <b-input
@@ -53,27 +56,34 @@
               </b-input>
             </b-field>
 
-            <b-field>
-              <p class="control">
-              <button style="margin-top: 32px"
-                      class="button is-success"
-                      @click="addGuest()">Add Guest</button>
-              <button style="margin-top: 32px; margin-left: 15px;"
-                      class="button is-warning"
-                      @click="setTBDGuest()">TBD</button>
-              </p>
+            <b-field label="Plus One">
+              <b-switch v-model="formProps.guest.plus_one" rounded="false" size="is-medium" type="is-active"></b-switch>
             </b-field>
 
-          </b-field>
+            <b-field>
+              <p class="buttons">
+              <button class="button is-success" @click="addGuest()">Add Guest</button>
+              <button class="button is-warning" @click="setTBDGuest()">TBD</button>
+              </p>
+            </b-field>
+          </div>
 
-          <div v-if="formProps.guests.length >0">
-            <ul>
-              <li class="guest" v-for="(guest, index) in formProps.guests" :key="index">
-                <b-icon icon="user"></b-icon>
-                {{ guest.first_name }} {{ guest.last_name }} - {{ guest.email }}
-                <b-button @click="deleteGuest(index)" type="is-danger" icon-right="trash-alt" size="is-small" />
-              </li>
-            </ul>
+          <div class="column">
+            <div v-if="formProps.guests.length >0" class="guestlist">
+              <h3>Party Guests:</h3>
+              <ul>
+                <li class="guest" v-for="(guest, index) in formProps.guests" :key="index">
+                  <b-icon icon="user"></b-icon>
+                  {{ guest.first_name }} {{ guest.last_name }}
+
+                  <span v-if="guest.plus_one === true" class="has-text-success">
+                    (+1)
+                  </span>
+
+                  <b-button @click="deleteGuest(index)" style="margin-left: 8px" type="is-danger" icon-right="trash-alt" size="is-small" />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -81,11 +91,11 @@
           <b-input maxlength="200" rows="2" v-model="formProps.comments" type="textarea"></b-input>
         </b-field>
 
+        <footer class="modal-card-foot">
+          <button class="button is-success" :disabled="$v.$invalid" @click="createParty()">Create</button>
+          <button class="button" @click="$parent.close()">Close</button>
+        </footer>
       </section>
-      <footer class="modal-card-foot">
-        <button class="button is-success" :disabled="$v.$invalid" @click="createParty()">Create</button>
-        <button class="button" @click="$parent.close()">Close</button>
-      </footer>
     </div>
   </form>
 </template>
@@ -107,6 +117,7 @@
             first_name: '',
             last_name: '',
             email: '',
+            plus_one: false,
           },
         },
         submitted: false,
@@ -193,8 +204,13 @@
 </script>
 
 <style lang="scss">
+
 .guests {
   background-color: #fffaff;
+}
+
+.guestlist {
+  background-color: #fffaaf;
 }
 
 .guest {
