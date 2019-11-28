@@ -10,7 +10,6 @@ const GET_GUESTS = "GET_GUESTS";
 const ADD_GUEST = "ADD_GUEST";
 const EDIT_GUESTS = "EDIT_GUESTS";
 const DELETE_GUEST = "DELETE_GUEST";
-const ADD_EMPTY_GUEST = "ADD_EMPTY_GUEST"
 
 const guest = {
   namespaced: true,
@@ -34,15 +33,6 @@ const guest = {
       const itemId = state.guests.find(guest => guest.ID === index);
       state.guests.splice(state.guests.indexOf(itemId), 1);
     },
-    ADD_EMPTY_GUEST(state, party_refer) {
-      const guest = {
-        first_name:  '',
-        last_name:    '',
-        email:  '',
-        party_refer: party_refer,
-      };
-      state.guests.unshift(guest);
-    }
   },
   getters: {
     guests(state) {
@@ -104,9 +94,6 @@ const guest = {
       } catch(error) {
         return Promise.reject(error);
       }
-    },
-    addEmptyGuest({ commit }, party_id) {
-      commit(ADD_EMPTY_GUEST, party_id);
     },
   },
 };

@@ -44,7 +44,8 @@
                 <b-input placeholder="Email" v-model="guest.email"></b-input>
               </b-field>
 
-              <b-switch v-model="guest.is_attending" type="is-success">Attending?</b-switch>
+              <b-switch v-model="guest.is_attending" type="is-active">Attending?</b-switch>
+              <b-switch v-model="guest.plus_one" type="is-active">Plus One?</b-switch>
 
             </div>
           </div>
@@ -82,6 +83,7 @@
       async editGuests() {
         try {
           await this.$store.dispatch("guest/editGuests", this.guests);
+          await this.$store.dispatch("party/getParties", null, { root: true });
           this.$parent.close();
         } catch (error) {
           console.log(error);

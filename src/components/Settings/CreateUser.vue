@@ -26,7 +26,7 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" @click="createUser">Create</button>
+        <button class="button is-success" @click="createUser" :disabled="$v.$invalid">Create</button>
         <button class="button" @click="$parent.close()">Close</button>
       </footer>
     </div>
@@ -58,7 +58,7 @@
     methods: {
       async createUser() {
         try {
-          this.$v.$touch();
+          //this.$v.$touch();
           if (this.$v.$invalid) {
             this.$v.$touch();
             return;

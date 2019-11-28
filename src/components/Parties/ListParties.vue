@@ -52,48 +52,7 @@
           </div>
         </div>
 
-        <div class="column is-two-fifths" v-if="this.parties.length > 0">
-          <div class="box totalsbox">
-            <nav class="level">
-
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Parties</p>
-                  <p class="title">{{ this.parties.length }}</p>
-                </div>
-              </div>
-
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Guests</p>
-                  <p class="title">{{ this.statistics.totalGuests }}</p>
-                </div>
-              </div>
-
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Attending</p>
-                  <p class="title">{{ this.statistics.guestsAttending }}</p>
-                </div>
-              </div>
-
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Pending</p>
-                  <p class="title">{{ this.statistics.guestsPending }}</p>
-                </div>
-              </div>
-
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Not Attending</p>
-                  <p class="title">{{ this.statistics.guestsNotAttending }}</p>
-                </div>
-              </div>
-
-            </nav>
-          </div>
-        </div>
+        <Statistics/>
 
       </div>
 
@@ -154,6 +113,12 @@
           </div>
         </b-table-column>
 
+
+        <b-table-column field="plusOne" label="Plus One">
+          &#10240;
+        </b-table-column>
+
+
         <b-table-column field="Comments" label="Comments" sortable>
           {{ props.row.comments }}
         </b-table-column>
@@ -166,7 +131,6 @@
             <td style="padding-left: 30px;">{{ guest.first_name }} {{ guest.last_name }}</td>
             <td></td>
             <td>
-
               <div class="has-text-success" v-if="guest.is_attending === true">
                 <span class="icon-text">Yep</span>
                 <b-icon pack="fas" icon="thumbs-up">
@@ -178,6 +142,16 @@
                 </b-icon>
               </div>
             </td>
+
+            <td>
+              <div class="has-text-success" v-if="guest.plus_one === true">
+                <span>Yes</span>
+              </div>
+              <div v-else>
+                <span>No</span>
+              </div>
+            </td>
+
             <td></td>
           </tr>
         </template>
@@ -195,10 +169,11 @@
   import EditParty from "@/components/Parties/EditParty.vue";
   import EditGuests from "@/components/Guests/EditGuests.vue";
   import DeleteParty from "@/components/Parties/DeleteParty.vue";
+  import Statistics from "@/components/Parties/Statistics.vue";
 
   export default {
     name: 'list_parties',
-    components: { CreateParty, EditParty, DeleteParty, EditGuests },
+    components: { CreateParty, EditParty, DeleteParty, EditGuests, Statistics },
     data() {
       return {
         createPartyActive: false,
@@ -220,25 +195,9 @@
       async loadParties() {
         try {
           const response = await this.$store.dispatch("party/getParties");
-          this.generateStatistics();
           return response.data;
         } catch (error) {
           console.log(error);
-        }
-      },
-      generateStatistics() {
-        for (var i = 0; i < this.parties.length; i++) {
-          let guestSize = this.parties[i].Guests.length;
-          this.statistics.totalGuests += guestSize
-          for (var j = 0; j < guestSize; j++) {
-            if (this.parties[i].Guests[j].is_attending) {
-              this.statistics.guestsAttending += 1
-            } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened === null) {
-              this.statistics.guestsPending += 1
-            } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened !== null) {
-              this.statistics.guestsNotAttending += 1
-            }
-          }
         }
       },
       toggle(row) {
@@ -258,15 +217,6 @@
         })
       },
     },
-    watch: {
-      editGuestsActive: function (newState) {
-        if (newState == false) {
-          this.loadParties();
-        }
-      }
-
-
-    },
     created() {
       this.loadParties();
     },
@@ -275,12 +225,9 @@
 
 <style lang="scss">
 @import "@/variables";
+
 .icon-text {
   margin-right: 10px;
-}
-
-.totalsbox {
-  background-color: #f1ffe7;
 }
 
 </style>
