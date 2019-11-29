@@ -10,6 +10,9 @@
             <b-tab-item label="Invite Design" icon="envelope">
               <Invite />
             </b-tab-item>
+            <b-tab-item label="Event" icon="calendar-alt">
+              <Event />
+            </b-tab-item>
         </b-tabs>
 
     </div>
@@ -19,9 +22,10 @@
 <script>
   import Users from "@/components/Settings/Users.vue";
   import Invite from "@/components/Settings/Invite.vue";
+  import Event from "@/components/Settings/Event.vue";
 
   export default {
     name: "login",
-    components: { Users, Invite },
+    components: { Users, Invite, Event },
   }
 </script>

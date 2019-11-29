@@ -36,10 +36,10 @@ const guest = {
     }
   },
   actions: {
-    async getGuest({ commit, rootGetters }, index) {
+    async getGuest({ commit, rootGetters }, id) {
       try {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
-        const response = await axios.get("/api/guest/" + index);
+        const response = await axios.get("/api/guest/" + id);
         commit(GET_GUEST, response.data);
         return response.data;
       } catch (error) {

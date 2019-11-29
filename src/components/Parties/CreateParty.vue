@@ -57,7 +57,7 @@
             </b-field>
 
             <b-field label="Plus One">
-              <b-switch v-model="formProps.guest.plus_one" rounded="false" size="is-medium" type="is-active"></b-switch>
+              <b-switch v-model="formProps.guest.plus_one" size="is-medium" type="is-active"></b-switch>
             </b-field>
 
             <b-field>
