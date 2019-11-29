@@ -51,7 +51,7 @@ func GetGuest(c echo.Context) error {
     SELECT guests.*, parties.name as party_name
     FROM guests
     INNER JOIN parties ON guests.party_refer = parties.id
-    where parties.id = $1`
+    where guests.id = $1`
 
     rows, err := db.Queryx(query, id)
 
