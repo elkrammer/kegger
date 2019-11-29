@@ -7,6 +7,7 @@ import user from "@/store/user";
 import users from "@/store/users";
 import party from "@/store/party";
 import guest from "@/store/guest";
+import settings from "@/store/settings";
 
 const store = new Vuex.Store({
   modules: {
@@ -14,6 +15,7 @@ const store = new Vuex.Store({
     users,
     party,
     guest,
+    settings,
   }
 });
 

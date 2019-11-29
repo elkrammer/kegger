@@ -4,14 +4,14 @@
       <h1 class="title">Settings</h1>
 
         <b-tabs type="is-toggle">
-            <b-tab-item label="Manage Users" icon="users">
-              <Users />
+            <b-tab-item label="Event" icon="calendar-alt">
+              <Event />
             </b-tab-item>
             <b-tab-item label="Invite Design" icon="envelope">
               <Invite />
             </b-tab-item>
-            <b-tab-item label="Event" icon="calendar-alt">
-              <Event />
+            <b-tab-item label="Manage Users" icon="users">
+              <Users />
             </b-tab-item>
         </b-tabs>
 
