@@ -7,7 +7,6 @@ Vue.use(Vuex);
 
 const GET_GUEST = "GET_GUEST";
 const GET_GUESTS = "GET_GUESTS";
-const ADD_GUEST = "ADD_GUEST";
 const EDIT_GUESTS = "EDIT_GUESTS";
 const DELETE_GUEST = "DELETE_GUEST";
 
@@ -22,9 +21,6 @@ const guest = {
     },
     GET_GUESTS(state, data) {
       state.guests = data;
-    },
-    ADD_GUEST(state, data) {
-      state.guests.push(data);
     },
     EDIT_GUESTS(state, data) {
       Vue.set(state.guests, data);
@@ -55,21 +51,6 @@ const guest = {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
         const response = await axios.get("/api/guests/" + party_id);
         commit(GET_GUESTS, response.data);
-        return response.data;
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    },
-    async createGuest({ commit, rootGetters }, data) {
-      try {
-        setAuthorizationHeader(rootGetters["user/accessToken"]);
-        const response = await axios.post("/api/guest", {
-          name: data.name,
-          host_id: data.host_id,
-          comments: data.comments,
-          Guests: data.guests,
-        });
-        commit(ADD_GUEST, response.data);
         return response.data;
       } catch (error) {
         return Promise.reject(error);

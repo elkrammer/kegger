@@ -7,7 +7,7 @@
       <section class="modal-card-body">
 
         <div style="margin-bottom: 5px" class="buttons">
-          <b-button @click="addEmptyGuest" type="is-success">Add</b-button>
+          <b-button @click="addGuest" type="is-success">Add</b-button>
         </div>
 
         <b-collapse
@@ -47,6 +47,9 @@
               <b-switch v-model="guest.is_attending" type="is-active">Attending?</b-switch>
               <b-switch v-model="guest.plus_one" type="is-active">Plus One?</b-switch>
 
+              <div class="is-pulled-right">
+                <b-button @click="deleteGuest(index)" type="is-danger" icon-right="trash-alt" size="is-small" />
+              </div>
             </div>
           </div>
         </b-collapse>
@@ -89,10 +92,19 @@
           console.log(error);
         }
       },
-      addEmptyGuest() {
-        this.$store.dispatch("guest/addEmptyGuest", this.party_id);
+      addGuest() {
+        const guest = {
+          first_name:  '',
+          last_name:    '',
+          email:  '',
+          party_refer: this.party_id,
+        };
+        this.guests.unshift(guest);
         this.isOpen = 0;
-      }
+      },
+      deleteGuest(index) {
+        this.guests.splice(this.guests.indexOf(index), 1);
+      },
     },
     computed: {
       ...mapGetters({
