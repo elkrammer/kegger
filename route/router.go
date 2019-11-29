@@ -61,5 +61,8 @@ func Init() *echo.Echo {
     r.GET("/user/:id", api.GetUser)
     r.DELETE("/user/:id", api.DeleteUser)
 
+    // Settings Routes
+    r.GET("/settings", api.GetSettings)
+
     return e
 }
