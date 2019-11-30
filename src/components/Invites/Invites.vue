@@ -35,7 +35,8 @@
         ref="table"
         hoverable
         paginated
-        default-sort="Name"
+        default-sort="name"
+        per-page="10"
         default-sort-direction="asc"
         :selected.sync="selected"
         sort-icon="chevron-up"

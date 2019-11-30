@@ -6,7 +6,17 @@
         <p class="modal-card-title">Invite for {{ guest.first_name }} {{ guest.last_name }}</p>
       </header>
       <section class="modal-card-body">
-        <b-icon icon="dizzy" size="is-large"></b-icon>
+        <p>
+        Hello {{ guest.first_name }}!<br />
+        You've been invited to {{ eventName }}<br />
+        to be celebrated on {{ eventDate }}.
+        <br />
+        <br />
+        <span v-if="guest.plus_one">
+          You are allowed to bring a guest.
+        </span>
+
+        </p>
       </section>
       <footer class="modal-card-foot">
         <button class="button" @click="$parent.close()">Close</button>
@@ -30,7 +40,15 @@
     computed: {
       ...mapGetters({
         guests: "guest/guests",
-      })
+        settings: "settings/settings",
+      }),
+      eventName() {
+        return this.settings.find(s => s.name === 'event_name').value;
+      },
+      eventDate() {
+        return this.settings.find(s => s.name === 'event_date').value;
+      }
+
     },
     methods: {
       async getGuest() {

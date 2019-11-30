@@ -76,6 +76,7 @@
         paginated
         show-detail-icon
         custom-detail-row
+        per-page="10"
         :selected.sync="selected"
         default-sort="Name"
         default-sort-direction="asc"

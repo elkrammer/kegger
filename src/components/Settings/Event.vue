@@ -60,8 +60,10 @@
     },
     created() {
       this.getSettings();
-      let date = this.settings.find(s => s.name === 'event_date');
-      this.eventDate = new Date(date.value);
+      if (this.settings.length > 0) {
+        let date = this.settings.find(s => s.name === 'event_date');
+        this.eventDate = new Date(date.value);
+      }
     }
   }
 </script>
