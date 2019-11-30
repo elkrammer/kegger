@@ -63,6 +63,7 @@ func Init() *echo.Echo {
 
     // Settings Routes
     r.GET("/settings", api.GetSettings)
+    r.PUT("/settings", api.UpdateSettings)
 
     return e
 }

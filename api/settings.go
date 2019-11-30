@@ -34,3 +34,27 @@ func GetSettings(c echo.Context) error {
 
     return c.JSON(http.StatusOK, settings)
 }
+
+func UpdateSettings(c echo.Context) error {
+    db := db.DbManager()
+    settings := []model.Settings{}
+
+    // bind request to model
+    if err := c.Bind(&settings); err != nil {
+        msg := fmt.Sprintf("Invalid request body. %s", err)
+        return c.JSON(http.StatusBadRequest, msg)
+    }
+
+    //  update all keys as per the request
+    for _, setting := range settings {
+        query := `UPDATE settings SET "name" = $1, "value" = $2 WHERE "name" = $3`
+        _, err := db.Exec(query, setting.Name, setting.Value, setting.Name)
+        if err != nil {
+            fmt.Println("error updating setting: ", query)
+            fmt.Println(err)
+            break
+        }
+    }
+
+    return c.JSON(http.StatusOK, settings)
+}
