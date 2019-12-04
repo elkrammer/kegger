@@ -10,6 +10,7 @@ Vue.use(Vuex);
 const GET_USERS = "GET_USERS";
 const GET_USER = "GET_USER";
 const ADD_USER = "ADD_USER";
+const EDIT_USER = "EDIT_USER";
 const DELETE_USER = "DELETE_USER";
 
 const users = {
@@ -26,6 +27,10 @@ const users = {
     },
     ADD_USER(state, data) {
       state.users.push(data);
+    },
+    EDIT_USER(state, data) {
+      const itemId = state.users.findIndex(user => user.id === data.id);
+      Vue.set(state.users, itemId, data);
     },
     DELETE_USER(state, index) {
       const itemId = state.users.find(user => user.id === index);
@@ -77,6 +82,16 @@ const users = {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
         const response = await axios.delete("/api/user/" + id);
         commit(DELETE_USER, id);
+        return response.data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async editUser({ commit, rootGetters }, data) {
+      try {
+        setAuthorizationHeader(rootGetters["user/accessToken"]);
+        const response = await axios.put("/api/user/" + data.id, data);
+        commit(EDIT_USER, data);
         return response.data;
       } catch (error) {
         return Promise.reject(error);
