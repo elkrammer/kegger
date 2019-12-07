@@ -69,6 +69,7 @@
       </div>
 
       <b-table
+        id="parties-table"
         :data="filteredPartyList"
         ref="table"
         hoverable
@@ -86,15 +87,15 @@
         >
         <template slot-scope="props">
 
-          <b-table-column field="Name" label="Party Name" sortable>
+          <b-table-column field="Name" label="Party Name" width="200" sortable>
             {{ props.row.name }}
           </b-table-column>
 
-        <b-table-column field="HostName" label="Host" sortable>
+        <b-table-column field="HostName" label="Host" width="200" sortable>
           {{ props.row.host_name }}
         </b-table-column>
 
-        <b-table-column field="isPartyAttending" label="Attending" visible sortable>
+        <b-table-column field="isPartyAttending" label="Attending" width="100" visible sortable>
           <div class="has-text-success" v-if="props.row.isPartyAttending === 'true'">
             <span class="icon-text">Yep</span>
             <b-icon pack="fas" icon="thumbs-up">
@@ -115,12 +116,12 @@
         </b-table-column>
 
 
-        <b-table-column field="plusOne" label="Plus One">
+        <b-table-column field="plusOne" label="Plus One" width="100">
           &#10240;
         </b-table-column>
 
 
-        <b-table-column field="Comments" label="Comments" sortable>
+        <b-table-column field="Comments" label="Comments" width="200" sortable>
           {{ props.row.comments }}
         </b-table-column>
 
@@ -229,6 +230,11 @@
 
 .icon-text {
   margin-right: 10px;
+}
+
+#parties-table td {
+    word-break: break-all;
+    vertical-align: middle;
 }
 
 </style>

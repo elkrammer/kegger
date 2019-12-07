@@ -63,7 +63,6 @@
             <b-field>
               <p class="buttons">
               <button class="button is-success" @click="addGuest()">Add Guest</button>
-              <button class="button is-warning" @click="setTBDGuest()">TBD</button>
               </p>
             </b-field>
           </div>
@@ -163,11 +162,6 @@
       deleteGuest(index) {
         this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);
       },
-      setTBDGuest() {
-        this.formProps.guest.first_name = 'TBD';
-        this.formProps.guest.last_name= 'TBD';
-        this.formProps.guest.email = 'not_known_yet@tbd.com';
-      }
     },
     validations: {
       formProps: {

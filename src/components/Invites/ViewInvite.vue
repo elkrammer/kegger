@@ -72,10 +72,18 @@
           console.log(error);
         }
       },
+      async getSettings() {
+        try {
+          const response = await this.$store.dispatch("settings/getSettings");
+          return response.data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
     },
     created() {
+      this.getSettings();
       this.getGuest();
-      this.$store.dispatch("settings/getSettings");
     },
   }
 </script>
