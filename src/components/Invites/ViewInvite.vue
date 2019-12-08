@@ -1,7 +1,7 @@
 <template>
   <section>
 
-    <div class="modal-card">
+    <div class="modal-card" style="width: 900px;">
       <header class="modal-card-head">
         <p class="modal-card-title">Invite for {{ guest.first_name }} {{ guest.last_name }}</p>
       </header>
@@ -19,11 +19,8 @@
           <div class="invite">
             <p>
             Hello {{ guest.first_name }}!<br />
-            You've been invited to {{ eventName }}<br />
-            to be celebrated on {{ eventDate }}.
+            You've been invited to {{ eventName }}.
             </p>
-            <br />
-            <br />
             <span v-if="guest.plus_one">
               You are allowed to bring a guest.
             </span>
@@ -92,6 +89,7 @@
 <style lang="scss" scoped>
 @import "@/variables";
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://db.onlinewebfonts.com/c/19106915702fcec8936aa3e6cf1019aa?family=ConeriaScriptW01-Medium');
 
 .invite-background {
   background-image: url("~@/assets/invite_bg.jpg");
@@ -105,25 +103,26 @@
 }
 
 .title-box {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 5.2em;
+  font-family: 'ConeriaScriptW01-Medium', sans-serif;
+  font-size: 6.0em;
   color: white;
   text-align: center;
 }
 
 .event-date {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'ConeriaScriptW01-Medium', sans-serif;
   font-size: 3.2em;
   color: yellow;
   text-align: center;
 }
 
 .invite {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 2.2em;
   margin: auto;
   margin-top: 50px;
-  background-color: #666666;
-  opacity: 0.5;
   color: white;
+  background-color: rgba(0,0,0,0.6);
   width: 80%;
 }
 
