@@ -122,7 +122,7 @@
   margin: auto;
   margin-top: 50px;
   background-color: #666666;
-  opacity: 0.8;
+  opacity: 0.5;
   color: white;
   width: 80%;
 }

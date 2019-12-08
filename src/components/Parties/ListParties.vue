@@ -91,7 +91,7 @@
             {{ props.row.name }}
           </b-table-column>
 
-        <b-table-column field="HostName" label="Host" width="200" sortable>
+        <b-table-column field="HostName" label="Host" width="150" sortable>
           {{ props.row.host_name }}
         </b-table-column>
 
@@ -121,7 +121,7 @@
         </b-table-column>
 
 
-        <b-table-column field="Comments" label="Comments" width="200" sortable>
+        <b-table-column field="Comments" label="Comments" width="250" sortable>
           {{ props.row.comments }}
         </b-table-column>
 
