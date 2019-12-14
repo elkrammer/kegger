@@ -66,5 +66,8 @@ func Init() *echo.Echo {
 	r.GET("/settings", api.GetSettings)
 	r.PUT("/settings", api.UpdateSettings)
 
+	// Send Invite Email Route
+	r.POST("/sendinvite/:id", api.SendInvite)
+
 	return e
 }

@@ -18,6 +18,8 @@ require (
 	github.com/mattn/go-sqlite3 v1.11.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.1
 	github.com/segmentio/ksuid v1.0.2
+	github.com/sendgrid/rest v2.4.1+incompatible // indirect
+	github.com/sendgrid/sendgrid-go v3.5.0+incompatible
 	github.com/shopspring/decimal v0.0.0-20191009025716-f1972eb1d1f5 // indirect
 	github.com/urfave/cli v1.22.1
 	github.com/valyala/fasttemplate v1.1.0 // indirect
