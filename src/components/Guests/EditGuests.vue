@@ -14,8 +14,9 @@
           class="card"
           v-for="(guest, index) in guests"
           :key="index"
-          :open="isOpen == index"
-          @open="isOpen = index">
+          :open="isOpen == guest.id"
+          @open="isOpen = guest.id"
+        >
           <div
             slot="trigger"
             slot-scope="props"
@@ -103,7 +104,7 @@
         this.isOpen = 0;
       },
       deleteGuest(index) {
-        this.guests.splice(this.guests.indexOf(index), 1);
+        this.$delete(this.guests, index);
       },
     },
     computed: {
