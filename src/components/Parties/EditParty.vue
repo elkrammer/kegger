@@ -40,6 +40,8 @@
 
 <script>
   import { mapGetters } from "vuex";
+
+  // TODO: do proper form validations
   export default {
     name: 'edit_party',
     props: ['party_id'],

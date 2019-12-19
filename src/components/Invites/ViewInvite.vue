@@ -19,10 +19,15 @@
                     <div class="invite">
                         <p>
                             Hello {{ guest.first_name }}!<br />
-                            You've been invited to {{ eventName }}.
+                            You've been invited to {{ eventName }}.<br /><br />
                         </p>
                         <span v-if="guest.plus_one">
-                            You are allowed to bring a guest.
+                            You are allowed to bring a guest. <br /><br />
+                        </span>
+
+                        <span>
+                            This event will take place at {{ eventLocation }}. <br /><br />
+                            The dress code for this event is {{ dressCode }}. <br />
                         </span>
                     </div>
 
@@ -58,6 +63,12 @@ export default {
         },
         eventDate() {
             return this.settings.find(s => s.name === 'event_date').value;
+        },
+        eventLocation() {
+            return this.settings.find(s => s.name === 'event_location').value;
+        },
+        dressCode() {
+            return this.settings.find(s => s.name === 'dress_code').value;
         },
     },
     methods: {
