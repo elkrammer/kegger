@@ -11,6 +11,11 @@ This app is only the API Server (backend). The frontend app is [WingDing](https:
 * Postgres 10+
 * (optional) SendGrid account for being able to send out the email invites
 
+# Running gorsvp
+1. Edit .env file
+2. `go build`
+3. `./gorsvp`
+
 # Sample .env File
 ```
 DB_USERNAME="dbuser"
