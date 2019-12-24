@@ -8,6 +8,7 @@ import users from "@/store/users";
 import party from "@/store/party";
 import guest from "@/store/guest";
 import settings from "@/store/settings";
+import invite from "@/store/invite";
 
 const store = new Vuex.Store({
   modules: {
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
     party,
     guest,
     settings,
+    invite,
   }
 });
 

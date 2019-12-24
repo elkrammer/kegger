@@ -1,123 +1,131 @@
 <template>
-  <section class="section">
-    <div class="container">
+    <section class="section">
+        <div class="container">
 
-      <section>
-        <b-modal
-          :active.sync="viewInviteActive"
-          has-modal-card
-          trap-focus
-          aria-role="dialog"
-          aria-modal>
-          <ViewInvite v-if="selected !== null" :guest_id="selected.id" />
-        </b-modal>
+            <section>
+                <b-modal
+                    :active.sync="viewInviteActive"
+                    has-modal-card
+                    trap-focus
+                    aria-role="dialog"
+                    aria-modal>
+                    <ViewInvite v-if="selected !== null" :guest_id="selected.id" />
+                </b-modal>
 
-      </section>
+            </section>
 
 
-      <div class="columns">
+            <div class="columns">
 
-        <div class="column">
-          <h1 class="title">Invites</h1>
-          <b-field>
-            <div style="margin-bottom: 5px" class="buttons">
-              <b-button @click="viewInviteActive = true" :disabled="selected === null" type="is-success">View Invite</b-button>
-              <b-button v-if="selected !== null" type="is-info">Send Invite</b-button>
-              <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
+                <div class="column">
+                    <h1 class="title">Invites</h1>
+                    <b-field>
+                        <div style="margin-bottom: 5px" class="buttons">
+                            <b-button @click="viewInviteActive = true" :disabled="selected === null" type="is-success">View Invite</b-button>
+                            <b-button v-if="selected !== null" @click="sendInvite" type="is-info">Send Invite</b-button>
+                            <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
+                        </div>
+                    </b-field>
+
+                </div>
             </div>
-          </b-field>
+
+            <b-table
+                :data="this.guests"
+                ref="table"
+                hoverable
+                paginated
+                default-sort="name"
+                per-page="10"
+                default-sort-direction="asc"
+                :selected.sync="selected"
+                sort-icon="chevron-up"
+                sort-icon-size="is-small"
+                >
+                <template slot-scope="props">
+
+                    <b-table-column field="name" label="Guest Name" searchable sortable>
+                        {{ props.row.name }}
+                    </b-table-column>
+
+                <b-table-column field="party_name" label="Party Name" searchable sortable>
+                    {{ props.row.party_name }}
+                </b-table-column>
+
+                <b-table-column label="Invite Sent" sortable>
+                    <div v-if="props.row.invitation_sent">
+                        <div>{{ props.row.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
+                    </div>
+                </b-table-column>
+
+                <b-table-column label="Invite Opened" sortable>
+                    <div v-if="props.row.invitation_opened">
+                        <div>{{ props.row.invitation_opened | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
+                    </div>
+                </b-table-column>
+
+                </template>
+            </b-table>
 
         </div>
-      </div>
-
-      <b-table
-        :data="this.guests"
-        ref="table"
-        hoverable
-        paginated
-        default-sort="name"
-        per-page="10"
-        default-sort-direction="asc"
-        :selected.sync="selected"
-        sort-icon="chevron-up"
-        sort-icon-size="is-small"
-        >
-        <template slot-scope="props">
-
-          <b-table-column field="name" label="Guest Name" searchable sortable>
-            {{ props.row.name }}
-          </b-table-column>
-
-        <b-table-column field="party_name" label="Party Name" searchable sortable>
-          {{ props.row.party_name }}
-        </b-table-column>
-
-        <b-table-column label="Invite Sent" sortable>
-          <div v-if="props.row.invitation_sent">
-            <div>{{ props.row.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
-          </div>
-        </b-table-column>
-
-        <b-table-column label="Invite Opened" sortable>
-          <div v-if="props.row.invitation_opened">
-            <div>{{ props.row.invitation_opened | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
-          </div>
-        </b-table-column>
-
-        </template>
-      </b-table>
-
-    </div>
-  </section>
+    </section>
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
-  import ViewInvite from "@/components/Invites/ViewInvite.vue";
+import { mapGetters } from "vuex";
+import ViewInvite from "@/components/Invites/ViewInvite.vue";
 
-  export default {
+export default {
     name: "invites",
     components: { ViewInvite },
     data() {
-      return {
-        guests: [],
-        selected: null,
-        viewInviteActive: false,
-      }
+        return {
+            guests: [],
+            selected: null,
+            viewInviteActive: false,
+        }
     },
     methods: {
-      async loadParties() {
-        try {
-          const response = await this.$store.dispatch("party/getParties");
-          return response.data;
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      mapData() {
-        for (var i=0; i < this.parties.length; i++) {
-          for (var j=0; j < this.parties[i].Guests.length; j++) {
-            let guest = this.parties[i].Guests[j];
-            guest.party_name = this.parties[i].name;
-            guest.name = guest.first_name + ' ' + guest.last_name;
-            delete guest.first_name;
-            delete guest.last_name;
+        async loadParties() {
+            try {
+                const response = await this.$store.dispatch("party/getParties");
+                return response.data;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async sendInvite() {
+            try {
+                const response = await this.$store.dispatch("invite/sendInvite");
+                return response.data;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        mapData() {
+            for (var i=0; i < this.parties.length; i++) {
+                for (var j=0; j < this.parties[i].Guests.length; j++) {
+                    let guest = this.parties[i].Guests[j];
+                    guest.party_name = this.parties[i].name;
+                    guest.name = guest.first_name + ' ' + guest.last_name;
+                    delete guest.first_name;
+                    delete guest.last_name;
 
-            this.guests.push(guest);
-          }
-        }
-      },
+                    this.guests.push(guest);
+                }
+            }
+        },
     },
     computed: {
-      ...mapGetters({
-        parties: "party/parties"
-      }),
+        ...mapGetters({
+            parties: "party/parties"
+        }),
     },
     created() {
-      this.loadParties();
-      this.mapData();
+        this.loadParties();
+        this.mapData();
     }
-  }
+}
 </script>
 
 
