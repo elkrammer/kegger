@@ -89,25 +89,30 @@ func CreateUser(c echo.Context) error {
 	q := `SELECT EXISTS (SELECT 1 FROM users WHERE email = $1)`
 	err := db.QueryRow(q, user.Email).Scan(&exists)
 
-	fmt.Println(exists)
 	if exists == true {
 		err := fmt.Sprintf("User with email %s already exists", user.Email)
 		return echo.NewHTTPError(http.StatusNotFound, err)
 	}
 
 	hash, _ := helper.HashPassword(user.Password)
+	var pid uint
 	query := `
     INSERT INTO users
     (name, email, password)
-    VALUES($1, $2, $3)`
-	_, err = db.Exec(query, user.Name, user.Email, hash)
+    VALUES($1, $2, $3)
+    RETURNING id`
+	err = db.QueryRow(query, user.Name, user.Email, hash).Scan(&pid)
 
 	if err != nil {
 		fmt.Println("error inserting user record: ", query)
 		fmt.Println(err)
 	}
 
-	return c.JSON(http.StatusOK, user)
+	response := model.UserResponse{}
+	response.Name = user.Name
+	response.Email = user.Email
+	response.ID = pid
+	return c.JSON(http.StatusOK, response)
 }
 
 func DeleteUser(c echo.Context) error {
