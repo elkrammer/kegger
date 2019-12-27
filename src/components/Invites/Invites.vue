@@ -54,13 +54,13 @@
 
                 <b-table-column label="Invite Sent" sortable>
                     <div v-if="props.row.invitation_sent">
-                        <div>{{ props.row.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MM/DD/YY HH:mm:ss') }}</div>
+                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/New_York', 'M/D/YY H:mm') }}</div>
                     </div>
                 </b-table-column>
 
                 <b-table-column label="Invite Opened" sortable>
                     <div v-if="props.row.invitation_opened">
-                        <div>{{ props.row.invitation_opened | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
+                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/New_York', 'M/D/YY H:mm') }}</div>
                     </div>
                 </b-table-column>
 

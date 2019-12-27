@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="event-date">
-                        <span>{{ eventDate | dateParse('YYYY-MM-DD HH:mm:ss') | dateFormat('MMM DD YYYY(HH:mm)') }}</span>
+                        <span>{{ eventDate | moment('timezone', 'America/New_York', 'MMM do YYYY H:mm') }}</span>
                     </div>
 
                     <div class="invite">
