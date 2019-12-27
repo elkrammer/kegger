@@ -128,7 +128,13 @@ func SendInvite(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, msg)
 	}
 
-	// TODO: set invite as sent in db
+	// update invite_sent column
+	query = `UPDATE guests SET invitation_sent = NOW() WHERE id=$1;`
+	_, err = db.Exec(query, id)
+	if err != nil {
+		msg := fmt.Sprintf("There was an error updating invitation_sent column for guest %v: %v", id, err)
+		return c.JSON(http.StatusBadRequest, msg)
+	}
 
 	return c.JSON(http.StatusOK, H{
 		"msg":  "Email successfully sent",
