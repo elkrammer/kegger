@@ -54,13 +54,13 @@
 
                 <b-table-column label="Invite Sent" sortable>
                     <div v-if="props.row.invitation_sent">
-                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/New_York', 'M/D/YY H:mm') }}</div>
+                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/Toronto', 'M/D/YY H:mm') }}</div>
                     </div>
                 </b-table-column>
 
                 <b-table-column label="Invite Opened" sortable>
                     <div v-if="props.row.invitation_opened">
-                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/New_York', 'M/D/YY H:mm') }}</div>
+                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/Toronto', 'M/D/YY H:mm') }}</div>
                     </div>
                 </b-table-column>
 
@@ -104,6 +104,10 @@ export default {
                     position: 'is-bottom',
                     duration: 3000,
                 })
+                var d = new Date();
+                var now = d.toISOString();
+                const itemId = this.guests.findIndex(guest => guest.id === this.selected.id);
+                this.guests[itemId].invitation_sent = now;
                 return response.data;
             } catch (error) {
                 const msg = `There was an error sending the invitation to ${this.selected.name}`

@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="event-date">
-                        <span>{{ eventDate | moment('timezone', 'America/New_York', 'MMM do YYYY H:mm') }}</span>
+                        <span>{{ eventDate | moment('timezone', 'America/Toronto', 'MMM do YYYY H:mm') }}</span>
                     </div>
 
                     <div class="invite">
