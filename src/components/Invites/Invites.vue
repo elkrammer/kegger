@@ -22,7 +22,7 @@
                     <b-field>
                         <div style="margin-bottom: 5px" class="buttons">
                             <b-button @click="viewInviteActive = true" :disabled="selected === null" type="is-success">View Invite</b-button>
-                            <b-button v-if="selected !== null" @click="sendInvite" type="is-info">Send Invite</b-button>
+                            <b-button v-if="selected !== null && !selected.invitation_sent" @click="sendInvite" type="is-info">Send Invite</b-button>
                             <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
                         </div>
                     </b-field>
@@ -54,7 +54,7 @@
 
                 <b-table-column label="Invite Sent" sortable>
                     <div v-if="props.row.invitation_sent">
-                        <div>{{ props.row.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MMM DD YYYY') }}</div>
+                        <div>{{ props.row.invitation_sent | dateParse('YYYY.MM.DD') | dateFormat('MM/DD/YY HH:mm:ss') }}</div>
                     </div>
                 </b-table-column>
 
@@ -97,9 +97,22 @@ export default {
         async sendInvite() {
             try {
                 const response = await this.$store.dispatch("invite/sendInvite", this.selected.id);
+                const msg = `Invitation to ${this.selected.name} successfully sent`
+                this.$buefy.toast.open({
+                    message: msg,
+                    type: 'is-success',
+                    position: 'is-bottom',
+                    duration: 3000,
+                })
                 return response.data;
             } catch (error) {
-                console.log(error);
+                const msg = `There was an error sending the invitation to ${this.selected.name}`
+                this.$buefy.toast.open({
+                    message: msg,
+                    type: 'is-danger',
+                    position: 'is-bottom',
+                    duration: 3000,
+                })
             }
         },
         mapData() {
