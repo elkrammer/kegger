@@ -45,19 +45,13 @@ func GetUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	query := `SELECT id, "name", email FROM users WHERE id = $1`
-	rows, err := db.Queryx(query, id)
-
+	row := db.QueryRowx(query, id)
+	err := row.StructScan(&user)
 	if err != nil {
 		err := fmt.Sprintf("User with ID: %v not found", id)
 		return echo.NewHTTPError(http.StatusNotFound, err)
 	}
 
-	for rows.Next() {
-		err = rows.StructScan(&user)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
 	return c.JSON(http.StatusOK, user)
 }
 
