@@ -96,7 +96,7 @@ export default {
         },
         async sendInvite() {
             try {
-                const response = await this.$store.dispatch("invite/sendInvite");
+                const response = await this.$store.dispatch("invite/sendInvite", this.selected.id);
                 return response.data;
             } catch (error) {
                 console.log(error);

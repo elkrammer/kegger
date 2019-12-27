@@ -19,10 +19,10 @@ const invite = {
     },
   },
   actions: {
-    async sendInvite({ commit, rootGetters }) {
+    async sendInvite({ commit, rootGetters }, guest_id) {
       try {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
-        const response = await axios.post("/api/sendinvite/1", {
+        const response = await axios.post("/api/sendinvite/" + guest_id, {
           from_name: "Wingding",
           from_email: "wingding@wingding.com",
           to: [
