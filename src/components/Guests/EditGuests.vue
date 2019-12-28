@@ -90,8 +90,22 @@ export default {
             try {
                 await this.$store.dispatch("guest/editGuests", this.guests);
                 await this.$store.dispatch("party/getParties", null, { root: true });
+                const msg = `Changes saved!`
+                this.$buefy.toast.open({
+                    message: msg,
+                    type: 'is-success',
+                    position: 'is-bottom',
+                    duration: 3000,
+                })
                 this.$parent.close();
             } catch (error) {
+                const msg = `There was an error editing guests: ${error}`
+                this.$buefy.toast.open({
+                    message: msg,
+                    type: 'is-danger',
+                    position: 'is-bottom',
+                    duration: 3000,
+                })
                 console.log(error);
             }
         },

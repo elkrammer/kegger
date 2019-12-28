@@ -23,10 +23,24 @@
     methods: {
       async deleteParty() {
         try {
-          await this.$store.dispatch("party/deleteParty", this.party_id);
-          this.$parent.close();
+            await this.$store.dispatch("party/deleteParty", this.party_id);
+            const msg = `Successfully deleted party ${this.party_name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            this.$parent.close();
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error deleting party ${this.party_name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       },
     },

@@ -58,17 +58,31 @@
     methods: {
       async createUser() {
         try {
-          //this.$v.$touch();
-          if (this.$v.$invalid) {
-            this.$v.$touch();
-            return;
-          }
+            //this.$v.$touch();
+            if (this.$v.$invalid) {
+                this.$v.$touch();
+                return;
+              }
 
-          this.submitted = true;
-          await this.$store.dispatch("users/createUser", this.user);
-          this.$parent.close();
+            this.submitted = true;
+            await this.$store.dispatch("users/createUser", this.user);
+            const msg = `User ${this.user.name} created!`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            this.$parent.close();
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error creating user ${this.user.name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       },
     },

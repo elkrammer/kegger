@@ -48,13 +48,26 @@
       },
       async saveSettings() {
         try {
-          // update our state with the new selected date
-          this.settings.find(s => s.name === 'event_date').value = this.eventDate.toISOString();
-
-          const response = await this.$store.dispatch("settings/updateSettings", this.settings);
-          return response.data;
+            // update our state with the new selected date
+            this.settings.find(s => s.name === 'event_date').value = this.eventDate.toISOString();
+            const response = await this.$store.dispatch("settings/updateSettings", this.settings);
+            const msg = `Changes saved!`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            return response.data;
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error saving event settings: ${error}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       }
     },

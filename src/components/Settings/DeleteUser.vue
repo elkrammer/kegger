@@ -23,10 +23,24 @@
     methods: {
       async deleteUser() {
         try {
-          await this.$store.dispatch("users/deleteUser", this.user_id);
-          this.$parent.close();
+            await this.$store.dispatch("users/deleteUser", this.user_id);
+            const msg = `User ${this.user.name} deleted!`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            this.$parent.close();
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error editing user ${this.user.name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       },
     },

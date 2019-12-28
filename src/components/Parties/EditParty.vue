@@ -69,10 +69,24 @@
       },
       async editParty() {
         try {
-          await this.$store.dispatch("party/editParty", this.party);
-          this.$parent.close();
+            await this.$store.dispatch("party/editParty", this.party);
+            const msg = `Changes saved!`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            this.$parent.close();
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error editing party: ${error}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       }
     },

@@ -141,10 +141,23 @@
         }
 
         try {
-          await this.$store.dispatch("party/createParty", this.formProps);
-          this.$parent.close();
+            await this.$store.dispatch("party/createParty", this.formProps);
+            const msg = `Successfully created party ${this.formProps.name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error creating party ${this.formProps.name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       },
       addGuest() {

@@ -64,11 +64,25 @@
           this.user.password = this.password;
         }
         try {
-          const response = await this.$store.dispatch("users/editUser", this.user);
-          this.user = response;
-          this.$parent.close();
+            const response = await this.$store.dispatch("users/editUser", this.user);
+            this.user = response;
+            const msg = `User ${this.user.name} updated!`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            this.$parent.close();
         } catch (error) {
-          console.log(error);
+            const msg = `There was an error editing user ${this.user.name}`
+            this.$buefy.toast.open({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+                duration: 3000,
+            })
+            console.log(error);
         }
       },
     },
