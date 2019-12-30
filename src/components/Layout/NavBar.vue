@@ -45,7 +45,7 @@
     methods: {
       async logout() {
         await this.$store.dispatch("user/userLogout");
-        this.$router.push({ name: "login" });
+        this.$router.push({ name: "login" }).catch(err => {console.log(err)});
         document.location.href = "/";
       }
     }

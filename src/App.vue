@@ -15,7 +15,9 @@
     },
     computed: {
       showNavBar() {
-        return this.$route.name !== 'login';
+        const disabled = ["login", "invitation"];
+        const showNavBar = !disabled.includes(this.$route.name);
+        return showNavBar;
       }
     }
   };

@@ -6,6 +6,7 @@ Vue.use(Router);
 import Login from "@/components/User/Login.vue";
 import ListParties from "@/components/Parties/ListParties.vue";
 import Invites from "@/components/Invites/Invites.vue";
+import Invitation from "@/components/Invites/Invitation.vue";
 import Settings from "@/components/Settings/Settings.vue";
 
 const router = new Router({
@@ -36,7 +37,13 @@ const router = new Router({
       name: "settings",
       meta: { title: "Settings", requiresAuth: true }
     },
-
+    {
+      path: "/invite/:id",
+      component: Invitation,
+      name: "invitation",
+      meta: { title: "View Invitation" },
+      props: true
+    },
     {
       path: "*",
       redirect: "/login"
@@ -45,24 +52,28 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  // set the title of each route
-  document.title = to.meta.title;
-  let accessToken = localStorage.getItem("accessToken") ? localStorage.getItem("accessToken"): null;
-  let refreshToken = localStorage.getItem("refreshToken") ? localStorage.getItem("refreshToken"): null;
+  document.title = to.meta.title; //set title of each route
+  let isLoggedIn = router.app.$options.store.getters["user/user"]
+  let accessToken = localStorage.getItem("accessToken");
+  let refreshToken = localStorage.getItem("refreshToken");
+
   if (accessToken) {
     router.app.$options.store.dispatch("user/setUserAndTokens", {
-      accessToken: accessToken,
-      refreshToken: refreshToken
-    });
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      });
   }
 
-  // if the user is not logged in do not allow acess into protected pages.
-  if (to.meta.requiresAuth && !router.app.$options.store.getters["user/user"]) {
+  if (isLoggedIn && accessToken && refreshToken && to.meta.requiresAuth) {
+    // user is logged in
+    next();
+  } else if (!isLoggedIn && !to.meta.requiresAuth) {
+    // user is not logged in but the page doesn't require authentication
+    next();
+  } else {
+    // user needs to authenticate
     next({ name: "login" });
   }
-
-  next();
-
 });
 
 export default router;
