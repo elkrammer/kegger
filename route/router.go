@@ -6,8 +6,8 @@ import (
 	"github.com/elkrammer/gorsvp/api"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type jwtClaim struct {
@@ -68,6 +68,9 @@ func Init() *echo.Echo {
 
 	// Send Invite Email Route
 	r.POST("/sendinvite/:id", api.SendInvite)
+
+	// Fetch Invitation Details
+	e.GET("/invite/:invite_id", api.FetchInviteDetails)
 
 	return e
 }

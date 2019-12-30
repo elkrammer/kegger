@@ -9,7 +9,7 @@ import (
 	"github.com/elkrammer/gorsvp/db"
 	"github.com/elkrammer/gorsvp/model"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/segmentio/ksuid"
 )
 

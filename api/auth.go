@@ -6,12 +6,12 @@ import (
 	"os"
 
 	"github.com/elkrammer/gorsvp/db"
-	"github.com/elkrammer/gorsvp/internal/gen_jwt_token"
+	jwttoken "github.com/elkrammer/gorsvp/internal/gen_jwt_token"
 	"github.com/elkrammer/gorsvp/internal/helper"
 	"github.com/elkrammer/gorsvp/model"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // POST Request
