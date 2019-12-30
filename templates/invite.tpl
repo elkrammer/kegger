@@ -461,7 +461,7 @@ body {
                                     <tr>
                                         <td class="content-cell" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px; padding: 45px;">
                                             <div class="f-fallback">
-                                                <h1 style="margin-top: 0; color: #333333; font-size: 22px; font-weight: bold; text-align: left;" align="left">Hi {{ .Name }}!</h1>
+                                                <h1 style="margin-top: 0; color: #333333; font-size: 22px; font-weight: bold; text-align: left;" align="left">Hi {{ .Guest.FirstName }}!</h1>
                                                 <p style="font-size: 16px; line-height: 1.625; color: #51545E; margin: .4em 0 1.1875em;">
                                                     <span style="color: #51545E;">
                                                     You are invited to {{ .EventName }} to celebrate the wedding of
@@ -480,7 +480,7 @@ body {
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                                                     <tr>
                                                                         <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-                                                                            <a href="http://192.168.0.109:8080/viewinvite/{{.InviteId}}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">View Invite</a>
+                                                                            <a href="http://192.168.0.109:8080/viewinvite/{{.Guest.InvitationId}}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">View Invite</a>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -502,7 +502,7 @@ body {
                                 <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                         <td class="content-cell" align="center">
-                                        Invite ID: {{ .InviteId }}
+                                        Invite ID: {{ .Guest.InvitationId }}
                                         </td>
                                     </tr>
 

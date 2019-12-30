@@ -10,7 +10,7 @@ import (
 	"github.com/elkrammer/gorsvp/internal/helper"
 	"github.com/elkrammer/gorsvp/model"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -26,76 +26,10 @@ func SendInvite(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, msg)
 	}
 
-	// fetch all the data we need to prepopulate the invites
-	vars := make(map[string]interface{})
+	// fetch the data we need to populate the invites
+	invite := helper.FetchEventInformationByGuestId(id)
 
-	// event name
-	var result string
-	q := `SELECT value FROM settings WHERE name = 'event_name';`
-	row := db.QueryRowx(q)
-	err := row.Scan(&result)
-	if err != nil {
-		e := fmt.Sprintf("Failed to fetch event information from the database: %v", err)
-		return echo.NewHTTPError(http.StatusNotFound, e)
-	}
-	vars["EventName"] = result
-
-	// event date
-	q = `SELECT value FROM settings WHERE name = 'event_date';`
-	row = db.QueryRowx(q)
-	err = row.Scan(&result)
-	if err != nil {
-		e := fmt.Sprintf("Failed to fetch event information from the database: %v", err)
-		return echo.NewHTTPError(http.StatusNotFound, e)
-	}
-	vars["EventDate"] = result
-
-	// event location
-	q = `SELECT value FROM settings WHERE name = 'event_location';`
-	row = db.QueryRowx(q)
-	err = row.Scan(&result)
-	if err != nil {
-		e := fmt.Sprintf("Failed to fetch event information from the database: %v", err)
-		return echo.NewHTTPError(http.StatusNotFound, e)
-	}
-	vars["EventLocation"] = result
-
-	// hosts
-	var hosts []string
-	q = `SELECT DISTINCT users.name AS host_name FROM parties INNER JOIN users ON parties.host_id = users.id;`
-	rows, err := db.Queryx(q)
-
-	if err != nil {
-		err := fmt.Sprintf("Error fetching host list")
-		return echo.NewHTTPError(http.StatusNotFound, err)
-	}
-
-	for rows.Next() {
-		var host string
-		if err := rows.Scan(&host); err != nil {
-			fmt.Printf("%v", err)
-		}
-		hosts = append(hosts, host)
-	}
-	vars["Hosts"] = hosts
-
-	// fetch guest information
-	guest := model.GuestResponse{}
-	query := `
-	SELECT guests.*, parties.name as party_name
-	FROM guests
-	INNER JOIN parties ON guests.party_refer = parties.id
-	where guests.id = $1`
-	row = db.QueryRowx(query, id)
-	err = row.StructScan(&guest)
-	if err != nil {
-		e := fmt.Sprintf("Failed to fetch guest information from the database: %v", err)
-		return echo.NewHTTPError(http.StatusNotFound, e)
-	}
-	vars["Name"] = guest.FirstName
-	vars["InviteId"] = guest.InvitationId
-
-	body := helper.ProcessTemplateFile("templates/invite.tpl", vars)
+	body := helper.ProcessTemplateFile("templates/invite.tpl", invite)
 
 	m := mail.NewV3Mail()
 	from := mail.NewEmail(email.FromName, email.FromEmail)
@@ -129,7 +63,7 @@ func SendInvite(c echo.Context) error {
 	}
 
 	// update invite_sent column
-	query = `UPDATE guests SET invitation_sent = NOW() WHERE id=$1;`
+	query := `UPDATE guests SET invitation_sent = NOW() WHERE id=$1;`
 	_, err = db.Exec(query, id)
 	if err != nil {
 		msg := fmt.Sprintf("There was an error updating invitation_sent column for guest %v: %v", id, err)
@@ -140,5 +74,22 @@ func SendInvite(c echo.Context) error {
 		"msg":  "Email successfully sent",
 		"code": response.StatusCode,
 	})
+}
 
+func FetchInviteDetails(c echo.Context) error {
+	id := c.Param("invite_id")
+
+	if len(id) == 0 {
+		msg := fmt.Sprintf("Invite ID can't be null")
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+
+	invite := helper.FetchEventInformation(id)
+
+	// validate if we were able to fetch invite details
+	if invite.Guest.PartyName == "" {
+		msg := fmt.Sprintf("Could not fetch invite for id: %v", id)
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+	return c.JSON(http.StatusOK, invite)
 }
