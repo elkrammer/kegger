@@ -17,6 +17,7 @@ type Invite struct {
 	EventDate     string        `json:"event_date"`
 	EventLocation string        `json:"event_location"`
 	EventName     string        `json:"event_name"`
+	DressCode     string        `json:"dress_code"`
 	Guest         GuestResponse `json:"guest"`
 	Hosts         []string      `json:"hosts"`
 }

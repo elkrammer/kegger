@@ -39,6 +39,15 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.EventLocation = result
 
+	// dress code
+	q = `SELECT value FROM settings WHERE name = 'dress_code';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch dress code: %v", err)
+	}
+	m.DressCode = result
+
 	// hosts
 	var hosts []string
 	q = `SELECT DISTINCT users.name AS host_name FROM parties INNER JOIN users ON parties.host_id = users.id;`

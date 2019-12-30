@@ -480,7 +480,7 @@ body {
                                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                                                     <tr>
                                                                         <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-                                                                            <a href="http://192.168.0.109:8080/viewinvite/{{.Guest.InvitationId}}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">View Invite</a>
+                                                                            <a href="http://192.168.0.109:8080/invite/{{.Guest.InvitationId}}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">View Invite</a>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
