@@ -6,10 +6,22 @@ import { setAuthorizationHeader } from "@/common/utilities";
 
 Vue.use(Vuex);
 
+const GET_INVITE = "GET_INVITE";
+
 const invite = {
   namespaced: true,
   state: {
     invite: [],
+  },
+  mutations: {
+    GET_INVITE(state, data) {
+      state.invite = data;
+    },
+  },
+  getters: {
+    invite(state) {
+      return state.invite;
+    },
   },
   actions: {
     async sendInvite({ rootGetters }, guest_id) {
@@ -27,6 +39,15 @@ const invite = {
           subject: "Test message from wingding",
           message: "<strong>test from wingding.</strong>"
         });
+        return response.data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async getInvite({ commit }, id) {
+      try {
+        const response = await axios.get("/invite/" + id);
+        commit(GET_INVITE, response.data);
         return response.data;
       } catch (error) {
         return Promise.reject(error);
