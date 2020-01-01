@@ -28,7 +28,6 @@ func SendInvite(c echo.Context) error {
 
 	// fetch the data we need to populate the invites
 	invite := helper.FetchEventInformationByGuestId(id)
-
 	body := helper.ProcessTemplateFile("templates/invite.tpl", invite)
 
 	m := mail.NewV3Mail()
@@ -92,4 +91,48 @@ func FetchInviteDetails(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, msg)
 	}
 	return c.JSON(http.StatusOK, invite)
+}
+
+func UpdateInvite(c echo.Context) error {
+	db := db.DbManager()
+	request := model.UpdateInviteRequest{}
+
+	if err := c.Bind(&request); err != nil {
+		msg := fmt.Sprintf("Invalid request body. %s", err)
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+
+	guest := model.Guest{}
+	query := `
+	SELECT *
+	FROM guests
+	where invitation_id = $1`
+	err := db.QueryRowx(query, request.InvitationId).StructScan(&guest)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid Invitation ID")
+	}
+
+	// update is_attending field
+	if request.IsAttending != nil {
+		query = `UPDATE guests SET is_attending = $1 WHERE invitation_id = $2`
+		_, err = db.Exec(query, request.IsAttending, request.InvitationId)
+		if err != nil {
+			msg := fmt.Sprintf("There was an error updating invitation_sent column for guest %v: %v", guest.ID, err)
+			return c.JSON(http.StatusBadRequest, msg)
+		}
+	}
+
+	// update invitation_opened field
+	if request.InvitationOpened != nil {
+		query := `UPDATE guests SET invitation_opened = $1 WHERE invitation_id = $2`
+		_, err := db.Exec(query, request.InvitationOpened, request.InvitationId)
+		if err != nil {
+			msg := fmt.Sprintf("There was an error updating invitation_opened column for guest %v: %v", guest.ID, err)
+			return c.JSON(http.StatusBadRequest, msg)
+		}
+	}
+
+	msg := fmt.Sprintf("Successfully updated invite for guest %s", guest.FirstName)
+	return c.JSON(http.StatusOK, msg)
 }

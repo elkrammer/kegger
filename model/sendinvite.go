@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type SendInvite struct {
 	FromName  string `json:"from_name"`
 	FromEmail string `json:"from_email"`
@@ -20,4 +22,10 @@ type Invite struct {
 	DressCode     string        `json:"dress_code"`
 	Guest         GuestResponse `json:"guest"`
 	Hosts         []string      `json:"hosts"`
+}
+
+type UpdateInviteRequest struct {
+	InvitationId     *string    `json:"invitation_id" db:"invitation_id"`
+	IsAttending      *bool      `json:"is_attending" db:"is_attending"`
+	InvitationOpened *time.Time `json:"invitation_opened" db:"invitation_opened"`
 }

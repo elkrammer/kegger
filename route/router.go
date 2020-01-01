@@ -66,11 +66,10 @@ func Init() *echo.Echo {
 	r.GET("/settings", api.GetSettings)
 	r.PUT("/settings", api.UpdateSettings)
 
-	// Send Invite Email Route
-	r.POST("/sendinvite/:id", api.SendInvite)
-
-	// Fetch Invitation Details
-	e.GET("/invite/:invite_id", api.FetchInviteDetails)
+	// Invitation Routes
+	r.POST("/sendinvite/:id", api.SendInvite)           // Send Invite Email Route (protected)
+	e.GET("/invite/:invite_id", api.FetchInviteDetails) // Fetch Invitation Details
+	e.PUT("/invite", api.UpdateInvite)                  // Update Invitation Attendance / Invite Opened Timestamp
 
 	return e
 }
