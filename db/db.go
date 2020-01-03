@@ -2,9 +2,11 @@ package db
 
 import (
 	"fmt"
-	"github.com/elkrammer/gorsvp/internal/config"
 	"log"
 	"os"
+
+	"github.com/elkrammer/gorsvp/internal/config"
+
 	//    "github.com/elkrammer/gorsvp/model"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -21,13 +23,14 @@ func Init() {
 	config.LoadEnv()
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 
-	db = sqlx.MustConnect("pgx", connectionString)
-	err = db.Ping()
+	db, err = sqlx.Connect("pgx", connectionString)
 	if err != nil {
 		fmt.Println("Failed to connect to database: " + connectionString)
 	}
 
-	RunMigrations()
+	if os.Getenv("RUN_MIGRATIONS") == "true" {
+		RunMigrations()
+	}
 }
 
 func RunMigrations() {
