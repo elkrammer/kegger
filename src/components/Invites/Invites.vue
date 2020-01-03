@@ -14,9 +14,7 @@
 
             </section>
 
-
             <div class="columns">
-
                 <div class="column">
                     <h1 class="title">Invites</h1>
                     <b-field>
@@ -26,7 +24,6 @@
                             <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
                         </div>
                     </b-field>
-
                 </div>
             </div>
 
@@ -60,7 +57,7 @@
 
                 <b-table-column label="Invite Opened" sortable>
                     <div v-if="props.row.invitation_opened">
-                        <div>{{ props.row.invitation_sent | moment('timezone', 'America/Toronto', 'M/D/YY H:mm') }}</div>
+                        <div>{{ props.row.invitation_opened | moment('timezone', 'America/Toronto', 'M/D/YY H:mm') }}</div>
                     </div>
                 </b-table-column>
 
@@ -119,15 +116,16 @@ export default {
                 })
             }
         },
+        // this function re-maps the data obtained from the loadParties API call into the this.guests array like so:
+        // {"id":1,"party_refer":1,"invitation_id":"1UfD6v1YuzssdgJKxWSYRJZjlsS","invitation_sent":null,"invitation_opened":null,"email":"foo@bar.com","plus_one":false,"is_attending":false,"party_name":"foo","name":"foo"}
         mapData() {
-            for (var i=0; i < this.parties.length; i++) {
-                for (var j=0; j < this.parties[i].Guests.length; j++) {
+            for (var i = 0; i < this.parties.length; i++) {
+                for (var j = 0; j < this.parties[i].Guests.length; j++) {
                     let guest = this.parties[i].Guests[j];
                     guest.party_name = this.parties[i].name;
                     guest.name = guest.first_name + ' ' + guest.last_name;
                     delete guest.first_name;
                     delete guest.last_name;
-
                     this.guests.push(guest);
                 }
             }
@@ -144,7 +142,6 @@ export default {
     }
 }
 </script>
-
 
 <style lang="scss">
 @import "@/variables";
