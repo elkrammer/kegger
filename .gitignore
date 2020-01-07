@@ -1,0 +1,6 @@
+gorsvp
+gorsvp-cmd
+*.swp
+.env
+tmp
+db/migrations/*test_data.up.sql
