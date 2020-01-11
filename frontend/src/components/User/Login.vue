@@ -1,10 +1,10 @@
 <template>
-  <section class="hero is-primary is-fullheight has-background-info">
+  <section class="hero is-primary is-fullheight has-background-black-ter">
     <div class="hero-body">
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-            <img src="@/assets/logo.png" alt="WingDing Logo" />
+            <img src="@/assets/logo.png" alt="Kegger Logo" />
 
             <b-message v-if="loginError" auto-close :duration="5000" type="is-danger">
               {{ loginError }}
