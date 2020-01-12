@@ -49,3 +49,12 @@ npm install
 edit .env file as per instructions in frontend/README.md
 npm run serve
 ```
+
+## Docker
+
+Alternatively, you can use docker to run the project:
+
+```sh
+edit .env files for in api/ and frontend/
+docker-compose up
+```
