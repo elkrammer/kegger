@@ -1,7 +1,7 @@
 ![Kegger](./frontend/src/assets/logo.png)
 
 Kegger is an Event / RSVP manager to keep track of guests attendance.
-The application is split into the API(Go) and the frontend(Vue.js).
+The application is split in two: the API (Go) and the frontend(Vue.js).
 
 ## Features
 
@@ -28,14 +28,14 @@ Kegger's API is built using the [Echo](https://echo.labstack.com/) Go web framew
 
 ```sh
 cd api
-edit .env file as per instructions in api/README.md)
+edit .env file as per instructions in api/README.md
 go build
 ./gorsvp
 ```
 
 ## Frontend
 
-Kegger's Frontend is built with Vue.js.
+Kegger's Frontend is built with [Vue.js](https://vuejs.org/).
 
 ### Requirements
 
@@ -45,7 +45,7 @@ Kegger's Frontend is built with Vue.js.
 
 ```sh
 cd frontend
-npm install # to install dependencies
-edit .env file as per instructions in frontend/README.md)
+npm install
+edit .env file as per instructions in frontend/README.md
 npm run serve
 ```
