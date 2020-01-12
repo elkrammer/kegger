@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - "4041:4040"
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "8081:8080"
+    volumes:
+      - "./frontend:/app"
+      - "/app/node_modules"
+  db:
+    image: postgres:12.1-alpine
+    restart: always
+    ports:
+      - "54320:5432"
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+    driver: local
