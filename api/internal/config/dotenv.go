@@ -1,25 +1,26 @@
 package config
 
 import (
-	"fmt"
-	"github.com/joho/godotenv"
+	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func LoadEnv() {
 	err := godotenv.Load()
 
 	if err != nil {
-		fmt.Println("Error loading .env file")
+		log.Printf("Warning: Could not read environment variables from .env file")
 	}
 
 	if vars := checkVars(); len(vars) != 0 {
-		fmt.Sprintf("Error: Mandatory environment variables not set in .env file: %v", vars)
+		log.Printf("Error: Mandatory environment variables not set in .env file: %v", vars)
 	}
 }
 
 func checkVars() []string {
-	vars := []string{"DB_USERNAME", "DB_PASSWORD", "DB_NAME", "DB_PORT", "JWT_SECRET"}
+	vars := []string{"DB_USERNAME", "DB_PASSWORD", "DB_NAME", "DB_PORT", "JWT_SECRET", "SENDGRID_API_KEY", "RUN_MIGRATIONS"}
 	missing := []string{}
 	for _, v := range vars {
 		_, set := os.LookupEnv(v)

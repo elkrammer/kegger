@@ -4,11 +4,16 @@ services:
   api:
     build: ./api
     restart: always
+    env_file: .env
     ports:
       - "4041:4040"
+    depends_on:
+      - "db"
+      - "migrate"
   frontend:
     build: ./frontend
     restart: always
+    env_file: .env
     ports:
       - "8081:8080"
     volumes:
@@ -20,9 +25,18 @@ services:
     ports:
       - "54320:5432"
     environment:
-      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  migrate:
+    image: migrate/migrate
+    command: ["-path", "/migrations", "-database",  "postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}?sslmode=disable", "up"]
+    depends_on:
+      - "db"
+    volumes:
+      - ./api/db/migrations:/migrations
 
 volumes:
   db_data:

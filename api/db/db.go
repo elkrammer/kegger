@@ -26,6 +26,7 @@ func Init() {
 	db, err = sqlx.Connect("pgx", connectionString)
 	if err != nil {
 		fmt.Println("Failed to connect to database: " + connectionString)
+		os.Exit(1)
 	}
 
 	if os.Getenv("RUN_MIGRATIONS") == "true" {
