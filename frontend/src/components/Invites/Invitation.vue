@@ -54,7 +54,7 @@ export default {
   props: ['id'],
   data() {
     return {
-      attending: false,
+      attending: null,
     }
   },
   computed: {
@@ -66,9 +66,12 @@ export default {
     async getInvite() {
       try {
         await this.$store.dispatch("invite/getInvite", this.id);
+        // update invitation_opened if this is the first time it's being opened
         if (this.invite && this.invite.guest.invitation_opened == null) {
           this.setInviteOpened();
         }
+        // sync local attending state with the invite
+        this.attending = this.invite.guest.is_attending;
       } catch (error) {
         console.log(error);
       }
