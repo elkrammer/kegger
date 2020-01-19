@@ -45,7 +45,6 @@
                                 <b-input placeholder="Email" v-model="guest.email"></b-input>
                             </b-field>
 
-                            <b-switch v-model="guest.is_attending" type="is-active">Attending?</b-switch>
                             <b-switch v-model="guest.plus_one" type="is-active">Plus One?</b-switch>
 
                             <div class="is-pulled-right">

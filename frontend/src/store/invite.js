@@ -29,16 +29,15 @@ const invite = {
       try {
         setAuthorizationHeader(rootGetters["user/accessToken"]);
         const response = await axios.post("/api/sendinvite/" + guest_id, {
-          from_name: "Wingding",
-          from_email: "wingding@wingding.com",
+          from_name: process.env.VUE_APP_EMAIL_FROM_NAME,
+          from_email: process.env.VUE_APP_EMAIL_FROM,
           to: [
             {
-              name: "Mauricio",
-              email: "mauricioc.bahamonde@gmail.com"
+              name: process.env.VUE_APP_EMAIL_TO_NAME, // DEBUGGING
+              email: process.env.VUE_APP_EMAIL_TO // DEBUGGING
             },
           ],
-          subject: "Test message from wingding",
-          message: "<strong>test from wingding.</strong>"
+          subject: process.env.VUE_APP_EMAIL_SUBJECT,
         });
         return response.data;
       } catch (error) {

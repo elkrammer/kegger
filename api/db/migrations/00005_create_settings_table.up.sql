@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS settings (
 
 INSERT INTO public.settings
 ("name", value, description)
-VALUES('event_name', 'WingDing''s Bash', 'Event Name');
+VALUES('event_name', 'Kegger''s Bash', 'Event Name');
 
 INSERT INTO public.settings
 ("name", value, description)

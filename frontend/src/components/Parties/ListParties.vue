@@ -97,7 +97,7 @@
 
         <b-table-column field="isPartyAttending" label="Attending" width="100" visible sortable>
           <div class="has-text-success" v-if="props.row.isPartyAttending === 'true'">
-            <span class="icon-text">Yep</span>
+            <span class="icon-text">Yes</span>
             <b-icon pack="fas" icon="thumbs-up">
             </b-icon>
           </div>
@@ -109,7 +109,7 @@
           </div>
 
           <div class="has-text-danger" v-if="props.row.isPartyAttending === 'false'">
-            <span class="icon-text">Nay</span>
+            <span class="icon-text">No</span>
             <b-icon pack="fas" icon="thumbs-down">
             </b-icon>
           </div>
@@ -134,12 +134,12 @@
             <td></td>
             <td>
               <div class="has-text-success" v-if="guest.is_attending === true">
-                <span class="icon-text">Yep</span>
+                <span class="icon-text">Yes</span>
                 <b-icon pack="fas" icon="thumbs-up">
                 </b-icon>
               </div>
               <div class="has-text-danger" v-else>
-                <span class="icon-text">Nay</span>
+                <span class="icon-text">No</span>
                 <b-icon pack="fas" icon="thumbs-down">
                 </b-icon>
               </div>

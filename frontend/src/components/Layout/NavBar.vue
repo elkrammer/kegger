@@ -5,7 +5,7 @@
       <b-navbar-item tag="router-link" :to="{ path: '/parties' }">
         <img
           src="@/assets/logo-small.png"
-          alt="WingDing Logo"
+          alt="Kegger Logo"
           >
       </b-navbar-item>
     </template>
