@@ -5,9 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/elkrammer/gorsvp/internal/config"
-
-	//    "github.com/elkrammer/gorsvp/model"
+	"github.com/elkrammer/kegger/api/internal/config"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

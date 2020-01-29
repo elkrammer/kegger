@@ -1,4 +1,4 @@
-module github.com/elkrammer/gorsvp
+module github.com/elkrammer/kegger/api
 
 go 1.13
 

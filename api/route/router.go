@@ -3,7 +3,7 @@ package route
 import (
 	"os"
 
-	"github.com/elkrammer/gorsvp/api"
+	"github.com/elkrammer/kegger/api/api"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"

@@ -6,9 +6,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/elkrammer/gorsvp/db"
-	"github.com/elkrammer/gorsvp/internal/helper"
-	"github.com/elkrammer/gorsvp/model"
+	"github.com/elkrammer/kegger/api/db"
+	"github.com/elkrammer/kegger/api/internal/helper"
+	"github.com/elkrammer/kegger/api/model"
 
 	"github.com/labstack/echo/v4"
 	"github.com/sendgrid/sendgrid-go"

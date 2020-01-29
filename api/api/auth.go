@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/elkrammer/gorsvp/db"
-	jwttoken "github.com/elkrammer/gorsvp/internal/gen_jwt_token"
-	"github.com/elkrammer/gorsvp/internal/helper"
-	"github.com/elkrammer/gorsvp/model"
+	"github.com/elkrammer/kegger/api/db"
+	jwttoken "github.com/elkrammer/kegger/api/internal/gen_jwt_token"
+	"github.com/elkrammer/kegger/api/internal/helper"
+	"github.com/elkrammer/kegger/api/model"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"

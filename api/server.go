@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/elkrammer/gorsvp/db"
-	"github.com/elkrammer/gorsvp/route"
+	"github.com/elkrammer/kegger/api/db"
+	"github.com/elkrammer/kegger/api/route"
 )
 
 func main() {

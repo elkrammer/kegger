@@ -3,8 +3,8 @@ package helper
 import (
 	"fmt"
 
-	"github.com/elkrammer/gorsvp/db"
-	"github.com/elkrammer/gorsvp/model"
+	"github.com/elkrammer/kegger/api/db"
+	"github.com/elkrammer/kegger/api/model"
 )
 
 func FetchEventInformation(inviteId string) model.Invite {

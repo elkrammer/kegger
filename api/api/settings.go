@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/elkrammer/gorsvp/db"
-	"github.com/elkrammer/gorsvp/model"
+	"github.com/elkrammer/kegger/api/db"
+	"github.com/elkrammer/kegger/api/model"
 
 	"github.com/labstack/echo/v4"
 )
