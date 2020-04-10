@@ -136,3 +136,26 @@ func UpdateInvite(c echo.Context) error {
 	msg := fmt.Sprintf("Successfully updated invite for guest %s", guest.FirstName)
 	return c.JSON(http.StatusOK, msg)
 }
+
+// GET - find invitation id from email
+func FindInviteId(c echo.Context) error {
+	email := c.Param("email")
+	db := db.DbManager()
+
+	if len(email) == 0 {
+		msg := fmt.Sprintf("Email can't be null")
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+
+	// attempt to fetch invite id
+	var inviteId string
+	q := `SELECT invitation_id FROM guests WHERE email = $1`
+	row := db.QueryRowx(q, email)
+	err := row.Scan(&inviteId)
+	if err != nil {
+		msg := fmt.Sprintf("No invitations found for email: %v", email)
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+
+	return c.JSON(http.StatusOK, inviteId)
+}
