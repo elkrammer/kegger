@@ -40,7 +40,7 @@ COPY --from=builder /app/gorsvp /go/bin/gorsvp
 USER appuser
 
 # expose echo http service
-EXPOSE 8080
+EXPOSE 4040
 
 # run our app binary.
 ENTRYPOINT ["/go/bin/gorsvp"]
