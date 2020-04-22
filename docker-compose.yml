@@ -6,15 +6,6 @@ services:
     restart: always
     ports:
       - "4040:4040"
-    environment:
-      DB_HOST: $DB_HOST
-      DB_NAME: $DB_NAME
-      DB_PASSWORD: $DB_PASSWORD
-      DB_PORT: $DB_PORT
-      DB_USERNAME: $DB_USERNAME
-      JWT_SECRET: $JWT_SECRET
-      SENDGRID_API_KEY: $SENDGRID_API_KEY
-      RUN_MIGRATIONS: "false"
     depends_on:
       - "db"
       - "migrate"
