@@ -1,5 +1,5 @@
 # step 1 - build executable binary
-FROM golang:1.13-alpine as builder
+FROM golang:1.14-alpine as builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY go.mod .
 COPY go.sum .
 
 # expose echo http service
-EXPOSE 8080
+EXPOSE 4040
 
 # fetch go dependencies
 RUN go mod download
@@ -33,8 +33,10 @@ COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
 
-# copy our static executable
-COPY --from=builder /app/gorsvp /go/bin/gorsvp
+# copy our app files and template dir
+WORKDIR /app
+COPY --from=builder /app/gorsvp /app/gorsvp
+COPY --from=builder /app/templates /app/
 
 # use an unprivileged user
 USER appuser
@@ -43,4 +45,4 @@ USER appuser
 EXPOSE 4040
 
 # run our app binary.
-ENTRYPOINT ["/go/bin/gorsvp"]
+ENTRYPOINT ["/app/gorsvp"]

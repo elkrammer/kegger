@@ -9,7 +9,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY package.json /app/package.json
 RUN npm install
-RUN npm install @vue/cli@4.3.1 -g
+RUN npm install -g @vue/cli@4.3.1
 
 # install frontend
 COPY . .
@@ -17,7 +17,20 @@ COPY . .
 # build stage
 FROM base as build-stage
 
-ENV NODE_ENV=production
+ARG VUE_APP_API_SERVER
+ARG VUE_APP_EMAIL_FROM_NAME
+ARG VUE_APP_EMAIL_FROM
+ARG VUE_APP_EMAIL_SUBJECT
+ARG VUE_APP_EMAIL_TO
+ARG VUE_APP_EMAIL_TO_NAME
+
+ENV VUE_APP_API_SERVER=$VUE_APP_API_SERVER \
+    VUE_APP_EMAIL_FROM_NAME=$VUE_APP_EMAIL_FROM_NAME \
+    VUE_APP_EMAIL_FROM=$VUE_APP_EMAIL_FROM \
+    VUE_APP_EMAIL_SUBJECT=$VUE_APP_EMAIL_SUBJECT \
+    VUE_APP_EMAIL_TO=$VUE_APP_EMAIL_TO \
+    VUE_APP_EMAIL_TO_NAME=$VUE_APP_EMAIL_TO_NAME \
+    NODE_ENV=production
 
 RUN npm run build
 
