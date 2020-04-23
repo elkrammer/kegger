@@ -48,23 +48,23 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.DressCode = result
 
-	// hosts
-	var hosts []string
-	q = `SELECT DISTINCT users.name AS host_name FROM parties INNER JOIN users ON parties.host_id = users.id;`
-	rows, err := db.Queryx(q)
-
+	// bride's name
+	q = `SELECT value FROM settings WHERE name = 'bride_name';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
 	if err != nil {
-		fmt.Printf("Failed to fetch hosts: %v", err)
+		fmt.Printf("Failed to fetch bride name: %v", err)
 	}
+	m.BrideName = result
 
-	for rows.Next() {
-		var host string
-		if err := rows.Scan(&host); err != nil {
-			fmt.Printf("%v", err)
-		}
-		hosts = append(hosts, host)
+	// groom's name
+	q = `SELECT value FROM settings WHERE name = 'groom_name';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch groom name: %v", err)
 	}
-	m.Hosts = hosts
+	m.GroomName = result
 
 	// fetch guest information
 	guest := model.GuestResponse{}
@@ -117,23 +117,23 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 	}
 	m.EventLocation = result
 
-	// hosts
-	var hosts []string
-	q = `SELECT DISTINCT users.name AS host_name FROM parties INNER JOIN users ON parties.host_id = users.id;`
-	rows, err := db.Queryx(q)
-
+	// bride's name
+	q = `SELECT value FROM settings WHERE name = 'bride_name';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
 	if err != nil {
-		fmt.Printf("Failed to fetch hosts: %v", err)
+		fmt.Printf("Failed to fetch bride name: %v", err)
 	}
+	m.BrideName = result
 
-	for rows.Next() {
-		var host string
-		if err := rows.Scan(&host); err != nil {
-			fmt.Printf("%v", err)
-		}
-		hosts = append(hosts, host)
+	// groom's name
+	q = `SELECT value FROM settings WHERE name = 'groom_name';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch groom name: %v", err)
 	}
-	m.Hosts = hosts
+	m.GroomName = result
 
 	// fetch guest information
 	guest := model.GuestResponse{}

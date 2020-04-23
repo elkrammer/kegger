@@ -20,3 +20,11 @@ VALUES('event_date', '2020-11-19 14:00:00.000', 'Event Date');
 INSERT INTO public.settings
 ("name", value, description)
 VALUES('dress_code', 'Casual', 'Dress Code');
+
+INSERT INTO public.settings
+("name", value, description)
+VALUES('groom_name', 'Fat Mike', 'Groom''s Name');
+
+INSERT INTO public.settings
+("name", value, description)
+VALUES('bride_name', 'Beer', 'Bride''s Name');

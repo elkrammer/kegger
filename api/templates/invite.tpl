@@ -465,7 +465,7 @@ body {
                                                 <p style="font-size: 16px; line-height: 1.625; color: #51545E; margin: .4em 0 1.1875em;">
                                                     <span style="color: #51545E;">
                                                     You are invited to {{ .EventName }} to celebrate the wedding of
-                                                    {{ index .Hosts 0 }} &amp; {{ index .Hosts 1 }}.
+                                                    {{ .BrideName }} &amp; {{ .GroomName }}.
                                                     <br />
                                                     The wedding will be on {{ .EventDate }} at {{ .EventLocation }}.<br />
                                                     Please click the button below to view the wedding invite and to confirm your attendance:

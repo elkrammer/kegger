@@ -20,8 +20,9 @@ type Invite struct {
 	EventLocation string        `json:"event_location"`
 	EventName     string        `json:"event_name"`
 	DressCode     string        `json:"dress_code"`
+	GroomName     string        `json:"groom_name"`
+	BrideName     string        `json:"bride_name"`
 	Guest         GuestResponse `json:"guest"`
-	Hosts         []string      `json:"hosts"`
 }
 
 type UpdateInviteRequest struct {
