@@ -36,7 +36,7 @@ COPY --from=builder /etc/passwd /etc/passwd
 # copy our app files and template dir
 WORKDIR /app
 COPY --from=builder /app/gorsvp /app/gorsvp
-COPY --from=builder /app/templates /app/
+COPY --from=builder /app/templates /app/templates
 
 # use an unprivileged user
 USER appuser
