@@ -1,6 +1,5 @@
-gorsvp
-gorsvp-cmd
+kegger
+.env*
 *.swp
-.env
 tmp
 db/migrations/*test_data.up.sql

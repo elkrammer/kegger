@@ -53,63 +53,75 @@
             </form>
           </div>
         </div>
+
+      <br><br><br><br><br><br><br><br>
+      <div class="content has-text-centered has-text-primary">
+        <p>
+          <a href="https://github.com/elkrammer/kegger">Kegger</a> - RSVP Manager<br />
+          © 2020 <a href="https://github.com/elkrammer">Mauricio Bahamonde</a><br /><br />
+          The source code is licensed under <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+        </p>
+      </div>
+
       </div>
     </div>
+
+
   </section>
 </template>
 
 <script>
-  import { required, email } from "vuelidate/lib/validators";
+import { required, email } from "vuelidate/lib/validators";
 
-  const touchMap = new WeakMap()
+const touchMap = new WeakMap()
 
-  export default {
-    name: "login",
-    data() {
-      return {
-        email: "",
-        password: "",
-        submitted: false,
-        loginError: "",
+export default {
+  name: "login",
+  data() {
+    return {
+      email: "",
+      password: "",
+      submitted: false,
+      loginError: "",
+    };
+  },
+  methods: {
+    async submit() {
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        return;
+      }
+
+      this.loginError = "";
+      this.submitted = true;
+      const credentials = {
+        email: this.email,
+        password: this.password
       };
-    },
-    methods: {
-      async submit() {
-        if (this.$v.$invalid) {
-          this.$v.$touch();
-          return;
-        }
 
-        this.loginError = "";
-        this.submitted = true;
-        const credentials = {
-          email: this.email,
-          password: this.password
-        };
-
-        try {
-          await this.$store.dispatch("user/userLogin", credentials);
-          this.email= "";
-          this.password = "";
-          this.$v.$reset();
-          this.$router.push({ name: "list_parties" });
-        } catch (error) {
-          this.loginError = "Invalid Login Credentials";
-        } finally {
-          this.submitted = false;
-        }
-      },
-      delayTouch($v) {
-        $v.$reset()
-        if (touchMap.has($v)) {
-          clearTimeout(touchMap.get($v));
-        }
-        touchMap.set($v, setTimeout($v.$touch, 1000))
+      try {
+        await this.$store.dispatch("user/userLogin", credentials);
+        this.email= "";
+        this.password = "";
+        this.$v.$reset();
+        this.$router.push({ name: "list_parties" });
+      } catch (error) {
+        this.loginError = "Invalid Login Credentials";
+      } finally {
+        this.submitted = false;
       }
     },
-    validations: {
-      email: { required, email },
-      password: { required },
+    delayTouch($v) {
+      $v.$reset()
+      if (touchMap.has($v)) {
+        clearTimeout(touchMap.get($v));
+      }
+      touchMap.set($v, setTimeout($v.$touch, 1000))
     }
-  };
+  },
+  validations: {
+    email: { required, email },
+    password: { required },
+  }
+};
 </script>
