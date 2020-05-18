@@ -6,6 +6,7 @@
         <img
           src="@/assets/logo-small.png"
           alt="Kegger Logo"
+          class="logo"
           >
       </b-navbar-item>
     </template>
@@ -40,22 +41,26 @@
 </template>
 
 <script>
-  export default {
-    name: "navbar",
-    methods: {
-      async logout() {
-        await this.$store.dispatch("user/userLogout");
-        this.$router.push({ name: "login" }).catch(err => {console.log(err)});
-        document.location.href = "/";
-      }
+export default {
+  name: "navbar",
+  methods: {
+    async logout() {
+      await this.$store.dispatch("user/userLogout");
+      this.$router.push({ name: "login" }).catch(err => {console.log(err)});
+      document.location.href = "/";
     }
-  };
+  }
+};
 </script>
 
 <style lang="scss">
 @import "@/variables";
 .navbar-start .navbar-item:first-of-type {
   margin-left: 30px;
+}
+
+.navbar-link.is-active:not(:focus):not(:hover), a.navbar-item.is-active:not(:focus):not(:hover) {
+  background-color: transparent;
 }
 
 .navbar-item span.item-text {

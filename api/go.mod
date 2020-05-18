@@ -11,7 +11,7 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/joho/godotenv v1.3.0
-	github.com/labstack/echo/v4 v4.1.16
+	github.com/labstack/echo/v4 v4.1.5
 	github.com/mattn/go-sqlite3 v1.11.0 // indirect
 	github.com/segmentio/ksuid v1.0.2
 	github.com/sendgrid/rest v2.4.1+incompatible // indirect

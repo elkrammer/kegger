@@ -3,7 +3,7 @@
 # Kegger - RSVP Manager
 
 Kegger is an Event / RSVP manager to keep track of guests attendance.
-The application is split in two: the API (Go) and the frontend(Vue.js).
+The application is split in two modules: the API (Go) and the frontend(Vue.js).
 
 ## Features
 
@@ -21,11 +21,10 @@ The application is split in two: the API (Go) and the frontend(Vue.js).
 You can quickly get started using the project with Docker:
 
 ```sh
-# edit .env files for in api/ and frontend/
 docker-compose up
 ```
 
-Then open your browser and head to http://127.0.0.1:8081/
+Once Docker is finished building the images open a browser and head over to http://127.0.0.1:8080/
 The default email to login is admin@admin.com and the password is admin.
 
 # Building the project locally
@@ -45,9 +44,8 @@ Kegger's API is built using the [Echo](https://echo.labstack.com/) Go web framew
 
 ```sh
 cd api
-# edit file api/.env
-go build
-./gorsvp
+go build -o kegger
+./kegger
 ```
 
 ## Frontend
@@ -56,18 +54,16 @@ Kegger's Frontend is built with [Vue.js](https://vuejs.org/).
 
 ### Requirements
 
-- Node.js 6+
-- Vue 2.6
-- Vuex 3.1
+- Node.js 12+
+- Vue 2.6+
+- Vuex 3.1+
 
 ### Build
 
 ```sh
 cd frontend
 npm install
-# edit file frontend/.env
 npm run serve
 ```
 
-Then open your browser and head to http://127.0.0.1:8080/
-The default email to login is admin@admin.com and the password is admin.
+Open your browser and head over to http://127.0.0.1:8080/
