@@ -23,7 +23,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o gorsvp
+RUN go build -o kegger
 
 # step 2 - build compact image
 FROM scratch
@@ -35,7 +35,7 @@ COPY --from=builder /etc/passwd /etc/passwd
 
 # copy our app files and template dir
 WORKDIR /app
-COPY --from=builder /app/gorsvp /app/gorsvp
+COPY --from=builder /app/kegger /app/kegger
 COPY --from=builder /app/templates /app/templates
 
 # use an unprivileged user
@@ -45,4 +45,4 @@ USER appuser
 EXPOSE 4040
 
 # run our app binary.
-ENTRYPOINT ["/app/gorsvp"]
+ENTRYPOINT ["/app/kegger"]
