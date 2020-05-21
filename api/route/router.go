@@ -72,5 +72,8 @@ func Init() *echo.Echo {
 	e.PUT("/invite", api.UpdateInvite)                  // Update Invitation Attendance / Invite Opened Timestamp
 	e.GET("/findinvite/:email", api.FindInviteId)       // Find Invitation ID from email
 
+	// Health Check
+	e.GET("/health", api.HealthCheck)
+
 	return e
 }
