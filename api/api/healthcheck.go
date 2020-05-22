@@ -18,5 +18,7 @@ func HealthCheck(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "Kegger API is DOWN")
 	}
 
+	defer db.Close()
+
 	return c.String(http.StatusOK, "Kegger API is UP")
 }
