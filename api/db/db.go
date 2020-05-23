@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/elkrammer/kegger/api/internal/config"
 	"github.com/golang-migrate/migrate/v4"
@@ -26,6 +27,11 @@ func Init() {
 		fmt.Println("Failed to connect to database: " + connectionString)
 		os.Exit(1)
 	}
+
+	// configure sql.DB for better performance
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(5 * time.Minute)
 
 	if os.Getenv("RUN_MIGRATIONS") == "true" {
 		RunMigrations()

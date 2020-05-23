@@ -1,6 +1,7 @@
 package api
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/elkrammer/kegger/api/db"
@@ -11,14 +12,12 @@ import (
 // GET - Health Check
 func HealthCheck(c echo.Context) error {
 	db := db.DbManager()
-	query := `SELECT * from settings;`
-	_, err := db.Queryx(query)
+	err := db.Ping()
 
 	if err != nil {
+		log.Print(err)
 		return c.String(http.StatusBadRequest, "Kegger API is DOWN")
 	}
-
-	defer db.Close()
 
 	return c.String(http.StatusOK, "Kegger API is UP")
 }
