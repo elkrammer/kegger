@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="createParty" novalidate>
+  <form @submit.prevent="isFormValid" novalidate>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Create New Party</p>
@@ -144,7 +144,7 @@ export default {
       try {
         await this.$store.dispatch("party/createParty", this.formProps);
         // close modal dialog
-        //this.closeModal();
+        this.closeModal();
         const msg = `Successfully created party ${this.formProps.name}`
         this.$buefy.toast.open({
           message: msg,
