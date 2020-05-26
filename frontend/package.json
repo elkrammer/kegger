@@ -13,12 +13,11 @@
     "core-js": "^3.6.5",
     "jwt-decode": "^2.2.0",
     "moment-timezone": "^0.5.28",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.1.6",
-    "vuelidate": "^0.7.5",
     "vuex": "^3.3.0"
   },
   "devDependencies": {

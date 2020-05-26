@@ -36,7 +36,6 @@
 
 <script>
   import { mapGetters } from "vuex";
-  import { required, minLength, email } from "vuelidate/lib/validators"
 
   export default {
     name: "create_user",
@@ -58,11 +57,6 @@
     methods: {
       async createUser() {
         try {
-            //this.$v.$touch();
-            if (this.$v.$invalid) {
-                this.$v.$touch();
-                return;
-              }
 
             this.submitted = true;
             await this.$store.dispatch("users/createUser", this.user);
@@ -84,13 +78,6 @@
             })
             console.log(error);
         }
-      },
-    },
-    validations: {
-      user: {
-        name: { required, minLength: minLength(2) },
-        email: { required,  email },
-        password: { required, minLength: minLength(8) },
       },
     },
   }
