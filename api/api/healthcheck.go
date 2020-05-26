@@ -16,8 +16,8 @@ func HealthCheck(c echo.Context) error {
 
 	if err != nil {
 		log.Print(err)
-		return c.String(http.StatusBadRequest, "Kegger API is DOWN")
+		return c.String(http.StatusBadRequest, "Kegger API is down :(")
 	}
 
-	return c.String(http.StatusOK, "Kegger API is UP")
+	return c.String(http.StatusOK, "Kegger API is up! :)")
 }
