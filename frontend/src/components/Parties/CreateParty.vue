@@ -83,7 +83,7 @@
                   <b-icon icon="user"></b-icon>
                   {{ guest.first_name }} {{ guest.last_name }}
 
-                  <span v-if="guest.plus_one === true" class="has-text-success">
+                  <span v-if="guest.plus_one" class="has-text-success">
                     (+1)
                   </span>
 
@@ -173,7 +173,11 @@ export default {
       this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);
     },
     isFormValid() {
-      if ((this.$refs.form && this.$refs.form.checkValidity()) || this.formProps.guests.length > 0) {
+      if (
+        this.formProps.guests.length > 0 &&
+        this.formProps.name !== '' &&
+        this.formProps.host_id
+      ) {
         return true;
       }
       return false;
