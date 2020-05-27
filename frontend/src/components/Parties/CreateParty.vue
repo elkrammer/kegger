@@ -123,7 +123,7 @@ export default {
           first_name: '',
           last_name: '',
           email: '',
-          plus_one: '',
+          plus_one: 'false',
         },
       },
     }
@@ -164,10 +164,17 @@ export default {
       }
     },
     addGuest() {
+      // convert from string to bool
+      if (this.formProps.guest.plus_one == 'true') {
+        this.formProps.guest.plus_one = true;
+      } else {
+        this.formProps.guest.plus_one = false;
+      }
       this.formProps.guests.push({ ...this.formProps.guest });
       this.formProps.guest.first_name = '';
       this.formProps.guest.last_name= '';
       this.formProps.guest.email = '';
+      this.formProps.guest.plus_one = 'false';
     },
     deleteGuest(index) {
       this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);
