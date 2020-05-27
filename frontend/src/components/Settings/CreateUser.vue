@@ -8,25 +8,24 @@
       </header>
       <section class="modal-card-body">
 
-
-        <form v-on:submit.prevent>
+        <form ref="form" @submit.prevent="createUser">
 
           <b-field label="Name">
-            <b-input placeholder="Name" icon="id-card" v-model="user.name"></b-input>
+            <b-input placeholder="Name" icon="id-card" v-model="user.name" required></b-input>
           </b-field>
 
           <b-field label="Email">
-            <b-input placeholder="Email" icon="envelope" v-model="user.email"></b-input>
+            <b-input placeholder="Email" type="email" icon="envelope" v-model="user.email" required></b-input>
           </b-field>
 
           <b-field label="Password">
-            <b-input type="password" icon="lock" placeholder="Password" v-model="user.password"></b-input>
+            <b-input placeholder="Password" type="password" icon="lock" v-model="user.password" required></b-input>
           </b-field>
 
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" @click="createUser" :disabled="$v.$invalid">Create</button>
+        <button class="button is-success" :disabled="!isFormValid()" @click="createUser">Create</button>
         <button class="button" @click="$parent.close()">Close</button>
       </footer>
     </div>
@@ -35,50 +34,56 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
-  export default {
-    name: "create_user",
-    data() {
-      return {
-        user: {
-          name: '',
-          email: '',
-          password: '',
-        },
-        submitted: false,
+export default {
+  name: "create_user",
+  data() {
+    return {
+      user: {
+        name: '',
+        email: '',
+        password: '',
+      },
+    }
+  },
+  computed: {
+    ...mapGetters({
+      users: "user/users",
+    })
+  },
+  methods: {
+    async createUser() {
+      if (!this.isFormValid) {
+        return;
+      }
+      try {
+        await this.$store.dispatch("users/createUser", this.user);
+        this.$parent.close();
+        const msg = `User ${this.user.name} created!`
+        this.$buefy.toast.open({
+          message: msg,
+          type: 'is-success',
+          position: 'is-bottom',
+          duration: 3000,
+        })
+      } catch (error) {
+        console.log(error);
+        const msg = `There was an error creating user ${this.user.name}`
+        this.$buefy.toast.open({
+          message: msg,
+          type: 'is-danger',
+          position: 'is-bottom',
+          duration: 3000,
+        })
       }
     },
-    computed: {
-      ...mapGetters({
-        users: "user/users",
-      })
-    },
-    methods: {
-      async createUser() {
-        try {
-
-            this.submitted = true;
-            await this.$store.dispatch("users/createUser", this.user);
-            const msg = `User ${this.user.name} created!`
-            this.$buefy.toast.open({
-                message: msg,
-                type: 'is-success',
-                position: 'is-bottom',
-                duration: 3000,
-            })
-            this.$parent.close();
-        } catch (error) {
-            const msg = `There was an error creating user ${this.user.name}`
-            this.$buefy.toast.open({
-                message: msg,
-                type: 'is-danger',
-                position: 'is-bottom',
-                duration: 3000,
-            })
-            console.log(error);
-        }
-      },
-    },
-  }
+    isFormValid() {
+      if (this.$refs.form && this.$refs.form.checkValidity()) {
+        return true;
+      }
+      return false;
+    }
+  },
+}
 </script>
