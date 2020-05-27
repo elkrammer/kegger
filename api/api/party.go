@@ -149,11 +149,13 @@ func CreateParty(c echo.Context) error {
 	// insert all guests in the request into the guests table
 	for _, guest := range party.Guests {
 		invitationId := ksuid.New()
+		plusOne = strconv.ParseBool(guest.PlusOne)
+
 		q := `
         INSERT INTO guests
         (party_refer, first_name, last_name, email, is_attending, invitation_id, plus_one)
         VALUES($1, $2, $3, $4, $5, $6, $7);`
-		_, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId, guest.PlusOne)
+		_, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId, plusOne)
 		if err != nil {
 			fmt.Println("error inserting guest record: ", q)
 			fmt.Println(err)

@@ -123,7 +123,7 @@ export default {
           first_name: '',
           last_name: '',
           email: '',
-          plus_one: false,
+          plus_one: '',
         },
       },
     }
