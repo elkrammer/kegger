@@ -65,8 +65,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-// TODO: do proper form validations
-// import { required, email } from "vuelidate/lib/validators";
 export default {
     name: 'edit_guest',
     props: ['party_id'],
