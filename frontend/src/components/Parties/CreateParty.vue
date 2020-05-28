@@ -63,8 +63,8 @@
 
             <b-field label="Plus One">
               <b-select v-model="formProps.guest.plus_one" placeholder="Plus One">
-                <option value="false">No</option>
-                <option value="true">Yes</option>
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
               </b-select>
             </b-field>
 
@@ -123,7 +123,7 @@ export default {
           first_name: '',
           last_name: '',
           email: '',
-          plus_one: 'false',
+          plus_one: false,
         },
       },
     }
@@ -164,17 +164,11 @@ export default {
       }
     },
     addGuest() {
-      // convert from string to bool
-      if (this.formProps.guest.plus_one == 'true') {
-        this.formProps.guest.plus_one = true;
-      } else {
-        this.formProps.guest.plus_one = false;
-      }
       this.formProps.guests.push({ ...this.formProps.guest });
       this.formProps.guest.first_name = '';
       this.formProps.guest.last_name= '';
       this.formProps.guest.email = '';
-      this.formProps.guest.plus_one = 'false';
+      this.formProps.guest.plus_one = false;
     },
     deleteGuest(index) {
       this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);
