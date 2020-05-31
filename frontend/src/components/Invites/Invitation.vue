@@ -1,6 +1,9 @@
 <template>
 
-  <section class="invite-background">
+  <section
+    class="invite-background"
+    :style="{ 'background-image': inviteBackground }"
+    >
     <div class="invite-main" v-if="Object.entries(this.invite).length > 0">
 
       <div class="title-box">
@@ -13,8 +16,8 @@
 
       <div class="invite">
         <p>
-          Hello {{ this.invite.guest.first_name }}!<br />
-          You've been invited to {{ this.invite.event_name }}.<br /><br />
+        Hello {{ this.invite.guest.first_name }}!<br />
+        You've been invited to {{ this.invite.event_name }}.<br /><br />
         </p>
         <span v-if="this.invite.guest.plus_one">
           You are allowed to bring a guest. <br /><br />
@@ -60,7 +63,12 @@ export default {
   computed: {
     ...mapGetters({
       invite: "invite/invite",
+      inviteSettings: "settings/inviteSettings",
     }),
+    inviteBackground() {
+      const path = process.env.VUE_APP_API_SERVER + this.inviteSettings.find(s => s.name === 'invite_background').value;
+      return 'url("' + path + '")';
+    }
   },
   methods: {
     async getInvite() {
@@ -99,6 +107,14 @@ export default {
         console.log(error);
       }
     },
+    async getSettings() {
+      try {
+        const response = await this.$store.dispatch("settings/getSettings");
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   watch: {
     attending: function() {
@@ -106,6 +122,7 @@ export default {
     }
   },
   created() {
+    this.getSettings();
     this.getInvite();
   },
 }
@@ -124,7 +141,6 @@ export default {
 }
 
 .invite-background {
-  background-image: url("~@/assets/invite_bg.jpg");
   background-color: #3D9970;
   background-size: cover;
   background-repeat: no-repeat;
