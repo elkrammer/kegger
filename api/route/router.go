@@ -65,6 +65,7 @@ func Init() *echo.Echo {
 	// Settings Routes
 	r.GET("/settings", api.GetSettings)
 	r.PUT("/settings", api.UpdateSettings)
+	r.POST("/settings/uploadInviteBg", api.UploadInviteBackground)
 
 	// Invitation Routes
 	r.POST("/sendinvite/:id", api.SendInvite)           // Send Invite Email Route (protected)
@@ -74,6 +75,12 @@ func Init() *echo.Echo {
 
 	// Health Check
 	e.GET("/health", api.HealthCheck)
+
+	// Static Assets
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   "assets",
+		Browse: false,
+	}))
 
 	return e
 }

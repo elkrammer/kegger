@@ -23,60 +23,60 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
-  export default {
-    name: "event_settings",
-    data() {
-      return {
-        eventDate: new Date(),
-      };
-    },
-    computed: {
-      ...mapGetters({
-        settings: "settings/settings",
-      }),
-    },
-    methods: {
-      async getSettings() {
-        try {
-          const response = await this.$store.dispatch("settings/getSettings");
-          return response.data;
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      async saveSettings() {
-        try {
-            // update our state with the new selected date
-            this.settings.find(s => s.name === 'event_date').value = this.eventDate.toISOString();
-            const response = await this.$store.dispatch("settings/updateSettings", this.settings);
-            const msg = `Changes saved!`
-            this.$buefy.toast.open({
-                message: msg,
-                type: 'is-success',
-                position: 'is-bottom',
-                duration: 3000,
-            })
-            return response.data;
-        } catch (error) {
-            const msg = `There was an error saving event settings: ${error}`
-            this.$buefy.toast.open({
-                message: msg,
-                type: 'is-danger',
-                position: 'is-bottom',
-                duration: 3000,
-            })
-            console.log(error);
-        }
+export default {
+  name: "event_settings",
+  data() {
+    return {
+      eventDate: new Date(),
+    };
+  },
+  computed: {
+    ...mapGetters({
+      settings: "settings/settings",
+    }),
+  },
+  methods: {
+    async getEventSettings() {
+      try {
+        const response = await this.$store.dispatch("settings/getSettings");
+        return response.data;
+      } catch (error) {
+        console.log(error);
       }
     },
-    created() {
-      this.getSettings();
-      if (this.settings.length > 0) {
-        let date = this.settings.find(s => s.name === 'event_date');
-        this.eventDate = new Date(date.value);
+    async saveSettings() {
+      try {
+        // update our state with the new selected date
+        this.settings.find(s => s.name === 'event_date').value = this.eventDate.toISOString();
+        const response = await this.$store.dispatch("settings/updateSettings", this.settings);
+        const msg = `Changes saved!`
+        this.$buefy.toast.open({
+          message: msg,
+          type: 'is-success',
+          position: 'is-bottom',
+          duration: 3000,
+        })
+        return response.data;
+      } catch (error) {
+        const msg = `There was an error saving event settings: ${error}`
+        this.$buefy.toast.open({
+          message: msg,
+          type: 'is-danger',
+          position: 'is-bottom',
+          duration: 3000,
+        })
+        console.log(error);
       }
     }
+  },
+  created() {
+    this.getEventSettings();
+    if (this.settings.length > 0) {
+      let date = this.settings.find(s => s.name === 'event_date');
+      this.eventDate = new Date(date.value);
+    }
   }
+}
 </script>

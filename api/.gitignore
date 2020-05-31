@@ -3,3 +3,4 @@ kegger
 *.swp
 tmp
 db/migrations/*test_data.up.sql
+assets/uploads/*

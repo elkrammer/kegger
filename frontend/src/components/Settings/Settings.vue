@@ -25,7 +25,7 @@
   import Event from "@/components/Settings/Event.vue";
 
   export default {
-    name: "login",
+    name: "Settings",
     components: { Users, Invite, Event },
   }
 </script>

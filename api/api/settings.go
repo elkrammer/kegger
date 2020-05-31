@@ -2,7 +2,9 @@ package api
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 
 	"github.com/elkrammer/kegger/api/db"
 	"github.com/elkrammer/kegger/api/model"
@@ -57,4 +59,46 @@ func UpdateSettings(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, settings)
+}
+
+func UploadInviteBackground(c echo.Context) error {
+	db := db.DbManager()
+
+	// source
+	file, err := c.FormFile("file")
+	if err != nil {
+		return err
+	}
+
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+
+	defer src.Close()
+
+	// destination
+	filePath := "./assets/uploads/" + file.Filename
+	dst, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+
+	defer dst.Close()
+
+	// copy
+	if _, err = io.Copy(dst, src); err != nil {
+		return err
+	}
+
+	webPath := "/uploads/" + file.Filename
+	query := `UPDATE settings SET "value" = $1 WHERE "name" = 'invite_background'`
+	_, err = db.Exec(query, webPath)
+
+	if err != nil {
+		fmt.Println("error updating background img: ", query)
+		fmt.Println(err)
+	}
+
+	return c.JSON(http.StatusOK, "background image successfully uploaded")
 }
