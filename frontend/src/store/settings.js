@@ -24,7 +24,7 @@ const settings = {
         },
     },
     getters: {
-        settings(state) {
+        eventSettings(state) {
             const event = [
                 'event_name',
                 'event_date',

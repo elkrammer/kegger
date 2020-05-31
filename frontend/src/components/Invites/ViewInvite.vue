@@ -8,7 +8,7 @@
         class="modal-card-body invite-background"
         :style="{ 'background-image': inviteBackground }"
         >
-        <div class="invite-main" v-if="settings.length > 0">
+        <div class="invite-main" v-if="eventSettings.length > 0">
 
           <div class="title-box">
             <span>Save the Date!</span>
@@ -58,20 +58,20 @@ export default {
   computed: {
     ...mapGetters({
       guests: "guest/guests",
-      settings: "settings/settings",
+      eventSettings: "settings/eventSettings",
       inviteSettings: "settings/inviteSettings"
     }),
     eventName() {
-      return this.settings.find(s => s.name === 'event_name').value;
+      return this.eventSettings.find(s => s.name === 'event_name').value;
     },
     eventDate() {
-      return this.settings.find(s => s.name === 'event_date').value;
+      return this.eventSettings.find(s => s.name === 'event_date').value;
     },
     eventLocation() {
-      return this.settings.find(s => s.name === 'event_location').value;
+      return this.eventSettings.find(s => s.name === 'event_location').value;
     },
     dressCode() {
-      return this.settings.find(s => s.name === 'dress_code').value;
+      return this.eventSettings.find(s => s.name === 'dress_code').value;
     },
     inviteBackground() {
       const path = process.env.VUE_APP_API_SERVER + this.inviteSettings.find(s => s.name === 'invite_background').value;

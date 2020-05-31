@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      settings: "settings/settings",
+      settings: "settings/eventSettings",
     }),
   },
   methods: {
