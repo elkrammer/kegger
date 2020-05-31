@@ -10,7 +10,8 @@ services:
       - "db"
       - "migrate"
     volumes:
-      - "./.env:/app/.env"
+      - ./.env:/app/.env
+      - ./api/assets:/app/assets
 
   frontend:
     build:
