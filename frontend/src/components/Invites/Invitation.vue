@@ -63,10 +63,9 @@ export default {
   computed: {
     ...mapGetters({
       invite: "invite/invite",
-      inviteSettings: "settings/inviteSettings",
     }),
     inviteBackground() {
-      const path = process.env.VUE_APP_API_SERVER + this.inviteSettings.find(s => s.name === 'invite_background').value;
+      const path = process.env.VUE_APP_API_SERVER + this.invite.invite_background;
       return 'url("' + path + '")';
     }
   },
@@ -107,14 +106,6 @@ export default {
         console.log(error);
       }
     },
-    async getSettings() {
-      try {
-        const response = await this.$store.dispatch("settings/getSettings");
-        return response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
   },
   watch: {
     attending: function() {
@@ -122,7 +113,6 @@ export default {
     }
   },
   created() {
-    this.getSettings();
     this.getInvite();
   },
 }

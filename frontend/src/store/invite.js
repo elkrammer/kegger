@@ -18,6 +18,9 @@ const invite = {
         GET_INVITE(state, data) {
             state.invite = data;
         },
+        UPDATE_INVITE(state, data) {
+            Vue.set(state.invite, data);
+        },
     },
     getters: {
         invite(state) {

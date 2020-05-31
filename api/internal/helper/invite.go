@@ -66,6 +66,15 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.GroomName = result
 
+	// invite background
+	q = `SELECT value FROM settings WHERE name = 'invite_background';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch invite background: %v", err)
+	}
+	m.InviteBackground = result
+
 	// fetch guest information
 	guest := model.GuestResponse{}
 

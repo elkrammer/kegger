@@ -16,13 +16,14 @@ type To struct {
 }
 
 type Invite struct {
-	EventDate     string        `json:"event_date"`
-	EventLocation string        `json:"event_location"`
-	EventName     string        `json:"event_name"`
-	DressCode     string        `json:"dress_code"`
-	GroomName     string        `json:"groom_name"`
-	BrideName     string        `json:"bride_name"`
-	Guest         GuestResponse `json:"guest"`
+	EventDate        string        `json:"event_date"`
+	EventLocation    string        `json:"event_location"`
+	EventName        string        `json:"event_name"`
+	DressCode        string        `json:"dress_code"`
+	GroomName        string        `json:"groom_name"`
+	BrideName        string        `json:"bride_name"`
+	InviteBackground string        `json:"invite_background"`
+	Guest            GuestResponse `json:"guest"`
 }
 
 type UpdateInviteRequest struct {
