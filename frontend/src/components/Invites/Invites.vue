@@ -88,7 +88,7 @@ export default {
         const response = await this.$store.dispatch("party/getParties");
         return response.data;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
     async sendInvite() {
@@ -123,6 +123,9 @@ export default {
     // this function re-maps the data obtained from the loadParties API call into the this.guests array like so:
     // {"id":1,"party_refer":1,"invitation_id":"1UfD6v1YuzssdgJKxWSYRJZjlsS","invitation_sent":null,"invitation_opened":null,"email":"foo@bar.com","plus_one":false,"is_attending":false,"party_name":"foo","name":"foo"}
     mapData() {
+      if (this.parties.length < 1) {
+        return;
+      }
       for (var i = 0; i < this.parties.length; i++) {
         for (var j = 0; j < this.parties[i].Guests.length; j++) {
           let guest = this.parties[i].Guests[j];

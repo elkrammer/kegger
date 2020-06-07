@@ -57,21 +57,22 @@ router.beforeEach((to, from, next) => {
     let accessToken = localStorage.getItem("accessToken");
     let refreshToken = localStorage.getItem("refreshToken");
 
-    if (accessToken) {
+    if (isLoggedIn || to.meta.requiresAuth) {
+        // user is logged in
+        next();
+    } else if (accessToken && refreshToken && !isLoggedIn) {
+        // user has data in our store but somehow isn't logged in
+        console.log("user has data in our store but somehow isn't logged in");
         router.app.$options.store.dispatch("user/setUserAndTokens", {
             accessToken: accessToken,
             refreshToken: refreshToken
         });
-    }
-
-    if (isLoggedIn && accessToken && refreshToken && to.meta.requiresAuth) {
-        // user is logged in
         next();
     } else if (!isLoggedIn && !to.meta.requiresAuth) {
         // user is not logged in but the page doesn't require authentication
         next();
     } else {
-        // user needs to authenticate
+        // this user needs to authenticate
         next({ name: "login" });
     }
 });

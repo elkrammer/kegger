@@ -166,63 +166,63 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
-  import CreateParty from "@/components/Parties/CreateParty.vue";
-  import EditParty from "@/components/Parties/EditParty.vue";
-  import EditGuests from "@/components/Guests/EditGuests.vue";
-  import DeleteParty from "@/components/Parties/DeleteParty.vue";
-  import Statistics from "@/components/Parties/Statistics.vue";
+import { mapGetters } from "vuex";
+import CreateParty from "@/components/Parties/CreateParty.vue";
+import EditParty from "@/components/Parties/EditParty.vue";
+import EditGuests from "@/components/Guests/EditGuests.vue";
+import DeleteParty from "@/components/Parties/DeleteParty.vue";
+import Statistics from "@/components/Parties/Statistics.vue";
 
-  export default {
-    name: 'list_parties',
-    components: { CreateParty, EditParty, DeleteParty, EditGuests, Statistics },
-    data() {
-      return {
-        createPartyActive: false,
-        editPartyActive: false,
-        deletePartyActive: false,
-        editGuestsActive: false,
-        selected: null,
-        isPartyAttending: null,
-        search: '',
-        statistics: {
-          guestsAttending: 0,
-          guestsNotAttending: 0,
-          totalGuests: 0,
-          guestsPending: 0,
-        },
-      };
+export default {
+  name: 'list_parties',
+  components: { CreateParty, EditParty, DeleteParty, EditGuests, Statistics },
+  data() {
+    return {
+      createPartyActive: false,
+      editPartyActive: false,
+      deletePartyActive: false,
+      editGuestsActive: false,
+      selected: null,
+      isPartyAttending: null,
+      search: '',
+      statistics: {
+        guestsAttending: 0,
+        guestsNotAttending: 0,
+        totalGuests: 0,
+        guestsPending: 0,
+      },
+    };
+  },
+  methods: {
+    async loadParties() {
+      try {
+        const response = await this.$store.dispatch("party/getParties");
+        return response.data;
+      } catch (error) {
+        // console.log(error);
+      }
     },
-    methods: {
-      async loadParties() {
-        try {
-          const response = await this.$store.dispatch("party/getParties");
-          return response.data;
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      toggle(row) {
-        this.$refs.table.toggleDetails(row)
-      },
-      unSelect() {
-        this.selected = null;
-      },
+    toggle(row) {
+      this.$refs.table.toggleDetails(row)
     },
-    computed: {
-      ...mapGetters({
-        parties: "party/parties"
-      }),
-      filteredPartyList() {
-        return this.parties.filter(party => {
-          return party.name.toLowerCase().includes(this.search.toLowerCase())
-        })
-      },
+    unSelect() {
+      this.selected = null;
     },
-    created() {
+  },
+  computed: {
+    ...mapGetters({
+      parties: "party/parties"
+    }),
+    filteredPartyList() {
+      return this.parties.filter(party => {
+        return party.name.toLowerCase().includes(this.search.toLowerCase())
+      })
+    },
+  },
+  created() {
       this.loadParties();
-    },
-  };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -233,8 +233,8 @@
 }
 
 #parties-table td {
-    word-break: break-all;
-    vertical-align: middle;
+  word-break: break-all;
+  vertical-align: middle;
 }
 
 </style>

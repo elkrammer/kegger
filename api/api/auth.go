@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -65,7 +66,7 @@ func GenRefreshToken(c echo.Context) error {
 	})
 
 	if err != nil {
-		return err
+		return echo.NewHTTPError(http.StatusBadRequest, "error parsing jwt token - could not renew access token")
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)

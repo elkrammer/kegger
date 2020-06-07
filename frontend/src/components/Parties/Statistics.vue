@@ -43,58 +43,80 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
-  export default {
-    name: 'statistics',
-    data() {
-      return {
-        guestsAttending: 0,
-        guestsNotAttending: 0,
-        guestsPending: 0,
-        totalGuests: 0,
-      };
-    },
-    methods: {
-      statistics() {
+export default {
+  name: 'statistics',
+  data() {
+    return {
+      guestsAttending: 0,
+      guestsNotAttending: 0,
+      guestsPending: 0,
+      totalGuests: 0,
+    };
+  },
+  methods: {
+    statistics() {
 
-       // reset stats
-        this.guestsAttending = 0;
-        this.guestsNotAttending = 0;
-        this.guestsPending = 0;
-        this.totalGuests = 0;
+      // reset stats
+      this.guestsAttending = 0;
+      this.guestsNotAttending = 0;
+      this.guestsPending = 0;
+      this.totalGuests = 0;
 
-        for (var i = 0; i < this.parties.length; i++) { // parties loop
-          let guestSize = this.parties[i].Guests.length;
-          for (var j = 0; j < guestSize; j++) { // guests Loop
-            // guest has plus_one
-            if (this.parties[i].Guests[j].plus_one) {
-              this.totalGuests += 2
-            } else {
-              this.totalGuests += 1
-            }
-            if (this.parties[i].Guests[j].is_attending) { // guest is attending
-              this.guestsAttending += 1
-            } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened === null) { // guest hasn't seen invite
-              this.guestsPending += 1
-            } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened !== null) { // guest saw the invite!
-              this.guestsNotAttending += 1
-            }
+      if (this.parties.length < 1) {
+        return;
+      }
+
+      for (var i = 0; i < this.parties.length; i++) { // parties loop
+        let guestSize = this.parties[i].Guests.length;
+        for (var j = 0; j < guestSize; j++) { // guests Loop
+          // guest has plus_one
+          if (this.parties[i].Guests[j].plus_one) {
+            this.totalGuests += 2
+          } else {
+            this.totalGuests += 1
+          }
+          if (this.parties[i].Guests[j].is_attending) { // guest is attending
+            this.guestsAttending += 1
+          } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened === null) { // guest hasn't seen invite
+            this.guestsPending += 1
+          } else if (!this.parties[i].Guests[j].is_attending && this.parties[i].Guests[j].invitation_opened !== null) { // guest saw the invite!
+            this.guestsNotAttending += 1
           }
         }
-      },
+      }
     },
-    computed: {
-      ...mapGetters({
-        parties: "party/parties"
-      }),
+    async loadParties() {
+      try {
+        const response = await this.$store.dispatch("party/getParties");
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
-    watch: {
-      parties() {
-        this.statistics();
-      },
+  },
+  computed: {
+    ...mapGetters({
+      parties: "party/parties"
+    }),
+  },
+  watch: {
+    parties() {
+      this.statistics();
     },
-  };
+  },
+  created() {
+    if (!this.parties) {
+      this.loadParties();
+    }
+  },
+  mounted() {
+    if (this.parties.length > 1 && this.totalGuests < 1) {
+      this.statistics();
+    }
+  },
+};
 
 </script>
 
