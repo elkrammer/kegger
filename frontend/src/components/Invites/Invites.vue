@@ -11,7 +11,6 @@
           aria-modal>
           <ViewInvite v-if="selected !== null" :guest_id="selected.id" />
         </b-modal>
-
       </section>
 
       <div class="columns">
@@ -26,6 +25,11 @@
           </b-field>
         </div>
       </div>
+
+      <b-message v-if="this.guests.length < 1" type="is-info">
+        Welcome to Kegger!<br>
+        Create a new Party to get started.
+      </b-message>
 
       <b-table
         :data="this.guests"
@@ -88,7 +92,13 @@ export default {
         const response = await this.$store.dispatch("party/getParties");
         return response.data;
       } catch (error) {
-        // console.log(error);
+        const msg = `There was an error fetching parties information`
+        this.$buefy.toast.open({
+          message: msg,
+          type: 'is-danger',
+          position: 'is-bottom',
+          duration: 3000,
+        })
       }
     },
     async sendInvite() {
@@ -146,7 +156,12 @@ export default {
   created() {
     this.loadParties();
     this.mapData();
-  }
+  },
+  updated() {
+    if (this.guests.length < 1) {
+      this.mapData();
+    }
+  },
 }
 </script>
 

@@ -68,6 +68,11 @@
         </div>
       </div>
 
+      <b-message v-if="this.parties.length < 1" type="is-info">
+        Welcome to Kegger!<br>
+        Create a new Party to get started.
+      </b-message>
+
       <b-table
         id="parties-table"
         :data="filteredPartyList"
@@ -220,7 +225,7 @@ export default {
     },
   },
   created() {
-      this.loadParties();
+    this.loadParties();
   },
 };
 </script>
