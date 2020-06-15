@@ -75,6 +75,15 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.InviteBackground = result
 
+	// event timezone
+	q = `SELECT value FROM settings WHERE name = 'time_zone';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch event time zone: %v", err)
+	}
+	m.TimeZone = result
+
 	// fetch guest information
 	guest := model.GuestResponse{}
 

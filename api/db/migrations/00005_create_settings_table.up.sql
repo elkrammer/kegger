@@ -28,3 +28,12 @@ VALUES('groom_name', 'Fat Mike', 'Groom''s Name');
 INSERT INTO public.settings
 ("name", value, description)
 VALUES('bride_name', 'Beer', 'Bride''s Name');
+
+INSERT INTO public.settings
+("name", value, description)
+VALUES('time_zone', 'America/Toronto', 'Event time zone');
+
+-- Invite Settings
+INSERT INTO public.settings
+("name", value, description)
+VALUES('invite_background', '/uploads/default_bg.jpg', 'Invitation Background Image Path');
