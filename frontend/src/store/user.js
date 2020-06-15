@@ -5,6 +5,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import jwtDecode from "jwt-decode";
 import axios from "@/common/axios";
+import router from "@/router";
 import store from "@/store/index";
 
 Vue.use(Vuex);
@@ -136,12 +137,16 @@ const user = {
                     refreshToken: response.data.refresh_token
                 });
             } catch (error) {
+                console.log("hit error in refreshUserTokens");
+                console.log(error);
+                await store.dispatch("user/userLogout")
                 return Promise.reject(error);
             }
         },
         async userLogout({ commit }) {
             try {
                 commit(LOGOUT_USER);
+                router.push({ name: "login" }).catch(err => {console.log(err)});
             } catch (error) {
                 return Promise.reject(error);
             }
