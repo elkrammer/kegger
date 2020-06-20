@@ -38,9 +38,15 @@ const settings = {
             })
         },
         inviteSettings(state) {
-            const invite = ['invite_background'];
+            const invite = ['invite_image_en', 'invite_image_es'];
             return state.settings.filter(obj => {
                 return invite.includes(obj.name)
+            })
+        },
+        appSettings(state) {
+            const app = ['wedding_website_url', 'kegger_website_url', 'kegger_api_url']
+            return state.settings.filter(obj => {
+                return app.includes(obj.name)
             })
         },
     },
@@ -65,10 +71,10 @@ const settings = {
                 return Promise.reject(error);
             }
         },
-        async uploadInviteBgImage({ commit, rootGetters }, data) {
+        async uploadInviteImage({ commit, rootGetters }, data) {
             try {
                 setAuthorizationHeader(rootGetters["user/accessToken"]);
-                const response = await axios.post("/api/settings/uploadInviteBg", data);
+                const response = await axios.post("/api/settings/uploadInviteImg", data);
                 commit(UPLOAD_INVITE_BG_IMAGE, response.data);
                 return response.data;
             } catch(error) {
