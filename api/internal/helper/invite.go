@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// used by api
 func FetchEventInformation(inviteId string) model.Invite {
 	db := db.DbManager()
 	m := model.Invite{}
@@ -71,15 +72,6 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.GroomName = result
 
-	// invite background
-	q = `SELECT value FROM settings WHERE name = 'invite_background';`
-	row = db.QueryRowx(q)
-	err = row.Scan(&result)
-	if err != nil {
-		fmt.Printf("Failed to fetch invite background: %v", err)
-	}
-	m.InviteBackground = result
-
 	// event timezone
 	q = `SELECT value FROM settings WHERE name = 'time_zone';`
 	row = db.QueryRowx(q)
@@ -105,9 +97,20 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.Guest = guest
 
+	// invite image
+
+	q = `SELECT value FROM settings WHERE name = 'invite_background';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch invite background: %v", err)
+	}
+	m.InviteImage = result
+
 	return m
 }
 
+// used by sendInvite function (internal)
 func FetchEventInformationByGuestId(id int) model.Invite {
 	db := db.DbManager()
 	m := model.Invite{}
@@ -179,23 +182,36 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 	}
 	m.Guest = guest
 
+	// kegger frontend url
+	q = `SELECT value FROM settings WHERE name = 'kegger_frontend_url';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch frontend: %v", err)
+	}
+	m.KeggerWebsite = result
+
+	// set invitation language
+	m.InviteLang = guest.InvitationLang
+
+	// invite image
+	image := "invite_image_" + guest.InvitationLang
+	q = `SELECT value FROM settings WHERE name = $1;`
+	row = db.QueryRowx(q, image)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch invite image: %v", err)
+	}
+	m.InviteImage = result
+
 	// wedding website url
 	q = `SELECT value FROM settings WHERE name = 'wedding_website_url';`
 	row = db.QueryRowx(q)
 	err = row.Scan(&result)
 	if err != nil {
-		fmt.Printf("Failed to fetch groom name: %v", err)
+		fmt.Printf("Failed to fetch website url: %v", err)
 	}
 	m.WeddingWebsite = result
-
-	// kegger frontend url
-	q = `SELECT value FROM settings WHERE name = 'kegger_website_url';`
-	row = db.QueryRowx(q)
-	err = row.Scan(&result)
-	if err != nil {
-		fmt.Printf("Failed to fetch groom name: %v", err)
-	}
-	m.KeggerWebsite = result
 
 	return m
 }

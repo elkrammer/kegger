@@ -30,7 +30,10 @@ func SendInvite(c echo.Context) error {
 
 	// fetch the data we need to populate the invites
 	invite := helper.FetchEventInformationByGuestId(id)
-	body := helper.ProcessTemplateFile("templates/invite.tpl", invite)
+
+	// process template based on guest's preferred language
+	template_file := fmt.Sprintf("templates/invite_%s.tpl", invite.InviteLang)
+	body := helper.ProcessTemplateFile(template_file, invite)
 
 	m := mail.NewV3Mail()
 	from := mail.NewEmail(email.FromName, email.FromEmail)
@@ -47,11 +50,13 @@ func SendInvite(c echo.Context) error {
 	p.AddTos(recipientList...)
 	m.AddPersonalizations(p)
 
-	// read/attach .jpg file
+	// read/attach invite image
+	image := "./assets" + invite.InviteImage
 	a_jpg := mail.NewAttachment()
-	dat, err := ioutil.ReadFile("assets/uploads/default_bg.jpg")
+	dat, err := ioutil.ReadFile(image)
 	if err != nil {
-		fmt.Println(err)
+		msg := fmt.Sprintf("Unable to read invite image %s", err)
+		fmt.Println(msg)
 	}
 	encoded := base64.StdEncoding.EncodeToString([]byte(dat))
 	a_jpg.SetContent(encoded)
