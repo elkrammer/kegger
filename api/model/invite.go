@@ -16,17 +16,18 @@ type To struct {
 }
 
 type Invite struct {
-	EventDate        string        `json:"event_date"`
-	EventLocation    string        `json:"event_location"`
-	EventName        string        `json:"event_name"`
-	DressCode        string        `json:"dress_code"`
-	GroomName        string        `json:"groom_name"`
-	BrideName        string        `json:"bride_name"`
-	InviteBackground string        `json:"invite_background"`
-	TimeZone         string        `json:"time_zone"`
-	Guest            GuestResponse `json:"guest"`
-	WeddingWebsite   string        `json:"wedding_website"`
-	KeggerWebsite    string        `json:"kegger_website"`
+	EventDate      string        `json:"event_date"`
+	EventLocation  string        `json:"event_location"`
+	EventName      string        `json:"event_name"`
+	DressCode      string        `json:"dress_code"`
+	GroomName      string        `json:"groom_name"`
+	BrideName      string        `json:"bride_name"`
+	InviteImage    string        `json:"invite_image"`
+	InviteLang     string        `json:"invite_lang"`
+	TimeZone       string        `json:"time_zone"`
+	Guest          GuestResponse `json:"guest"`
+	WeddingWebsite string        `json:"wedding_website"`
+	KeggerWebsite  string        `json:"kegger_website"`
 }
 
 type UpdateInviteRequest struct {
