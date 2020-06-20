@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS guests (
     plus_one bool NULL,
     is_attending bool NULL,
     invitation_id VARCHAR (27) NULL,
+    invitation_lang varchar(2) NOT NULL DEFAULT 'en'::character varying,
     invitation_sent timestamptz NULL,
     invitation_opened timestamptz NULL,
     CONSTRAINT guests_pkey PRIMARY KEY (id),

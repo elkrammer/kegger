@@ -35,7 +35,7 @@ VALUES('wedding_website_url', 'http://127.0.0.1:8081', 'Wedding Website URL');
 
 INSERT INTO public.settings
 ("name", value, description)
-VALUES('kegger_website_url', 'http://127.0.0.1:8080', 'Kegger Frontend URL');
+VALUES('kegger_frontend_url', 'http://127.0.0.1:8080', 'Kegger Frontend URL');
 
 INSERT INTO public.settings
 ("name", value, description)
