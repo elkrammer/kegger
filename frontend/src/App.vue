@@ -25,6 +25,7 @@
 
 <style lang="scss">
 @import "variables";
+@import "style";
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>
