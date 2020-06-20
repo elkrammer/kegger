@@ -25,6 +25,8 @@ type Invite struct {
 	InviteBackground string        `json:"invite_background"`
 	TimeZone         string        `json:"time_zone"`
 	Guest            GuestResponse `json:"guest"`
+	WeddingWebsite   string        `json:"wedding_website"`
+	KeggerWebsite    string        `json:"kegger_website"`
 }
 
 type UpdateInviteRequest struct {

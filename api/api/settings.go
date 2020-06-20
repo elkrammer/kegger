@@ -61,8 +61,9 @@ func UpdateSettings(c echo.Context) error {
 	return c.JSON(http.StatusOK, settings)
 }
 
-func UploadInviteBackground(c echo.Context) error {
+func UploadInviteImage(c echo.Context) error {
 	db := db.DbManager()
+	invite := c.FormValue("name")
 
 	// source
 	file, err := c.FormFile("file")
@@ -92,13 +93,13 @@ func UploadInviteBackground(c echo.Context) error {
 	}
 
 	webPath := "/uploads/" + file.Filename
-	query := `UPDATE settings SET "value" = $1 WHERE "name" = 'invite_background'`
-	_, err = db.Exec(query, webPath)
+	query := `UPDATE settings SET "value" = $1 WHERE "name" = $2`
+	_, err = db.Exec(query, webPath, invite)
 
 	if err != nil {
-		fmt.Println("error updating background img: ", query)
+		fmt.Println("error updating %s: ", invite, query)
 		fmt.Println(err)
 	}
 
-	return c.JSON(http.StatusOK, "background image successfully uploaded")
+	return c.JSON(http.StatusOK, "Invite image successfully uploaded")
 }

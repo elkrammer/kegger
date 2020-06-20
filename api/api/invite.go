@@ -1,7 +1,9 @@
 package api
 
 import (
+	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
@@ -45,8 +47,22 @@ func SendInvite(c echo.Context) error {
 	p.AddTos(recipientList...)
 	m.AddPersonalizations(p)
 
+	// read/attach .jpg file
+	a_jpg := mail.NewAttachment()
+	dat, err := ioutil.ReadFile("assets/uploads/default_bg.jpg")
+	if err != nil {
+		fmt.Println(err)
+	}
+	encoded := base64.StdEncoding.EncodeToString([]byte(dat))
+	a_jpg.SetContent(encoded)
+	a_jpg.SetType("image/jpeg")
+	a_jpg.SetFilename("testing.jpg")
+	a_jpg.SetDisposition("attachment")
+	a_jpg.SetContentID("Test Attachment")
+
 	co := mail.NewContent("text/html", body)
 	m.AddContent(co)
+	m.AddAttachment(a_jpg)
 
 	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
 
@@ -104,7 +120,7 @@ func UpdateInvite(c echo.Context) error {
 
 	guest := model.Guest{}
 	query := `
-	SELECT *
+SELECT *
 	FROM guests
 	where invitation_id = $1`
 	err := db.QueryRowx(query, request.InvitationId).StructScan(&guest)

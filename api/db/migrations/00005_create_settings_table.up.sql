@@ -31,9 +31,21 @@ VALUES('bride_name', 'Beer', 'Bride''s Name');
 
 INSERT INTO public.settings
 ("name", value, description)
-VALUES('time_zone', 'America/Toronto', 'Event time zone');
+VALUES('wedding_website_url', 'http://127.0.0.1:8081', 'Wedding Website URL');
+
+INSERT INTO public.settings
+("name", value, description)
+VALUES('kegger_website_url', 'http://127.0.0.1:8080', 'Kegger Frontend URL');
+
+INSERT INTO public.settings
+("name", value, description)
+VALUES('kegger_api_url', 'http://127.0.0.1:4040', 'Kegger API URL');
 
 -- Invite Settings
 INSERT INTO public.settings
 ("name", value, description)
-VALUES('invite_background', '/uploads/default_bg.jpg', 'Invitation Background Image Path');
+VALUES('invite_image_en', '/uploads/default_bg.jpg', 'English Invitation Image Path');
+
+INSERT INTO public.settings
+("name", value, description)
+VALUES('invite_image_es', '/uploads/default_bg.jpg', 'Spanish Invitation Image Path');
