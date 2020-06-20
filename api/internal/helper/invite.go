@@ -2,9 +2,9 @@ package helper
 
 import (
 	"fmt"
-
 	"github.com/elkrammer/kegger/api/db"
 	"github.com/elkrammer/kegger/api/model"
+	"time"
 )
 
 func FetchEventInformation(inviteId string) model.Invite {
@@ -28,7 +28,12 @@ func FetchEventInformation(inviteId string) model.Invite {
 	if err != nil {
 		fmt.Printf("Failed to fetch event date: %v", err)
 	}
-	m.EventDate = result
+	layout := "2006-01-02T15:04:05Z" // iso8601
+	t, _ := time.Parse(layout, result)
+	if err != nil {
+		fmt.Println("Error parsing date: ", err)
+	}
+	m.EventDate = t.Format("Mon Jan 2 '06 at 15:04")
 
 	// event location
 	q = `SELECT value FROM settings WHERE name = 'event_location';`
@@ -124,7 +129,12 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 	if err != nil {
 		fmt.Printf("Failed to fetch event date: %v", err)
 	}
-	m.EventDate = result
+	layout := "2006-01-02T15:04:05Z" // iso8601
+	t, _ := time.Parse(layout, result)
+	if err != nil {
+		fmt.Println("Error parsing date: ", err)
+	}
+	m.EventDate = t.Format("Mon Jan 2 '06 at 15:04")
 
 	// event location
 	q = `SELECT value FROM settings WHERE name = 'event_location';`
@@ -168,6 +178,24 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 		fmt.Printf("Failed to fetch guest information from the database: %v", err)
 	}
 	m.Guest = guest
+
+	// wedding website url
+	q = `SELECT value FROM settings WHERE name = 'wedding_website_url';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch groom name: %v", err)
+	}
+	m.WeddingWebsite = result
+
+	// kegger frontend url
+	q = `SELECT value FROM settings WHERE name = 'kegger_website_url';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch groom name: %v", err)
+	}
+	m.KeggerWebsite = result
 
 	return m
 }

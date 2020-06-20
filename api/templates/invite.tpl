@@ -1,514 +1,166 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="x-apple-disable-message-reformatting" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title></title>
-        <style type="text/css" rel="stylesheet" media="all">
-/* Base ------------------------------ */
-
-@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&amp;display=swap");
-body {
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Invite</title>
+    <style>
+@media only screen and (max-width: 620px) {
+  table[class=body] h1 {
+    font-size: 28px !important;
+    margin-bottom: 10px !important;
+  }
+  table[class=body] p,
+  table[class=body] ul,
+  table[class=body] ol,
+  table[class=body] td,
+  table[class=body] span,
+  table[class=body] a {
+    font-size: 16px !important;
+  }
+  table[class=body] .wrapper,
+  table[class=body] .article {
+    padding: 10px !important;
+  }
+  table[class=body] .content {
+    padding: 0 !important;
+  }
+  table[class=body] .container {
+    padding: 0 !important;
     width: 100% !important;
-    height: 100%;
-    margin: 0;
-    -webkit-text-size-adjust: none;
-}
-
-a {
-    color: #3869D4;
-}
-
-a img {
-    border: none;
-}
-
-td {
-    word-break: break-word;
-}
-
-.preheader {
-    display: none !important;
-    visibility: hidden;
-    mso-hide: all;
-    font-size: 1px;
-    line-height: 1px;
-    max-height: 0;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-}
-    /* Type ------------------------------ */
-
-    body,
-    td,
-    th {
-        font-family: "Nunito Sans", Helvetica, Arial, sans-serif;
-    }
-
-    h1 {
-        margin-top: 0;
-        color: #333333;
-        font-size: 22px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    h2 {
-        margin-top: 0;
-        color: #333333;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    h3 {
-        margin-top: 0;
-        color: #333333;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    td,
-    th {
-        font-size: 16px;
-    }
-
-    p,
-    ul,
-    ol,
-    blockquote {
-        margin: .4em 0 1.1875em;
-        font-size: 16px;
-        line-height: 1.625;
-    }
-
-    p.sub {
-        font-size: 13px;
-    }
-    /* Utilities ------------------------------ */
-
-    .align-right {
-        text-align: right;
-    }
-
-    .align-left {
-        text-align: left;
-    }
-
-    .align-center {
-        text-align: center;
-    }
-    /* Buttons ------------------------------ */
-
-    .button {
-        background-color: #3869D4;
-        border-top: 10px solid #3869D4;
-        border-right: 18px solid #3869D4;
-        border-bottom: 10px solid #3869D4;
-        border-left: 18px solid #3869D4;
-        display: inline-block;
-        color: #FFF;
-        text-decoration: none;
-        border-radius: 3px;
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
-        -webkit-text-size-adjust: none;
-        box-sizing: border-box;
-    }
-
-    .button--green {
-        background-color: #22BC66;
-        border-top: 10px solid #22BC66;
-        border-right: 18px solid #22BC66;
-        border-bottom: 10px solid #22BC66;
-        border-left: 18px solid #22BC66;
-    }
-
-    .button--red {
-        background-color: #FF6136;
-        border-top: 10px solid #FF6136;
-        border-right: 18px solid #FF6136;
-        border-bottom: 10px solid #FF6136;
-        border-left: 18px solid #FF6136;
-    }
-
-    @media only screen and (max-width: 500px) {
-        .button {
-            width: 100% !important;
-            text-align: center !important;
-        }
-    }
-    /* Attribute list ------------------------------ */
-
-    .attributes {
-        margin: 0 0 21px;
-    }
-
-    .attributes_content {
-        background-color: #F4F4F7;
-        padding: 16px;
-    }
-
-    .attributes_item {
-        padding: 0;
-    }
-    /* Related Items ------------------------------ */
-
-    .related {
-        width: 100%;
-        margin: 0;
-        padding: 25px 0 0 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-    }
-
-    .related_item {
-        padding: 10px 0;
-        color: #CBCCCF;
-        font-size: 15px;
-        line-height: 18px;
-    }
-
-    .related_item-title {
-        display: block;
-        margin: .5em 0 0;
-    }
-
-    .related_item-thumb {
-        display: block;
-        padding-bottom: 10px;
-    }
-
-    .related_heading {
-        border-top: 1px solid #CBCCCF;
-        text-align: center;
-        padding: 25px 0 10px;
-    }
-    /* Discount Code ------------------------------ */
-
-    .discount {
-        width: 100%;
-        margin: 0;
-        padding: 24px;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        background-color: #F4F4F7;
-        border: 2px dashed #CBCCCF;
-    }
-
-    .discount_heading {
-        text-align: center;
-    }
-
-    .discount_body {
-        text-align: center;
-        font-size: 15px;
-    }
-    /* Social Icons ------------------------------ */
-
-    .social {
-        width: auto;
-    }
-
-    .social td {
-        padding: 0;
-        width: auto;
-    }
-
-    .social_icon {
-        height: 20px;
-        margin: 0 8px 10px 8px;
-        padding: 0;
-    }
-    /* Data table ------------------------------ */
-
-    .purchase {
-        width: 100%;
-        margin: 0;
-        padding: 35px 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-    }
-
-    .purchase_content {
-        width: 100%;
-        margin: 0;
-        padding: 25px 0 0 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-    }
-
-    .purchase_item {
-        padding: 10px 0;
-        color: #51545E;
-        font-size: 15px;
-        line-height: 18px;
-    }
-
-    .purchase_heading {
-        padding-bottom: 8px;
-        border-bottom: 1px solid #EAEAEC;
-    }
-
-    .purchase_heading p {
-        margin: 0;
-        color: #85878E;
-        font-size: 12px;
-    }
-
-    .purchase_footer {
-        padding-top: 15px;
-        border-top: 1px solid #EAEAEC;
-    }
-
-    .purchase_total {
-        margin: 0;
-        text-align: right;
-        font-weight: bold;
-        color: #333333;
-    }
-
-    .purchase_total--label {
-        padding: 0 15px 0 0;
-    }
-
-    body {
-        background-color: #F2F4F6;
-        color: #51545E;
-    }
-
-    p {
-        color: #51545E;
-    }
-
-    .email-wrapper {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        background-color: #F2F4F6;
-    }
-
-    .email-content {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-    }
-    /* Masthead ----------------------- */
-
-    .email-masthead {
-        padding: 25px 0;
-        text-align: center;
-    }
-
-    .email-masthead_logo {
-        width: 94px;
-    }
-
-    .email-masthead_name {
-        font-size: 16px;
-        font-weight: bold;
-        color: #A8AAAF;
-        text-decoration: none;
-        text-shadow: 0 1px 0 white;
-    }
-    /* Body ------------------------------ */
-
-    .email-body {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-    }
-
-    .email-body_inner {
-        width: 570px;
-        margin: 0 auto;
-        padding: 0;
-        -premailer-width: 570px;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        background-color: #FFFFFF;
-    }
-
-    .email-footer {
-        width: 570px;
-        margin: 0 auto;
-        padding: 0;
-        -premailer-width: 570px;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        text-align: center;
-    }
-
-    .email-footer p {
-        color: #A8AAAF;
-    }
-
-    .body-action {
-        width: 100%;
-        margin: 30px auto;
-        padding: 0;
-        -premailer-width: 100%;
-        -premailer-cellpadding: 0;
-        -premailer-cellspacing: 0;
-        text-align: center;
-    }
-
-    .body-sub {
-        margin-top: 25px;
-        padding-top: 25px;
-        border-top: 1px solid #EAEAEC;
-    }
-
-    .content-cell {
-        padding: 45px;
-    }
-    /*Media Queries ------------------------------ */
-
-    @media only screen and (max-width: 600px) {
-        .email-body_inner,
-        .email-footer {
-            width: 100% !important;
-        }
-    }
-
-    @media (prefers-color-scheme: dark) {
-        body,
-        .email-body,
-        .email-body_inner,
-        .email-content,
-        .email-wrapper,
-        .email-masthead,
-        .email-footer {
-            background-color: #333333 !important;
-            color: #FFF !important;
-        }
-        p,
-        ul,
-        ol,
-        blockquote,
-        h1,
-        h2,
-        h3 {
-            color: #FFF !important;
-        }
-        .attributes_content,
-        .discount {
-            background-color: #222 !important;
-        }
-        .email-masthead_name {
-            text-shadow: none !important;
-        }
-    }
-        </style>
-        <!--[if mso]>
-            <style type="text/css">
-            .f-fallback  {
-            font-family: Arial, sans-serif;
-            }
-            </style>
-        <![endif]-->
-        <style type="text/css" rel="stylesheet" media="all">
-body {
+  }
+  table[class=body] .main {
+    border-left-width: 0 !important;
+    border-radius: 0 !important;
+    border-right-width: 0 !important;
+  }
+  table[class=body] .btn table {
     width: 100% !important;
-    height: 100%;
-    margin: 0;
-    -webkit-text-size-adjust: none;
+  }
+  table[class=body] .btn a {
+    width: 100% !important;
+  }
+  table[class=body] .img-responsive {
+    height: auto !important;
+    max-width: 100% !important;
+    width: auto !important;
+  }
 }
 
-body {
-    font-family: "Nunito Sans", Helvetica, Arial, sans-serif;
-}
+      /* -------------------------------------
+         PRESERVE THESE STYLES IN THE HEAD
+           ------------------------------------- */
+      @media all {
+        .ExternalClass {
+          width: 100%;
+        }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%;
+        }
+        .apple-link a {
+          color: inherit !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+          text-decoration: none !important;
+        }
+        #MessageViewBody a {
+          color: inherit;
+          text-decoration: none;
+          font-size: inherit;
+          font-family: inherit;
+          font-weight: inherit;
+          line-height: inherit;
+        }
+        .btn-primary table td:hover {
+          background-color: #34495e !important;
+        }
+        .btn-primary a:hover {
+          background-color: #34495e !important;
+          border-color: #34495e !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+    <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;">
+      <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+        <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;">
+          <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
 
-body {
-    background-color: #F2F4F6;
-    color: #51545E;
-}
-        </style>
-    </head>
-    <body style="width: 100% !important; height: 100%; -webkit-text-size-adjust: none; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; background-color: #F2F4F6; color: #51545E; margin: 0;" bgcolor="#F2F4F6">
-        <span class="preheader" style="display: none !important; visibility: hidden; mso-hide: all; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0; opacity: 0; overflow: hidden;">You've been invited to {{ .EventName }}!</span>
-        <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; background-color: #F2F4F6; margin: 0; padding: 0;" bgcolor="#F2F4F6">
-            <tr>
-                <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-                    <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; margin: 0; padding: 0;">
-                        <tr>
-                            <td class="email-masthead" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px; text-align: center; padding: 25px 0;" align="center">
-                                <a href="https://example.com" class="f-fallback email-masthead_name" style="color: #A8AAAF; font-size: 16px; font-weight: bold; text-decoration: none; text-shadow: 0 1px 0 white;">
-                                    Invite
-                                </a>
-                            </td>
-                        </tr>
-                        <!-- Email Body -->
-                        <tr>
-                            <td class="email-body" width="570" cellpadding="0" cellspacing="0" style="word-break: break-word; margin: 0; padding: 0; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px; width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0;">
-                                <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="width: 570px; -premailer-width: 570px; -premailer-cellpadding: 0; -premailer-cellspacing: 0; background-color: #FFFFFF; margin: 0 auto; padding: 0;" bgcolor="#FFFFFF">
-                                    <!-- Body content -->
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">Join us to celebrate {{ .EventName }}</span>
+            <table class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
+
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;">
+                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                    <tr>
+                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000">
+                          Hi {{ .Guest.FirstName }},
+                        </p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000">
+                          Please join us to celebrate the wedding of {{ .BrideName }} &amp; {{ .GroomName }}. <br />
+                          The wedding will be on {{ .EventDate }} at {{ .EventLocation }}.
+
+                          <br /><br />
+                          For more information about our wedding please visit our wedding website at <a href="{{ .WeddingWebsite }}" target="_blank">{{ .WeddingWebsite }}<a/>
+                        </p>
+                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
+                          <tbody>
+                            <tr>
+                              <td align="center" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
+                                  <tbody>
                                     <tr>
-                                        <td class="content-cell" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px; padding: 45px;">
-                                            <div class="f-fallback">
-                                                <h1 style="margin-top: 0; color: #333333; font-size: 22px; font-weight: bold; text-align: left;" align="left">Hi {{ .Guest.FirstName }}!</h1>
-                                                <p style="font-size: 16px; line-height: 1.625; color: #51545E; margin: .4em 0 1.1875em;">
-                                                    <span style="color: #51545E;">
-                                                    You are invited to {{ .EventName }} to celebrate the wedding of
-                                                    {{ .BrideName }} &amp; {{ .GroomName }}.
-                                                    <br />
-                                                    The wedding will be on {{ .EventDate }} at {{ .EventLocation }}.<br />
-                                                    Please click the button below to view the wedding invite and to confirm your attendance:
-                                                    </span>
-                                                </p>
-                                                <!-- Action -->
-                                                <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; -premailer-width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; text-align: center; margin: 30px auto; padding: 0;">
-                                                    <tr>
-                                                        <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-                                                            <!-- Border based button
-                                                                https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
-                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
-                                                                    <tr>
-                                                                        <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-                                                                            <a href="http://192.168.0.109:8080/invite/{{.Guest.InvitationId}}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">View Invite</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-
-                                                <p style="font-size: 16px; line-height: 1.625; color: #51545E; margin: .4em 0 1.1875em;">We look forward to seeing you!</p>
-
-                                            </div>
-                                        </td>
+                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="{{ .APIServer }}/invite/{{ .Guest.InvitationId }}" target="_blank" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize; border-color: #3498db;">Click here to RSVP</a> </td>
                                     </tr>
+                                  </tbody>
                                 </table>
-                            </td>
-                        </tr>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
 
-                        <tr>
-                            <td>
-                                <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
-                                    <tr>
-                                        <td class="content-cell" align="center">
-                                        Invite ID: {{ .Guest.InvitationId }}
-                                        </td>
-                                    </tr>
+              <!-- END MAIN CONTENT AREA -->
+            </table>
 
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-    </body>
+            <!-- START FOOTER -->
+            <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;">
+              <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                <tr>
+                  <td class="content-cell" align="center">
+                    Invite ID: {{ .Guest.InvitationId }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
+                    Powered by <a href="https://github.com/elkrammer/kegger/" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">Kegger</a>.
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
 </html>
