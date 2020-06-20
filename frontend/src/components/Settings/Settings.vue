@@ -10,6 +10,9 @@
             <b-tab-item label="Invite Design" icon="envelope">
               <Invite />
             </b-tab-item>
+            <b-tab-item label="App Settings" icon="cog">
+              <App />
+            </b-tab-item>
             <b-tab-item label="Manage Users" icon="users">
               <Users />
             </b-tab-item>
@@ -23,9 +26,10 @@
   import Users from "@/components/Settings/Users.vue";
   import Invite from "@/components/Settings/Invite.vue";
   import Event from "@/components/Settings/Event.vue";
+  import App from "@/components/Settings/App.vue";
 
   export default {
     name: "Settings",
-    components: { Users, Invite, Event },
+    components: { Users, Invite, Event, App },
   }
 </script>

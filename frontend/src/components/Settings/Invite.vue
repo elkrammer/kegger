@@ -4,40 +4,59 @@
 
     <div v-for="setting in settings" :key="setting.name">
 
-      <b-field :label="setting.description">
-        <b-input :value="setting.value" v-model="setting.value"></b-input>
-      </b-field>
+      <div class="columns is-multiline">
+        <div class="column is-two-thirds">
+          <b-field :label="setting.description">
+            <b-input :value="setting.value" v-model="setting.value"></b-input>
+          </b-field>
 
-      <b-collapse v-if="setting.name == 'invite_background'" :open="false" aria-id="changeBackground">
-        <button
-          class="button is-success"
-          slot="trigger"
-          aria-controls="contentIdForA11y1">
-          Change Image
-        </button>
+          <b-field>
 
-        <br/>
+            <b-upload v-if="setting.name == 'invite_image_en'" v-model="invite_image_en">
+              <a class="button is-info is-rounded">
+                <b-icon icon="upload"></b-icon>
+                <span>Change</span>
+              </a>
+            </b-upload>
 
-        <b-field class="file">
+            <b-upload v-if="setting.name == 'invite_image_es'" v-model="invite_image_es">
+              <a class="button is-info is-rounded">
+                <b-icon icon="upload"></b-icon>
+                <span>Change</span>
+              </a>
+            </b-upload>
 
-          <b-upload v-model="file">
-            <a class="button is-rounded">
-              <b-icon icon="upload"></b-icon>
-              <span>Click to upload</span>
-            </a>
-          </b-upload>
-          <span class="file-name" v-if="file">
-            {{ file.name }}
-          </span>
-          <b-button v-if="file" is-rounded @click="uploadInviteBgImage" class="is-info">
-            Save
-          </b-button>
+            <span class="file-name" v-if="setting.name == 'invite_image_es' && invite_image_es">
+              {{ invite_image_es.name }}
+            </span>
 
-        </b-field>
+            <span class="file-name" v-if="setting.name == 'invite_image_en' && invite_image_en">
+              {{ invite_image_en.name }}
+            </span>
 
-      </b-collapse>
+          </b-field>
+        </div>
 
+        <div class="column">
+          <figure class="image">
+            <img v-if="setting.name == 'invite_image_es'" :src="es_Invite_url" class="is-shady " @click="modal(es_Invite_url)">
+            <img v-if="setting.name == 'invite_image_en'" :src="en_Invite_url" class="is-shady " @click="modal(en_Invite_url)">
+          </figure>
+        </div>
+
+        <b-modal :active.sync="isModalActive">
+          <p class="image is-square">
+          <img :src="selected">
+          </p>
+        </b-modal>
+
+      </div>
     </div>
+
+    <br><br>
+    <b-button is-rounded :disabled="!saveEnabled" @click="saveChanges" class="is-success">
+      Save
+    </b-button>
 
   </div>
 </template>
@@ -48,13 +67,33 @@ export default {
   name: "invite_settings",
   data() {
     return {
-      file: null,
+      isModalActive: false,
+      invite_image_en: null,
+      invite_image_es: null,
+      selected: null,
     }
   },
   computed: {
     ...mapGetters({
       settings: "settings/inviteSettings",
+      appSettings: "settings/appSettings",
     }),
+    es_Invite_url() {
+      const img = this.settings.find(s => s.name === 'invite_image_es').value;
+      const url = this.appSettings.find(s => s.name === 'kegger_api_url').value;
+      return url + img;
+    },
+    en_Invite_url() {
+      const img = this.settings.find(s => s.name === 'invite_image_en').value;
+      const url = this.appSettings.find(s => s.name === 'kegger_api_url').value;
+      return url + img;
+    },
+    saveEnabled() {
+      if (this.invite_image_en || this.invite_image_es) {
+        return true;
+      }
+      return false;
+    }
   },
   methods: {
     async getInviteSettings() {
@@ -65,24 +104,41 @@ export default {
         console.log(error);
       }
     },
-    async uploadInviteBgImage() {
+    async saveChanges() {
       try {
-        let data = new FormData();
-        data.append('file', this.file);
-        const response = await this.$store.dispatch("settings/uploadInviteBgImage", data);
-        const msg = `Invite Background image updated!`
+
+        if (this.invite_image_en) {
+          let data = new FormData();
+          data.append('file', this.invite_image_en);
+          data.append('name', 'invite_image_en')
+          await this.$store.dispatch("settings/uploadInviteImage", data);
+        }
+
+        if (this.invite_image_es) {
+          let data = new FormData();
+          data.append('file', this.invite_image_es);
+          data.append('name', 'invite_image_es')
+          await this.$store.dispatch("settings/uploadInviteImage", data);
+        }
+
+        this.getInviteSettings();
+
+        const msg = `Invite Images updated!`
         this.$buefy.toast.open({
           message: msg,
           type: 'is-success',
           position: 'is-bottom',
           duration: 3000,
         })
-        this.settings.find(s => s.name === 'invite_background').value = './uploads/' + this.file.name;
-        return response.data;
+        return;
       } catch (error) {
         console.log(error);
       }
     },
+    modal(img) {
+      this.selected = img;
+      this.isModalActive = true;
+    }
   },
   created() {
     if (!this.settings) {
