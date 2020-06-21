@@ -98,7 +98,6 @@ func FetchEventInformation(inviteId string) model.Invite {
 	m.Guest = guest
 
 	// invite image
-
 	q = `SELECT value FROM settings WHERE name = 'invite_background';`
 	row = db.QueryRowx(q)
 	err = row.Scan(&result)
@@ -124,20 +123,6 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 		fmt.Printf("Failed to fetch event name: %v", err)
 	}
 	m.EventName = result
-
-	// event date
-	q = `SELECT value FROM settings WHERE name = 'event_date';`
-	row = db.QueryRowx(q)
-	err = row.Scan(&result)
-	if err != nil {
-		fmt.Printf("Failed to fetch event date: %v", err)
-	}
-	layout := "2006-01-02T15:04:05Z" // iso8601
-	t, _ := time.Parse(layout, result)
-	if err != nil {
-		fmt.Println("Error parsing date: ", err)
-	}
-	m.EventDate = t.Format("Mon Jan 2 '06 at 15:04")
 
 	// event location
 	q = `SELECT value FROM settings WHERE name = 'event_location';`
@@ -182,6 +167,40 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 	}
 	m.Guest = guest
 
+	// set invitation language
+	m.InviteLang = guest.InvitationLang
+
+	// get event timezone
+	q = `SELECT value FROM settings WHERE name = 'time_zone';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch event time zone: %v", err)
+	}
+	m.TimeZone = result
+
+	// event date
+	q = `SELECT value FROM settings WHERE name = 'event_date';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch event date: %v", err)
+	}
+	layout := "2006-01-02T15:04:05Z" // iso8601
+	t, _ := time.Parse(layout, result)
+	loc, _ := time.LoadLocation(m.TimeZone)
+	t = t.In(loc) // set location for time
+	if err != nil {
+		fmt.Println("Error parsing date: ", err)
+	}
+
+	// set formatting
+	if m.InviteLang == "es" {
+		m.EventDate = FormatSpanishDate(t)
+	} else {
+		m.EventDate = t.Format("Mon Jan 2 '06 at 15:04")
+	}
+
 	// kegger frontend url
 	q = `SELECT value FROM settings WHERE name = 'kegger_frontend_url';`
 	row = db.QueryRowx(q)
@@ -190,9 +209,6 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 		fmt.Printf("Failed to fetch frontend: %v", err)
 	}
 	m.KeggerWebsite = result
-
-	// set invitation language
-	m.InviteLang = guest.InvitationLang
 
 	// invite image
 	image := "invite_image_" + guest.InvitationLang

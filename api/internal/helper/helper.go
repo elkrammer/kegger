@@ -3,7 +3,10 @@ package helper
 
 import (
 	"bytes"
+	"fmt"
+	"strconv"
 	"text/template"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -50,4 +53,25 @@ func ParseTemplate(t *template.Template, vars interface{}) string {
 		panic(err)
 	}
 	return tmplBytes.String()
+}
+
+func FormatSpanishDate(t time.Time) string {
+	// spanish translations
+
+	var esDays = [...]string{
+		"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo",
+	}
+	var esMonths = [...]string{
+		"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+		"Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+	}
+
+	date := fmt.Sprintf("%s %02d de %s '%s a las %02d:%02d",
+		esDays[t.Weekday()][:3],
+		t.Day(),
+		esMonths[t.Month()-1][:3],
+		strconv.Itoa(t.Year())[2:],
+		t.Hour(), t.Minute())
+
+	return date
 }
