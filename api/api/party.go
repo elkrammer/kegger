@@ -49,7 +49,6 @@ func GetParties(c echo.Context) error {
 			fmt.Println(err)
 		}
 
-		// TODO: this is fucking ugly. find a better way to do it.
 		p := model.PartyResponse{}
 		p.ID = party.ID
 		p.Name = party.Name
@@ -101,7 +100,6 @@ func GetParty(c echo.Context) error {
 			fmt.Println(err)
 		}
 
-		// TODO: this is kinda ugly. find out a better way to do it.
 		p.ID = party.ID
 		p.Name = party.Name
 		p.HostId = party.HostId
@@ -152,9 +150,9 @@ func CreateParty(c echo.Context) error {
 
 		q := `
         INSERT INTO guests
-        (party_refer, first_name, last_name, email, is_attending, invitation_id, plus_one)
-        VALUES($1, $2, $3, $4, $5, $6, $7);`
-		_, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId, guest.PlusOne)
+        (party_refer, first_name, last_name, email, is_attending, invitation_id, plus_one, invitation_lang)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8);`
+		_, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId, guest.PlusOne, guest.InvitationLang)
 		if err != nil {
 			fmt.Println("error inserting guest record: ", q)
 			fmt.Println(err)

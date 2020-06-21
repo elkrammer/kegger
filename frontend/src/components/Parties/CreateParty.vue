@@ -61,12 +61,29 @@
               </b-input>
             </b-field>
 
-            <b-field label="Plus One">
-              <b-select v-model="formProps.guest.plus_one" placeholder="Plus One">
-                <option :value="false">No</option>
-                <option :value="true">Yes</option>
-              </b-select>
-            </b-field>
+            <nav class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <b-field label="Plus One">
+                    <b-select v-model="formProps.guest.plus_one" placeholder="Plus One">
+                      <option :value="false">No</option>
+                      <option :value="true">Yes</option>
+                    </b-select>
+                  </b-field>
+                </div>
+              </div>
+
+              <div class="level-right">
+                <div class="level-item">
+                  <b-field label="Invite Language">
+                    <b-select v-model="formProps.guest.invitation_lang" placeholder="Invite Language">
+                      <option value="es">Espanol</option>
+                      <option value="en">English</option>
+                    </b-select>
+                  </b-field>
+                </div>
+              </div>
+            </nav>
 
             <b-field>
               <p class="buttons">
@@ -124,6 +141,7 @@ export default {
           last_name: '',
           email: '',
           plus_one: false,
+          invitation_lang: 'es',
         },
       },
     }
@@ -169,6 +187,7 @@ export default {
       this.formProps.guest.last_name= '';
       this.formProps.guest.email = '';
       this.formProps.guest.plus_one = false;
+      this.formProps.guest.invitation_lang = 'es';
     },
     deleteGuest(index) {
       this.formProps.guests.splice(this.formProps.guests.indexOf(index), 1);

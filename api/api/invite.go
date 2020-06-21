@@ -61,9 +61,9 @@ func SendInvite(c echo.Context) error {
 	encoded := base64.StdEncoding.EncodeToString([]byte(dat))
 	a_jpg.SetContent(encoded)
 	a_jpg.SetType("image/jpeg")
-	a_jpg.SetFilename("testing.jpg")
+	a_jpg.SetFilename("invite.jpg")
 	a_jpg.SetDisposition("attachment")
-	a_jpg.SetContentID("Test Attachment")
+	a_jpg.SetContentID("Invite")
 
 	co := mail.NewContent("text/html", body)
 	m.AddContent(co)
