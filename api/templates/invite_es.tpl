@@ -105,15 +105,17 @@
                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000">
-                          Hola {{ .Guest.FirstName }},
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000;">
+                        Hola {{ .Guest.FirstName }},
                         </p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000">
-                          Acompañanos a celebrar el matrimonio de {{ .BrideName }} &amp; {{ .GroomName }}. <br />
-                          El matrimonio será el día {{ .EventDate }} en {{ .EventLocation }}.
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000;">
+                        Acompañanos a celebrar el matrimonio de {{ .BrideName }} &amp; {{ .GroomName }}. <br />
+                        El matrimonio será el día {{ .EventDate }} en {{ .EventLocation }}.
+                        </p>
 
-                          <br /><br />
-                          Para mayor información visita nuestra página de matrimonio en <a href="{{ .WeddingWebsite }}" target="_blank">{{ .WeddingWebsite }}<a/>
+                        <br />
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000;">
+                        Para mayor información visita nuestra página de matrimonio en <a href="{{ .WeddingWebsite }}" target="_blank">{{ .WeddingWebsite }}<a/>
                         </p>
                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
                           <tbody>

@@ -47,45 +47,45 @@
   }
 }
 
-      /* -------------------------------------
-         PRESERVE THESE STYLES IN THE HEAD
-           ------------------------------------- */
-      @media all {
-        .ExternalClass {
-          width: 100%;
-        }
-        .ExternalClass,
-        .ExternalClass p,
-        .ExternalClass span,
-        .ExternalClass font,
-        .ExternalClass td,
-        .ExternalClass div {
-          line-height: 100%;
-        }
-        .apple-link a {
-          color: inherit !important;
-          font-family: inherit !important;
-          font-size: inherit !important;
-          font-weight: inherit !important;
-          line-height: inherit !important;
-          text-decoration: none !important;
-        }
-        #MessageViewBody a {
-          color: inherit;
-          text-decoration: none;
-          font-size: inherit;
-          font-family: inherit;
-          font-weight: inherit;
-          line-height: inherit;
-        }
-        .btn-primary table td:hover {
-          background-color: #34495e !important;
-        }
-        .btn-primary a:hover {
-          background-color: #34495e !important;
-          border-color: #34495e !important;
-        }
-      }
+          /* -------------------------------------
+             PRESERVE THESE STYLES IN THE HEAD
+               ------------------------------------- */
+          @media all {
+            .ExternalClass {
+              width: 100%;
+            }
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+              line-height: 100%;
+            }
+            .apple-link a {
+              color: inherit !important;
+              font-family: inherit !important;
+              font-size: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+              text-decoration: none !important;
+            }
+            #MessageViewBody a {
+              color: inherit;
+              text-decoration: none;
+              font-size: inherit;
+              font-family: inherit;
+              font-weight: inherit;
+              line-height: inherit;
+            }
+            .btn-primary table td:hover {
+              background-color: #34495e !important;
+            }
+            .btn-primary a:hover {
+              background-color: #34495e !important;
+              border-color: #34495e !important;
+            }
+          }
     </style>
   </head>
   <body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
@@ -105,15 +105,17 @@
                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000">
-                          Hi {{ .Guest.FirstName }},
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000;">
+                        Hi {{ .Guest.FirstName }},
                         </p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000">
-                          Please join us to celebrate the wedding of {{ .BrideName }} &amp; {{ .GroomName }}. <br />
-                          The wedding will be on {{ .EventDate }} at {{ .EventLocation }}.
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000;">
+                        Please join us to celebrate the wedding of {{ .BrideName }} &amp; {{ .GroomName }}. <br />
+                        The wedding will be on {{ .EventDate }} at {{ .EventLocation }}.
+                        </p>
 
-                          <br /><br />
-                          For more information about our wedding please visit our wedding website at <a href="{{ .WeddingWebsite }}" target="_blank">{{ .WeddingWebsite }}<a/>
+                        <br />
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #000000;">
+                        For more information about our wedding please visit our wedding website at <a href="{{ .WeddingWebsite }}" target="_blank">{{ .WeddingWebsite }}<a/>
                         </p>
                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
                           <tbody>

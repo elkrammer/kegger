@@ -59,18 +59,18 @@ func FormatSpanishDate(t time.Time) string {
 	// spanish translations
 
 	var esDays = [...]string{
-		"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo",
+		"Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado",
 	}
 	var esMonths = [...]string{
 		"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
 		"Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
 	}
 
-	date := fmt.Sprintf("%s %02d de %s '%s a las %02d:%02d",
-		esDays[t.Weekday()][:3],
+	date := fmt.Sprintf("%s %02d de %s %s a las %02d:%02d",
+		esDays[t.Weekday()],
 		t.Day(),
-		esMonths[t.Month()-1][:3],
-		strconv.Itoa(t.Year())[2:],
+		esMonths[t.Month()-1],
+		strconv.Itoa(t.Year()),
 		t.Hour(), t.Minute())
 
 	return date
