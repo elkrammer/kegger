@@ -44,7 +44,7 @@ const settings = {
             })
         },
         appSettings(state) {
-            const app = ['wedding_website_url', 'kegger_frontend_url', 'kegger_api_url']
+            const app = ['wedding_website_url', 'kegger_frontend_url', 'kegger_api_url', 'time_zone']
             return state.settings.filter(obj => {
                 return app.includes(obj.name)
             })
