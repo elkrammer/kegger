@@ -45,7 +45,7 @@
         </div>
 
         <b-modal :active.sync="isModalActive">
-          <p class="image is-square">
+          <p class="image is-4by5">
           <img :src="selected">
           </p>
         </b-modal>
