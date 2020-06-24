@@ -97,14 +97,27 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.Guest = guest
 
-	// invite image
-	q = `SELECT value FROM settings WHERE name = 'invite_background';`
+	// set invitation language
+	m.InviteLang = guest.InvitationLang
+
+	// get api url
+	q = `SELECT value FROM settings WHERE name = 'kegger_api_url';`
 	row = db.QueryRowx(q)
 	err = row.Scan(&result)
 	if err != nil {
-		fmt.Printf("Failed to fetch invite background: %v", err)
+		fmt.Printf("Failed to fetch kegger_api_url: %v", err)
 	}
-	m.InviteImage = result
+	url := result
+
+	// invite image
+	image := "invite_image_" + guest.InvitationLang
+	q = `SELECT value FROM settings WHERE name = $1;`
+	row = db.QueryRowx(q, image)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch invite image: %v", err)
+	}
+	m.InviteImage = url + result
 
 	return m
 }
