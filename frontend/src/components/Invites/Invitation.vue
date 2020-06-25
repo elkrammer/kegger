@@ -41,7 +41,8 @@
             <br>
 
             Love,<br/>
-            {{ invite.bride_name }} &amp; {{ invite.groom_name }}
+            {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
+            <img :src="invite.signature_image">
             </p>
           </div>
 
@@ -83,8 +84,9 @@
             <br>
             <br>
 
-            Love,<br/>
-            {{ invite.bride_name }} &amp; {{ invite.groom_name }}
+            Love,<br><br>
+            {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
+            <img :src="invite.signature_image">
             </p>
           </div>
 
