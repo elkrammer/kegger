@@ -119,6 +119,15 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.InviteImage = url + result
 
+	// signature image
+	q = `SELECT value FROM settings WHERE name = 'signature_image';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch signature image: %v", err)
+	}
+	m.SignatureImage = url + result
+
 	return m
 }
 
@@ -241,6 +250,15 @@ func FetchEventInformationByGuestId(id int) model.Invite {
 		fmt.Printf("Failed to fetch website url: %v", err)
 	}
 	m.WeddingWebsite = result
+
+	// signature image
+	q = `SELECT value FROM settings WHERE name = 'signature_image';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch signature image: %v", err)
+	}
+	m.SignatureImage = result
 
 	return m
 }

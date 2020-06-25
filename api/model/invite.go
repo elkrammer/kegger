@@ -23,6 +23,7 @@ type Invite struct {
 	GroomName      string        `json:"groom_name"`
 	BrideName      string        `json:"bride_name"`
 	InviteImage    string        `json:"invite_image"`
+	SignatureImage string        `json:"signature_image"`
 	InviteLang     string        `json:"invite_lang"`
 	TimeZone       string        `json:"time_zone"`
 	Guest          GuestResponse `json:"guest"`
