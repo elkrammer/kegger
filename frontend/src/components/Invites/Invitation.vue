@@ -28,19 +28,18 @@
             Please join us to celebrate the wedding of {{ invite.bride_name }} &amp; {{ invite.groom_name }}.
             <br><br>
 
-            The wedding will be on {{ invite.event_date | moment('timezone', invite.time_zone, 'MMM do YYYY H:mm') }} at {{ invite.event_location }}.
+            The wedding will be on {{ invite.event_date }} at {{ invite.event_location }}.
             <br>
             The dress code will be {{ invite.dress_code }}.
 
-            <br><br>
-
             <span v-if="invite.guest.plus_one">
+              <br><br>
               You are allowed to bring a guest to the wedding.
             </span>
             <br>
             <br>
 
-            Love,<br/>
+            Love,<br>
             {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
             <img :src="invite.signature_image">
             </p>
@@ -71,20 +70,19 @@
         <div v-if="invite.invite_lang == 'es'" class="column is-half">
           <div class="box is-shady">
             <p>Hola {{ invite.guest.first_name }}, <br><br>
-            El matrimonio será el día {{ invite.event_date | moment('timezone', invite.time_zone, 'MMM do YYYY H:mm') }} en {{ invite.event_location }}.
+            El matrimonio será el día {{ invite.event_date }} en {{ invite.event_location }}.
             <br><br>
 
             La vestimenta para el evento será {{ invite.dress_code }}.
 
-            <br><br>
-
             <span v-if="invite.guest.plus_one">
+              <br><br>
               Puedes traer a un invitado al matrimonio.
             </span>
             <br>
             <br>
 
-            Love,<br><br>
+            Love,<br>
             {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
             <img :src="invite.signature_image">
             </p>

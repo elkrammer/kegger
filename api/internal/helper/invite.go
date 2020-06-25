@@ -22,20 +22,6 @@ func FetchEventInformation(inviteId string) model.Invite {
 	}
 	m.EventName = result
 
-	// event date
-	q = `SELECT value FROM settings WHERE name = 'event_date';`
-	row = db.QueryRowx(q)
-	err = row.Scan(&result)
-	if err != nil {
-		fmt.Printf("Failed to fetch event date: %v", err)
-	}
-	layout := "2006-01-02T15:04:05Z" // iso8601
-	t, _ := time.Parse(layout, result)
-	if err != nil {
-		fmt.Println("Error parsing date: ", err)
-	}
-	m.EventDate = t.Format("Mon Jan 2 '06 at 15:04")
-
 	// event location
 	q = `SELECT value FROM settings WHERE name = 'event_location';`
 	row = db.QueryRowx(q)
@@ -99,6 +85,27 @@ func FetchEventInformation(inviteId string) model.Invite {
 
 	// set invitation language
 	m.InviteLang = guest.InvitationLang
+
+	// event date
+	q = `SELECT value FROM settings WHERE name = 'event_date';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch event date: %v", err)
+	}
+	layout := "2006-01-02T15:04:05Z" // iso8601
+	t, _ := time.Parse(layout, result)
+	loc, _ := time.LoadLocation(m.TimeZone)
+	t = t.In(loc) // set location for time
+	if err != nil {
+		fmt.Println("Error parsing date: ", err)
+	}
+	// set formatting
+	if m.InviteLang == "es" {
+		m.EventDate = FormatSpanishDate(t)
+	} else {
+		m.EventDate = t.Format("Mon Jan 2 '06 at 15:04")
+	}
 
 	// get api url
 	q = `SELECT value FROM settings WHERE name = 'kegger_api_url';`
