@@ -9,8 +9,15 @@
       <div class="columns is-multiline" v-if="Object.entries(this.invite).length > 0">
         <div class="column is-half">
           <figure class="image">
-            <img :src="invite.invite_image" class="is-shady">
+            <img :src="invite.invite_image" @click="isModalActive = true" class="is-shady">
           </figure>
+
+          <b-modal :active.sync="isModalActive">
+            <p class="image is-4by5">
+            <img :src="invite.invite_image">
+            </p>
+          </b-modal>
+
         </div>
 
         <!-- English -->
@@ -117,6 +124,7 @@ export default {
   data() {
     return {
       attending: null,
+      isModalActive: false,
     }
   },
   computed: {
@@ -191,9 +199,9 @@ html, body {
 
 .section {
   height: 100vh;
-  background: #77A1D3;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to top, #E684AE, #79CBCA, #77A1D3);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to top, #E684AE, #79CBCA, #77A1D3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #A1FFCE;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #A1FFCE, #FAFFD1);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #A1FFCE, #FAFFD1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .invite {

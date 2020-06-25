@@ -15,7 +15,7 @@
           </div>
 
           <div class="event-date">
-            <span>{{ eventDate | moment('timezone', 'America/Toronto', 'MMM do YYYY H:mm') }}</span>
+            <span>{{ eventDate | moment('timezone', timeZone, 'MMM do YYYY H:mm') }}</span>
           </div>
 
           <div class="invite">
@@ -69,6 +69,9 @@ export default {
     },
     eventLocation() {
       return this.eventSettings.find(s => s.name === 'event_location').value;
+    },
+    timeZone() {
+      return this.eventSettings.find(s => s.name === 'time_zone').value;
     },
     dressCode() {
       return this.eventSettings.find(s => s.name === 'dress_code').value;
