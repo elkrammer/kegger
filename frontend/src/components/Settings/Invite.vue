@@ -26,12 +26,23 @@
               </a>
             </b-upload>
 
+            <b-upload v-if="setting.name == 'signature_image'" v-model="signature_image">
+              <a class="button is-info is-rounded">
+                <b-icon icon="upload"></b-icon>
+                <span>Change</span>
+              </a>
+            </b-upload>
+
             <span class="file-name" v-if="setting.name == 'invite_image_es' && invite_image_es">
               {{ invite_image_es.name }}
             </span>
 
             <span class="file-name" v-if="setting.name == 'invite_image_en' && invite_image_en">
               {{ invite_image_en.name }}
+            </span>
+
+            <span class="file-name" v-if="setting.name == 'signature_image' && signature_image">
+              {{ signature_image.name }}
             </span>
 
           </b-field>
@@ -41,6 +52,7 @@
           <figure class="image">
             <img v-if="setting.name == 'invite_image_es'" :src="es_Invite_url" class="is-shady " @click="modal(es_Invite_url)">
             <img v-if="setting.name == 'invite_image_en'" :src="en_Invite_url" class="is-shady " @click="modal(en_Invite_url)">
+            <img v-if="setting.name == 'signature_image'" :src="signature_image_url" class="is-shady " @click="modal(signature_image_url)">
           </figure>
         </div>
 
@@ -70,6 +82,7 @@ export default {
       isModalActive: false,
       invite_image_en: null,
       invite_image_es: null,
+      signature_image: null,
       selected: null,
     }
   },
@@ -88,12 +101,17 @@ export default {
       const url = this.appSettings.find(s => s.name === 'kegger_api_url').value;
       return url + img;
     },
+    signature_image_url() {
+      const img = this.settings.find(s => s.name === 'signature_image').value;
+      const url = this.appSettings.find(s => s.name === 'kegger_api_url').value;
+      return url + img;
+    },
     saveEnabled() {
-      if (this.invite_image_en || this.invite_image_es) {
+      if (this.invite_image_en || this.invite_image_es || this.signature_image) {
         return true;
       }
       return false;
-    }
+    },
   },
   methods: {
     async getInviteSettings() {
@@ -119,6 +137,13 @@ export default {
           data.append('file', this.invite_image_es);
           data.append('name', 'invite_image_es')
           await this.$store.dispatch("settings/uploadInviteImage", data);
+        }
+
+        if (this.signature_image) {
+          let data = new FormData();
+          data.append('file', this.signature_image);
+          data.append('name', 'signature_image')
+          await this.$store.dispatch("settings/uploadSignatureImage", data);
         }
 
         this.getInviteSettings();

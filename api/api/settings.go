@@ -103,3 +103,46 @@ func UploadInviteImage(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, "Invite image successfully uploaded")
 }
+
+func UploadSignatureImage(c echo.Context) error {
+	db := db.DbManager()
+	signature := c.FormValue("name")
+
+	// source
+	file, err := c.FormFile("file")
+	if err != nil {
+		return err
+	}
+
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+
+	defer src.Close()
+
+	// destination
+	filePath := "./assets/uploads/" + file.Filename
+	dst, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+
+	defer dst.Close()
+
+	// copy
+	if _, err = io.Copy(dst, src); err != nil {
+		return err
+	}
+
+	webPath := "/uploads/" + file.Filename
+	query := `UPDATE settings SET "value" = $1 WHERE "name" = $2`
+	_, err = db.Exec(query, webPath, signature)
+
+	if err != nil {
+		fmt.Println("error updating %s: ", signature, query)
+		fmt.Println(err)
+	}
+
+	return c.JSON(http.StatusOK, "Signature image successfully uploaded")
+}

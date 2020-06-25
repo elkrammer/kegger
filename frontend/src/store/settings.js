@@ -8,7 +8,6 @@ Vue.use(Vuex);
 
 const GET_SETTINGS = "GET_SETTINGS";
 const UPDATE_SETTINGS = "UPDATE_SETTINGS";
-const UPLOAD_INVITE_BG_IMAGE = "UPDATE_SETTINGS";
 
 const settings = {
     namespaced: true,
@@ -38,7 +37,7 @@ const settings = {
             })
         },
         inviteSettings(state) {
-            const invite = ['invite_image_en', 'invite_image_es'];
+            const invite = ['invite_image_en', 'invite_image_es', 'signature_image'];
             return state.settings.filter(obj => {
                 return invite.includes(obj.name)
             })
@@ -71,11 +70,19 @@ const settings = {
                 return Promise.reject(error);
             }
         },
-        async uploadInviteImage({ commit, rootGetters }, data) {
+        async uploadInviteImage({ rootGetters }, data) {
             try {
                 setAuthorizationHeader(rootGetters["user/accessToken"]);
                 const response = await axios.post("/api/settings/uploadInviteImg", data);
-                commit(UPLOAD_INVITE_BG_IMAGE, response.data);
+                return response.data;
+            } catch(error) {
+                return Promise.reject(error);
+            }
+        },
+        async uploadSignatureImage({ rootGetters }, data) {
+            try {
+                setAuthorizationHeader(rootGetters["user/accessToken"]);
+                const response = await axios.post("/api/settings/uploadSignatureImg", data);
                 return response.data;
             } catch(error) {
                 return Promise.reject(error);

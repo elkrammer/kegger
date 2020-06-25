@@ -66,6 +66,7 @@ func Init() *echo.Echo {
 	r.GET("/settings", api.GetSettings)
 	r.PUT("/settings", api.UpdateSettings)
 	r.POST("/settings/uploadInviteImg", api.UploadInviteImage)
+	r.POST("/settings/uploadSignatureImg", api.UploadSignatureImage)
 
 	// Invitation Routes
 	r.POST("/sendinvite/:id", api.SendInvite)           // Send Invite Email Route (protected)

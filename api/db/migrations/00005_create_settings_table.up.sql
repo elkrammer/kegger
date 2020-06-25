@@ -39,6 +39,10 @@ INSERT INTO public.settings
 ("name", value, description)
 VALUES('invite_image_es', '/uploads/invite_es.jpg', 'Spanish Invitation Image Path');
 
+INSERT INTO public.settings
+("name", value, description)
+VALUES('signature_image', '/uploads/signature.png', 'Signature Image Path');
+
 -- App Settings
 INSERT INTO public.settings
 ("name", value, description)
