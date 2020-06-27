@@ -1,3 +1,4 @@
 docker-compose.prod.yml
 .env*
 api/assets/uploads/*
+assets/
