@@ -42,7 +42,6 @@ const invite = {
                                 email: process.env.VUE_APP_EMAIL_TO // DEBUGGING
                             },
                         ],
-                        subject: process.env.VUE_APP_EMAIL_SUBJECT,
                     });
                     return response.data;
                 } else {
@@ -56,7 +55,6 @@ const invite = {
                                 email: payload.email
                             },
                         ],
-                        subject: process.env.VUE_APP_EMAIL_SUBJECT,
                     });
                     return response.data;
                 }

@@ -38,7 +38,15 @@ func SendInvite(c echo.Context) error {
 	m := mail.NewV3Mail()
 	from := mail.NewEmail(email.FromName, email.FromEmail)
 	m.SetFrom(from)
-	m.Subject = email.Subject
+
+	// set subject
+	if invite.InviteLang == "es" {
+		m.Subject = fmt.Sprintf("Te invitamos a celebrar el matrimonio de %s", invite.EventName)
+	}
+
+	if invite.InviteLang == "en" {
+		m.Subject = fmt.Sprintf("Join us to celebrate the wedding of %s", invite.EventName)
+	}
 
 	p := mail.NewPersonalization()
 
