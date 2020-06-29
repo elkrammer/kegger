@@ -40,12 +40,6 @@
               </b-field>
 
               <div class="field">
-                <label for="checkbox" class="checkbox">
-                  <input type="checkbox">
-                  Remember me
-                </label>
-              </div>
-              <div class="field">
                 <button v-on:click="submit()" :disabled="!isFormValid()" class="button is-success">
                   Login
                 </button>

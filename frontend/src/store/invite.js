@@ -45,7 +45,7 @@ const invite = {
                     });
                     return response.data;
                 } else {
-                    // debugging mode is not enabled, sent email to real recipient
+                    // debugging mode is not enabled, send email to real recipient
                     const response = await axios.post("/api/sendinvite/" + payload.id, {
                         from_name: process.env.VUE_APP_EMAIL_FROM_NAME,
                         from_email: process.env.VUE_APP_EMAIL_FROM,

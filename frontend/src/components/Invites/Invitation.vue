@@ -41,7 +41,7 @@
 
             Love,<br>
             {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
-            <img :src="invite.signature_image">
+            <img class="signature-img" :src="invite.signature_image">
             </p>
           </div>
 
@@ -84,7 +84,7 @@
 
             Love,<br>
             {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
-            <img :src="invite.signature_image">
+            <img class="signature-img" :src="invite.signature_image">
             </p>
           </div>
 
@@ -211,6 +211,10 @@ html, body {
 .rsvp {
   display: table;
   margin: 0 auto;
+}
+
+.signature-img {
+  height: 50px;
 }
 
 </style>

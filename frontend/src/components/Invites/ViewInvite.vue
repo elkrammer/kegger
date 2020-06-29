@@ -6,7 +6,6 @@
       </header>
       <section
         class="modal-card-body invite-background"
-        :style="{ 'background-image': inviteBackground }"
         >
         <div class="invite-main" v-if="eventSettings.length > 0">
 
@@ -76,16 +75,12 @@ export default {
     dressCode() {
       return this.eventSettings.find(s => s.name === 'dress_code').value;
     },
-    inviteBackground() {
-      const path = process.env.VUE_APP_API_SERVER + this.inviteSettings.find(s => s.name === 'invite_background').value;
-      return 'url("' + path + '")';
-    }
   },
   methods: {
     async getGuest() {
       try {
         const response = await this.$store.dispatch("guest/getGuest", this.guest_id);
-        this.guest= response;
+        this.guest = response;
       } catch (error) {
         console.log(error);
       }
