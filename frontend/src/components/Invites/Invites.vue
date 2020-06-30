@@ -9,7 +9,17 @@
           trap-focus
           aria-role="dialog"
           aria-modal>
-          <ViewInvite v-if="selected !== null" :guest_id="selected.id" />
+          <div class="modal-card" v-if="viewInviteActive" style="width: 900px;">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Invite for {{ selected.name }}</p>
+            </header>
+            <section class="modal-card-body">
+              <ViewInvite v-if="selected !== null" :id="selected.invitation_id" :isModal=true />
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button" @click="viewInviteActive = false">Close</button>
+            </footer>
+          </div>
         </b-modal>
       </section>
 
@@ -74,7 +84,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ViewInvite from "@/components/Invites/ViewInvite.vue";
+import ViewInvite from "@/components/Invites/Invitation.vue";
 
 export default {
   name: "invites",

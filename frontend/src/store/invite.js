@@ -71,6 +71,16 @@ const invite = {
                 return Promise.reject(error);
             }
         },
+        async getInviteProtected({ commit, rootGetters }, id) {
+            try {
+                setAuthorizationHeader(rootGetters["user/accessToken"]);
+                const response = await axios.get("/api/viewinvite/" + id);
+                commit(GET_INVITE, response.data);
+                return response.data;
+            } catch (error) {
+                return Promise.reject(error);
+            }
+        },
         async updateInvite({ commit }, data) {
             try {
                 if (data.action === "opened") {

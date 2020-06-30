@@ -45,7 +45,7 @@
             </p>
           </div>
 
-          <div class="box is-shady">
+          <div class="box is-shady" v-if="!this.isModal">
             <h1 class="title">RSVP</h1>
             <span>Are you planning to attend our wedding?</span>
             <br><br>
@@ -88,7 +88,7 @@
             </p>
           </div>
 
-          <div class="box is-shady">
+          <div class="box is-shady" v-if="!this.isModal">
             <h1 class="title">RSVP</h1>
             <span>Estas planeando venir a nuestro matrimonio?</span>
             <br><br>
@@ -120,7 +120,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "invitation",
-  props: ['id'],
+  props: ['id', 'isModal'],
   data() {
     return {
       attending: null,
@@ -130,18 +130,23 @@ export default {
   computed: {
     ...mapGetters({
       invite: "invite/invite",
+      user: "user/user",
     }),
   },
   methods: {
     async getInvite() {
       try {
-        await this.$store.dispatch("invite/getInvite", this.id);
-        // update invitation_opened if this is the first time it's being opened
-        if (this.invite && this.invite.guest.invitation_opened == null) {
-          this.setInviteOpened();
+        if (this.user && this.id.length < 10) {
+          await this.$store.dispatch("invite/getInviteProtected", this.id);
+        } else {
+          await this.$store.dispatch("invite/getInvite", this.id);
+          // update invitation_opened if this is the first time it's being opened
+          if (this.invite && this.invite.guest.invitation_opened == null) {
+            this.setInviteOpened();
+          }
+          // sync local attending state with the invite
+          this.attending = this.invite.guest.is_attending;
         }
-        // sync local attending state with the invite
-        this.attending = this.invite.guest.is_attending;
       } catch (error) {
         console.log(error);
       }
