@@ -112,7 +112,25 @@ func FetchInviteDetails(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, msg)
 	}
 
-	invite := helper.FetchEventInformation(id)
+	invite := helper.FetchEventInformation(id, false)
+
+	// validate if we were able to fetch invite details
+	if invite.Guest.PartyName == "" {
+		msg := fmt.Sprintf("Could not fetch invite for id: %v", id)
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+	return c.JSON(http.StatusOK, invite)
+}
+
+func FetchInviteDetailsProtected(c echo.Context) error {
+	id := c.Param("guest_id")
+
+	if len(id) == 0 {
+		msg := fmt.Sprintf("Invite ID can't be null")
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+
+	invite := helper.FetchEventInformation(id, true)
 
 	// validate if we were able to fetch invite details
 	if invite.Guest.PartyName == "" {

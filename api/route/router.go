@@ -69,10 +69,11 @@ func Init() *echo.Echo {
 	r.POST("/settings/uploadSignatureImg", api.UploadSignatureImage)
 
 	// Invitation Routes
-	r.POST("/sendinvite/:id", api.SendInvite)           // Send Invite Email Route (protected)
-	e.GET("/invite/:invite_id", api.FetchInviteDetails) // Fetch Invitation Details
-	e.PUT("/invite", api.UpdateInvite)                  // Update Invitation Attendance / Invite Opened Timestamp
-	e.GET("/findinvite/:email", api.FindInviteId)       // Find Invitation ID from email
+	r.POST("/sendinvite/:id", api.SendInvite)                       // Send Invite Email Route (protected)
+	r.GET("/viewinvite/:guest_id", api.FetchInviteDetailsProtected) // Fetch Invitation Details (protected)
+	e.GET("/invite/:invite_id", api.FetchInviteDetails)             // Fetch Invitation Details
+	e.PUT("/invite", api.UpdateInvite)                              // Update Invitation Attendance / Invite Opened Timestamp
+	e.GET("/findinvite/:email", api.FindInviteId)                   // Find Invitation ID from email
 
 	// Health Check
 	e.GET("/health", api.HealthCheck)

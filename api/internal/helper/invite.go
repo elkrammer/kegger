@@ -8,7 +8,7 @@ import (
 )
 
 // used by api
-func FetchEventInformation(inviteId string) model.Invite {
+func FetchEventInformation(inviteId string, isProtected bool) model.Invite {
 	db := db.DbManager()
 	m := model.Invite{}
 
@@ -70,12 +70,22 @@ func FetchEventInformation(inviteId string) model.Invite {
 	// fetch guest information
 	guest := model.GuestResponse{}
 
-	// if the id is only a number, then it corresponds to the guest_id and not the inviteId
-	query := `
-		SELECT guests.*, parties.name as party_name
-		FROM guests
-		INNER JOIN parties ON guests.party_refer = parties.id
-		WHERE guests.invitation_id = $1`
+	var query string
+	if len(inviteId) < 10 && isProtected {
+		query = `
+			SELECT guests.*, parties.name as party_name
+			FROM guests
+			INNER JOIN parties ON guests.party_refer = parties.id
+			WHERE guests.id = $1`
+	} else {
+		// if the id is only a number, then it corresponds to the guest_id and not the inviteId
+		query = `
+			SELECT guests.*, parties.name as party_name
+			FROM guests
+			INNER JOIN parties ON guests.party_refer = parties.id
+			WHERE guests.invitation_id = $1`
+	}
+
 	row = db.QueryRowx(query, inviteId)
 	err = row.StructScan(&guest)
 	if err != nil {
