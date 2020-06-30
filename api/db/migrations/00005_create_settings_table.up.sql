@@ -57,5 +57,5 @@ INSERT INTO public.settings
 VALUES('kegger_api_url', 'http://127.0.0.1:4040', 'Kegger API URL');
 
 INSERT INTO public.settings
-("time_zone", value, description)
+("name", value, description)
 VALUES('time_zone', 'America/Toronto', 'Time zone where the event will take place');
