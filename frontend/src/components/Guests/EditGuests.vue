@@ -127,6 +127,7 @@ export default {
         first_name:  '',
         last_name:    '',
         email:  '',
+        invitation_lang: 'es',
         party_refer: this.party_id,
       };
       this.guests.unshift(guest);

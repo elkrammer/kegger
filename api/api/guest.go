@@ -159,7 +159,7 @@ func UpdateGuests(c echo.Context) error {
 			query := `
 					INSERT INTO guests
 					(party_refer, first_name, last_name, email, plus_one, is_attending, invitation_lang)
-					VALUES($1, $2, $3, $4, $5, $6, $7, $8)`
+					VALUES($1, $2, $3, $4, $5, $6, $7)`
 			_, err := db.Exec(query, guest.PartyRefer, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending, guest.InvitationLang)
 
 			if err != nil {
