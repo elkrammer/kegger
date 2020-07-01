@@ -17,7 +17,7 @@
           </b-field>
 
           <b-field label="Host">
-            <b-select placeholder="Select Host" v-model="formProps.host_id">
+            <b-select placeholder="Select Host" v-model="selectedHost">
               <option
                 v-for="user in users"
                 :value="user.id"
@@ -144,6 +144,7 @@ export default {
           invitation_lang: 'es',
         },
       },
+      selectedHost: null,
     }
   },
   methods: {
@@ -213,6 +214,7 @@ export default {
   computed: {
     ...mapGetters({
       users: "users/users",
+      user: "user/user",
     }),
     isGuestFormValid () {
       if (
@@ -227,6 +229,12 @@ export default {
   },
   created() {
     this.getHosts();
+    this.selectedHost = this.user.sub;
+  },
+  watch: {
+    selectedHost() {
+      this.formProps.host_id = this.selectedHost;
+    },
   },
 };
 </script>

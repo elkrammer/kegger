@@ -152,6 +152,7 @@ func CreateParty(c echo.Context) error {
         INSERT INTO guests
         (party_refer, first_name, last_name, email, is_attending, invitation_id, plus_one, invitation_lang)
         VALUES($1, $2, $3, $4, $5, $6, $7, $8);`
+		fmt.Println(q)
 		_, err = db.Exec(q, pid, guest.FirstName, guest.LastName, guest.Email, guest.IsAttending, invitationId, guest.PlusOne, guest.InvitationLang)
 		if err != nil {
 			fmt.Println("error inserting guest record: ", q)
