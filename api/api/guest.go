@@ -171,9 +171,9 @@ func UpdateGuests(c echo.Context) error {
 
 		q := `
 			UPDATE guests
-			SET first_name=$1, last_name=$2, email=$3, plus_one=$4, is_attending=$5, invitation_lang=$6
-			WHERE id=$7;`
-		_, err := db.Exec(q, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending, guest.InvitationLang, guest.ID)
+			SET first_name=$1, last_name=$2, email=$3, plus_one=$4, is_attending=$5, invitation_lang=$6, invitation_id = $7
+			WHERE id=$8;`
+		_, err := db.Exec(q, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending, guest.InvitationLang, guest.InvitationId, guest.ID)
 		if err != nil {
 			fmt.Println("error updating guest record: ", q)
 			fmt.Println(err)
