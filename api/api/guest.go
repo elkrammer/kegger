@@ -155,12 +155,13 @@ func UpdateGuests(c echo.Context) error {
 
 		// identify new guests in the request and insert them into the guest table
 		if guest.ID == 0 {
+			invitationId := ksuid.New()
 			// insert guest struct into db
 			query := `
 					INSERT INTO guests
-					(party_refer, first_name, last_name, email, plus_one, is_attending, invitation_lang)
-					VALUES($1, $2, $3, $4, $5, $6, $7)`
-			_, err := db.Exec(query, guest.PartyRefer, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending, guest.InvitationLang)
+					(party_refer, first_name, last_name, email, plus_one, is_attending, invitation_lang, invitation_id)
+					VALUES($1, $2, $3, $4, $5, $6, $7, $8)`
+			_, err := db.Exec(query, guest.PartyRefer, guest.FirstName, guest.LastName, guest.Email, guest.PlusOne, guest.IsAttending, guest.InvitationLang, invitationId)
 
 			if err != nil {
 				fmt.Println("error inserting guest record: ", query)
