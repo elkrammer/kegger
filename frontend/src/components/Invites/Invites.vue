@@ -30,6 +30,7 @@
             <div style="margin-bottom: 5px" class="buttons">
               <b-button @click="viewInviteActive = true" :disabled="selected === null" type="is-success">View Invite</b-button>
               <b-button v-if="selected !== null && !selected.invitation_sent" @click="sendInvite" type="is-info">Send Invite</b-button>
+              <b-button v-if="selected !== null && selected.invitation_sent" @click="sendInvite" type="is-danger">ReSend Invite</b-button>
               <b-button v-if="selected !== null" @click="selected = null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
             </div>
           </b-field>
