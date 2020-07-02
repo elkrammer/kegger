@@ -4,7 +4,7 @@
 
     <div v-for="(value, name) in settings" :key="name">
       <b-field :label="name" type="is-info">
-        <b-input :value="value" rounded></b-input>
+        <b-input :value="value" rounded disabled></b-input>
       </b-field>
     </div>
 
