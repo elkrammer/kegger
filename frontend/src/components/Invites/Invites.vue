@@ -14,7 +14,7 @@
               <p class="modal-card-title">Invite for {{ selected.name }}</p>
             </header>
             <section class="modal-card-body">
-              <ViewInvite v-if="selected !== null" :id="selected.invitation_id" :isModal=true />
+              <ViewInvite v-if="selected !== null" :id="selected.id" :isModal=true />
             </section>
             <footer class="modal-card-foot">
               <button class="button" @click="viewInviteActive = false">Close</button>

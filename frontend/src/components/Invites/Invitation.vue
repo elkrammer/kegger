@@ -73,7 +73,7 @@
             El matrimonio será el día {{ invite.event_date }} en {{ invite.event_location }}.
             <br><br>
 
-            La vestimenta para el evento será {{ invite.dress_code }}.
+            Para más información revisa nuestra página web en {{ invite.wedding_website }}
 
             <span v-if="invite.guest.plus_one">
               <br><br>
@@ -136,12 +136,12 @@ export default {
   methods: {
     async getInvite() {
       try {
-        if (this.user && this.id.length < 10) {
+        if (this.user && this.user.username && this.user.sub && this.id.toString().length < 10 && !isNaN(parseInt(this.id))) {
           await this.$store.dispatch("invite/getInviteProtected", this.id);
-        } else {
+        } else if (this.id.toString().length > 20) {
           await this.$store.dispatch("invite/getInvite", this.id);
           // update invitation_opened if this is the first time it's being opened
-          if (this.invite && this.invite.guest.invitation_opened == null) {
+          if (this.invite && this.id.length > 10 && this.invite.guest.invitation_opened == null) {
             this.setInviteOpened();
           }
           // sync local attending state with the invite

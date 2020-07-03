@@ -72,18 +72,21 @@ func FetchEventInformation(inviteId string, isProtected bool) model.Invite {
 
 	var query string
 	if len(inviteId) < 10 && isProtected {
+		// guestId
 		query = `
 			SELECT guests.*, parties.name as party_name
 			FROM guests
 			INNER JOIN parties ON guests.party_refer = parties.id
 			WHERE guests.id = $1`
-	} else {
-		// if the id is only a number, then it corresponds to the guest_id and not the inviteId
+	} else if len(inviteId) > 20 && !isProtected {
+		// inviteId
 		query = `
 			SELECT guests.*, parties.name as party_name
 			FROM guests
 			INNER JOIN parties ON guests.party_refer = parties.id
 			WHERE guests.invitation_id = $1`
+	} else {
+		fmt.Printf("Invalid ID given to FetchEventInformation", err)
 	}
 
 	row = db.QueryRowx(query, inviteId)
