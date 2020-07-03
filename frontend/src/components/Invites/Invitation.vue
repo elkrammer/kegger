@@ -25,19 +25,12 @@
           <div class="box is-shady">
             <p>Hi {{ invite.guest.first_name }}, <br><br>
 
-            Please join us to celebrate the wedding of {{ invite.bride_name }} &amp; {{ invite.groom_name }}.
+            The wedding will be on {{ invite.event_date }} at {{ invite.event_location }}.
             <br><br>
 
-            The wedding will be on {{ invite.event_date }} at {{ invite.event_location }}.
-            <br>
-            The dress code will be {{ invite.dress_code }}.
+            For more information please visit our website at: <a :href="invite.wedding_website" alt="Wedding Website">{{ invite.wedding_website }}</a>
 
-            <span v-if="invite.guest.plus_one">
-              <br><br>
-              You are allowed to bring a guest to the wedding.
-            </span>
-            <br>
-            <br>
+            <br><br>
 
             Love,<br>
             {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
@@ -73,14 +66,9 @@
             El matrimonio será el día {{ invite.event_date }} en {{ invite.event_location }}.
             <br><br>
 
-            Para más información revisa nuestra página web en {{ invite.wedding_website }}
+            Para más información revisa nuestra página web: <a :href="invite.wedding_website" alt="Wedding Website">{{ invite.wedding_website }}</a>
 
-            <span v-if="invite.guest.plus_one">
-              <br><br>
-              Puedes traer a un invitado al matrimonio.
-            </span>
-            <br>
-            <br>
+            <br><br>
 
             Love,<br>
             {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>

@@ -148,6 +148,15 @@ func FetchEventInformation(inviteId string, isProtected bool) model.Invite {
 	}
 	m.SignatureImage = url + result
 
+	// wedding website url
+	q = `SELECT value FROM settings WHERE name = 'wedding_website_url';`
+	row = db.QueryRowx(q)
+	err = row.Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to fetch website url: %v", err)
+	}
+	m.WeddingWebsite = result
+
 	return m
 }
 
