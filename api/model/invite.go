@@ -32,7 +32,8 @@ type Invite struct {
 }
 
 type UpdateInviteRequest struct {
-	InvitationId     *string    `json:"invitation_id" db:"invitation_id"`
-	IsAttending      *bool      `json:"is_attending" db:"is_attending"`
-	InvitationOpened *time.Time `json:"invitation_opened" db:"invitation_opened"`
+	InvitationId     string    `json:"invitation_id" db:"invitation_id"`
+	IsAttending      bool      `json:"is_attending" db:"is_attending"`
+	PlusOne          bool      `json:"plus_one" db:"plus_one"`
+	InvitationOpened time.Time `json:"invitation_opened" db:"invitation_opened"`
 }
