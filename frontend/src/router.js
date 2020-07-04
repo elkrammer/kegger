@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
         next();
     } else if (accessToken && refreshToken && !isLoggedIn) {
         // user has data in our store but somehow isn't logged in
-        console.log("user has data in our store but somehow isn't logged in");
+        // console.log("user has data in our store but somehow isn't logged in");
         router.app.$options.store.dispatch("user/setUserAndTokens", {
             accessToken: accessToken,
             refreshToken: refreshToken

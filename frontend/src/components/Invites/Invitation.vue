@@ -38,7 +38,7 @@
             </p>
           </div>
 
-          <div class="box is-shady" v-if="!this.isModal">
+          <div class="box is-shady" v-if="!this.isModal && !this.confirmed">
             <h1 class="title">RSVP</h1>
             <span>Are you planning to attend our wedding?</span>
             <br><br>
@@ -50,12 +50,27 @@
               </b-select>
               <br>
 
-              <b-button @click="setAttending" rounded class="confirm-btn" type="is-success">
+              <div v-if="this.invite.guest.plus_one">
+                <span>Plus One?</span>
+                <br><br>
+                <b-select icon="plus" v-model="plus_one" rounded placeholder="Select an option">
+                  <option :value="true">Yes</option>
+                  <option :value="false">No</option>
+                </b-select>
+              </div>
+
+              <br>
+              <b-button @click="saveChanges" rounded class="confirm-btn" type="is-success">
                 Confirm
               </b-button>
             </div>
-
           </div>
+
+          <div class="box is-shady" v-if="this.confirmed">
+            Thanks for your confirmation. <br>
+            See you on {{ invite.event_date }} <br>
+          </div>
+
         </div>
 
 
@@ -76,23 +91,39 @@
             </p>
           </div>
 
-          <div class="box is-shady" v-if="!this.isModal">
+          <div class="box is-shady" v-if="!this.isModal && !this.confirmed">
             <h1 class="title">RSVP</h1>
             <span>Estas planeando venir a nuestro matrimonio?</span>
             <br><br>
 
-            <div class="rsvp">
-              <b-select icon="calendar-check" v-model="attending" rounded placeholder="Select an option">
+            <b-select icon="calendar-check" v-model="attending" rounded placeholder="Select an option">
+              <option :value="true">Si</option>
+              <option :value="false">No</option>
+            </b-select>
+            <br>
+
+            <div v-if="this.invite.guest.plus_one">
+              <span>Vendrás con alguien?</span>
+              <br><br>
+
+              <b-select icon="plus" v-model="plus_one" rounded placeholder="Select an option">
                 <option :value="true">Si</option>
                 <option :value="false">No</option>
               </b-select>
               <br>
+            </div>
 
-              <b-button @click="setAttending" rounded class="confirm-btn" type="is-success">
+            <br>
+            <div class="has-text-centered">
+              <b-button @click="saveChanges" rounded class="confirm-btn" type="is-success">
                 Confirmar
               </b-button>
             </div>
+          </div>
 
+          <div class="box is-shady" v-if="this.confirmed">
+            Gracias por confirmar. <br>
+            Nos vemos el {{ invite.event_date }} <br>
           </div>
 
         </div>
@@ -112,7 +143,9 @@ export default {
   data() {
     return {
       attending: null,
+      plus_one: null,
       isModalActive: false,
+      confirmed: false,
     }
   },
   computed: {
@@ -134,6 +167,7 @@ export default {
           }
           // sync local attending state with the invite
           this.attending = this.invite.guest.is_attending;
+          this.plus_one = this.invite.guest.plus_one;
         }
       } catch (error) {
         console.log(error);
@@ -150,14 +184,16 @@ export default {
         console.log(error);
       }
     },
-    async setAttending() {
+    async saveChanges() {
       try {
         const data = {
           action: "attending",
           invitation_id: this.id,
-          is_attending: this.attending
+          is_attending: this.attending,
+          plus_one: this.plus_one
         };
         await this.$store.dispatch("invite/updateInvite", data);
+        this.confirmed = true;
 
         const msg = `Successfully sent your RSVP`
         this.$buefy.toast.open({
@@ -199,11 +235,6 @@ html, body {
 
 .invite {
   min-height: 101vh !important;
-}
-
-.rsvp {
-  display: table;
-  margin: 0 auto;
 }
 
 .signature-img {

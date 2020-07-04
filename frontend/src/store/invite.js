@@ -93,7 +93,8 @@ const invite = {
                 } else if (data.action === "attending") {
                     const response = await axios.put("/invite", {
                         invitation_id: data.invitation_id,
-                        is_attending: data.is_attending
+                        is_attending: data.is_attending,
+                        plus_one: data.plus_one
                     });
                     commit(UPDATE_INVITE, response.data);
                 }
