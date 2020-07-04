@@ -160,24 +160,28 @@ func UpdateInvite(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "Invalid Invitation ID")
 	}
 
-	// update is_attending field
-	query = `UPDATE guests SET is_attending = $1, plus_one = $2 WHERE invitation_id = $3`
-	_, err = db.Exec(query, request.IsAttending, request.PlusOne, request.InvitationId)
-	if err != nil {
-		msg := fmt.Sprintf("There was an error updating invitation_sent column for guest %v: %v", guest.ID, err)
-		return c.JSON(http.StatusBadRequest, msg)
-	}
-
 	// update invitation_opened field
-	query = `UPDATE guests SET invitation_opened = $1 WHERE invitation_id = $2`
-	_, err = db.Exec(query, request.InvitationOpened, request.InvitationId)
-	if err != nil {
-		msg := fmt.Sprintf("There was an error updating invitation_opened column for guest %v: %v", guest.ID, err)
-		return c.JSON(http.StatusBadRequest, msg)
-	}
+	if !request.InvitationOpened.IsZero() {
+		query = `UPDATE guests SET invitation_opened = $1 WHERE invitation_id = $2`
+		_, err = db.Exec(query, request.InvitationOpened, request.InvitationId)
+		if err != nil {
+			msg := fmt.Sprintf("There was an error updating invitation_opened column for guest %v: %v", guest.ID, err)
+			return c.JSON(http.StatusBadRequest, msg)
+		}
+		msg := fmt.Sprintf("Successfully updated invite for guest %s", guest.FirstName)
+		return c.JSON(http.StatusOK, msg)
+	} else {
+		// update is_attending field
+		query = `UPDATE guests SET is_attending = $1, plus_one = $2 WHERE invitation_id = $3`
+		_, err = db.Exec(query, request.IsAttending, request.PlusOne, request.InvitationId)
+		if err != nil {
+			msg := fmt.Sprintf("There was an error updating invitation_sent column for guest %v: %v", guest.ID, err)
+			return c.JSON(http.StatusBadRequest, msg)
+		}
 
-	msg := fmt.Sprintf("Successfully updated invite for guest %s", guest.FirstName)
-	return c.JSON(http.StatusOK, msg)
+		msg := fmt.Sprintf("Successfully updated invite for guest %s", guest.FirstName)
+		return c.JSON(http.StatusOK, msg)
+	}
 }
 
 // GET - find invitation id from email
