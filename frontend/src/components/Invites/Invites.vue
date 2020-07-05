@@ -64,13 +64,13 @@
           {{ props.row.party_name }}
         </b-table-column>
 
-        <b-table-column label="Invite Sent" sortable>
+        <b-table-column label="Invite Sent" field="invitation_sent" sortable>
           <div v-if="props.row.invitation_sent">
             <div>{{ props.row.invitation_sent | moment('timezone', 'America/Toronto', 'M/D/YY H:mm') }}</div>
           </div>
         </b-table-column>
 
-        <b-table-column label="Invite Opened" sortable>
+        <b-table-column label="Invite Opened" field="invitation_opened" sortable>
           <div v-if="props.row.invitation_opened">
             <div>{{ props.row.invitation_opened | moment('timezone', 'America/Toronto', 'M/D/YY H:mm') }}</div>
           </div>
