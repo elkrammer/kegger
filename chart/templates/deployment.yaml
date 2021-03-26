@@ -1,16 +1,58 @@
+{{- if .Values.backend.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kegger.fullname" . }}
+  name: {{ include "backend-deployment.fullname" . }}
+  labels:
+    {{- include "kegger.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "backend.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "backend.fullname" . }}
+    spec:
+      serviceAccountName: {{ include "kegger.serviceAccountName" . }}
+      containers:
+        - name: {{ include "backend.fullname" . }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4040
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 4040
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 4040
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
+          env:
+
+{{- end }}
+
+---
+{{- if .Values.frontend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "frontend-deployment.fullname" . }}
   labels:
     {{- include "kegger.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.frontend.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "kegger.selectorLabels" . | nindent 6 }}
+      app: {{ include "frontend.fullname" . }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,9 +60,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "kegger.selectorLabels" . | nindent 8 }}
+        app: {{ include "frontend.fullname" . }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.frontend.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -28,25 +70,25 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "frontend.fullname" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.frontend.image.ports.containerPort }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: {{ .Values.frontend.image.ports.containerPort }}
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: {{ .Values.frontend.image.ports.containerPort }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -59,3 +101,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}

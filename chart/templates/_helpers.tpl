@@ -23,6 +23,44 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+
+{{/*
+Frontend & Backend customizations
+*/}}
+
+{{- define "frontend.fullname" -}}
+{{- printf "%s-frontend" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "backend.fullname" -}}
+{{- printf "%s-api" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "frontend-deployment.fullname" -}}
+{{- printf "%s-frontend" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "backend-deployment.fullname" -}}
+{{- printf "%s-api" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "backend-service.fullname" -}}
+{{- printf "%s-backend-svc" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "frontend-service.fullname" -}}
+{{- printf "%s-frontend-svc" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "backend-service.url" -}}
+{{- if .Values.frontend.env.backend -}}
+{{- .Values.frontend.env.backend | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "http://%s-backend-svc:8080" .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
