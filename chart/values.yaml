@@ -5,6 +5,12 @@
 nameOverride: ""
 fullnameOverride: ""
 
+# API Values
+runMigrations: false
+sendgridApiKey: abc-def123
+# jwtSecret: supersecret
+
+
 frontend:
   enabled: true
   replicaCount: 1
@@ -53,7 +59,7 @@ backend:
   image:
     repository: elkrammer/kegger
     pullPolicy: IfNotPresent
-    tag: "backend-0.0.1"
+    tag: "backend-0.0.3"
   service:
     type: ClusterIP
     port: 80
@@ -108,5 +114,10 @@ tolerations: []
 
 affinity: {}
 
-postgres:
+postgresql:
   enabled: true
+  postgresqlUsername: postgres
+  postgresqlDatabase: kegger
+  postgresqlPassword: postgres
+  service:
+    port: 5432

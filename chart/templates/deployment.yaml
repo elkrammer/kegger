@@ -26,16 +26,40 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 4040
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 4040
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           env:
-
+            - name: RUN_MIGRATIONS
+              value: {{ .Values.runMigrations | quote }}
+            - name: DB_HOST
+              value: {{ include "kegger.databaseHost" . | quote }}
+            - name: DB_USERNAME
+              value: {{ include "kegger.databaseUser" . | quote }}
+            - name: DB_PORT
+              value: {{ include "kegger.databasePort" . | quote }}
+            - name: DB_NAME
+              value: {{ include "kegger.databaseName" . | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kegger
+                  key: postgres-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kegger
+                  key: jwt-secret
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kegger
+                  key: sendgrid-api-key
 {{- end }}
 
 ---

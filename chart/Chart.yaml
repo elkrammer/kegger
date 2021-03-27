@@ -8,4 +8,4 @@ dependencies:
   - name: postgresql
     version: "10.3.*"
     repository: https://charts.bitnami.com/bitnami/
-    condition: postgres.enabled
+    condition: postgresql.enabled

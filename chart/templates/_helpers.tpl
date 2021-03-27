@@ -1,3 +1,5 @@
+{{/* vim: set filetype=mustache: */}}
+
 {{/*
 Expand the name of the chart.
 */}}
@@ -59,6 +61,60 @@ Frontend & Backend customizations
 {{- printf "http://%s-backend-svc:8080" .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
+
+
+{{- define "kegger.postgresql.fullname" -}}
+{{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return postgresql host
+*/}}
+{{- define "kegger.databaseHost" -}}
+{{- if .Values.postgresql.enabled }}
+    {{- printf "%s" (include "kegger.postgresql.fullname" .) -}}
+{{- end -}}
+{{- end }}
+
+
+{{/*
+Return postgresql username
+*/}}
+{{- define "kegger.databaseUser" -}}
+{{- if .Values.postgresql.enabled }}
+    {{- printf "%s" .Values.postgresql.postgresqlUsername -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Return postgresql database name
+*/}}
+{{- define "kegger.databaseName" -}}
+{{- if .Values.postgresql.enabled }}
+    {{- printf "%s" .Values.postgresql.postgresqlDatabase -}}
+{{- end -}}
+{{- end }}
+
+
+{{/*
+Return postgresql port
+*/}}
+{{- define "kegger.databasePort" -}}
+{{- if .Values.postgresql.enabled }}
+    {{- printf "5432" -}}
+{{- end -}}
+{{- end }}
+
+
+{{/*
+Return the postgres Secret Name
+*/}}
+{{- define "kegger.databaseSecretName" -}}
+{{- if .Values.postgresql.enabled }}
+    {{- printf "%s" (include "kegger.postgresql.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
 
 
 {{/*

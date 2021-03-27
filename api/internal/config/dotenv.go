@@ -21,7 +21,7 @@ func LoadEnv() {
     }
 
     fmt.Println("========== ENV VARS ==========")
-	vars := []string{"DB_USERNAME", "DB_PASSWORD", "DB_NAME", "DB_PORT", "JWT_SECRET", "SENDGRID_API_KEY", "RUN_MIGRATIONS"}
+	vars := []string{"DB_USERNAME", "DB_HOST", "DB_PASSWORD", "DB_NAME", "DB_PORT", "JWT_SECRET", "SENDGRID_API_KEY", "RUN_MIGRATIONS"}
 	for _, k := range vars {
         value := os.Getenv(k)
         fmt.Printf("%s: %s\n", k, value)
@@ -34,7 +34,7 @@ func LoadEnv() {
 }
 
 func checkVars() []string {
-	vars := []string{"DB_USERNAME", "DB_PASSWORD", "DB_NAME", "DB_PORT", "JWT_SECRET", "SENDGRID_API_KEY", "RUN_MIGRATIONS"}
+	vars := []string{"DB_USERNAME", "DB_PASSWORD", "DB_HOST", "DB_NAME", "DB_PORT", "JWT_SECRET", "SENDGRID_API_KEY", "RUN_MIGRATIONS"}
 	missing := []string{}
 	for _, v := range vars {
 		_, set := os.LookupEnv(v)
