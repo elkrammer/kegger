@@ -32,14 +32,14 @@ const invite = {
             try {
                 setAuthorizationHeader(rootGetters["user/accessToken"]);
                 // if debugging mode is enabled then send the emails to our debugging destination
-                if (process.env.VUE_APP_EMAIL_DEBUG === 'true') {
+                if (config.EMAIL_DEBUG === 'true') {
                     const response = await axios.post("/api/sendinvite/" + payload.id, {
-                        from_name: process.env.VUE_APP_EMAIL_FROM_NAME,
-                        from_email: process.env.VUE_APP_EMAIL_FROM,
+                        from_name: config.EMAIL_FROM_NAME,
+                        from_email: config.EMAIL_FROM,
                         to: [
                             {
                                 name: payload.name,
-                                email: process.env.VUE_APP_EMAIL_TO // DEBUGGING
+                                email: config.EMAIL_TO // DEBUGGING
                             },
                         ],
                     });
@@ -47,8 +47,8 @@ const invite = {
                 } else {
                     // debugging mode is not enabled, send email to real recipient
                     const response = await axios.post("/api/sendinvite/" + payload.id, {
-                        from_name: process.env.VUE_APP_EMAIL_FROM_NAME,
-                        from_email: process.env.VUE_APP_EMAIL_FROM,
+                        from_name: config.EMAIL_FROM_NAME,
+                        from_email: config.EMAIL_FROM,
                         to: [
                             {
                                 name: payload.name,
