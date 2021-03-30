@@ -1,5 +1,3 @@
-{{/* vim: set filetype=mustache: */}}
-
 {{/*
 Expand the name of the chart.
 */}}
@@ -55,14 +53,13 @@ Frontend & Backend customizations
 {{- end -}}
 
 {{- define "backend-service.url" -}}
-{{- if .Values.frontend.env.backend -}}
-{{- .Values.frontend.env.backend | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "http://%s-backend-svc:8080" .Chart.Name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{- printf "http://%s-backend-svc:4040" .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 
+{{/*
+Return postgresql service fullname
+*/}}
 {{- define "kegger.postgresql.fullname" -}}
 {{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
