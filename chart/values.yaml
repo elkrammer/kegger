@@ -130,9 +130,12 @@ postgresql:
   postgresqlPassword: postgres
   service:
     port: 5432
-
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 12.1.0-debian-10-r15
 
 ingress:
   hosts:
     apiServer: http://api.kegger
-    frontendHost: http:///kegger
+    frontendHost: http://frontend.kegger
