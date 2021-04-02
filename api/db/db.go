@@ -25,6 +25,7 @@ func Init() {
 	db, err = sqlx.Connect("pgx", connectionString)
 	if err != nil {
 		fmt.Println("Failed to connect to database: " + connectionString)
+        fmt.Println(err)
 		os.Exit(1)
 	}
 

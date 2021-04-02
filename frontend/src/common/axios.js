@@ -1,5 +1,5 @@
 import axios from "axios";
 
-axios.defaults.baseURL = process.env.VUE_APP_API_SERVER;
+axios.defaults.baseURL = config.API_SERVER;
 
 export default axios;

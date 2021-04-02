@@ -4,7 +4,7 @@
 
     <div v-for="(value, name) in settings" :key="name">
       <b-field :label="name" type="is-info">
-        <b-input :value="value" rounded disabled></b-input>
+        <b-input :value="value" rounded disabled />
       </b-field>
     </div>
 
@@ -18,11 +18,11 @@ export default {
   data() {
     return {
       settings: {
-        VUE_APP_API_SERVER: process.env.VUE_APP_API_SERVER,
-        VUE_APP_EMAIL_FROM_NAME: process.env.VUE_APP_EMAIL_FROM_NAME,
-        VUE_APP_EMAIL_FROM: process.env.VUE_APP_EMAIL_FROM,
-        VUE_APP_EMAIL_DEBUG: process.env.VUE_APP_EMAIL_DEBUG,
-        VUE_APP_EMAIL_TO: process.env.VUE_APP_EMAIL_TO
+        VUE_APP_API_SERVER: config.API_SERVER,
+        VUE_APP_EMAIL_FROM_NAME: config.EMAIL_FROM_NAME,
+        VUE_APP_EMAIL_FROM: config.EMAIL_FROM,
+        VUE_APP_EMAIL_DEBUG: config.EMAIL_DEBUG,
+        VUE_APP_EMAIL_TO: config.EMAIL_TO
       },
     };
   },

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "frontend-deployment.fullname" . }}-config
+data:
+  config.js: |
+    /* eslint-disable */
+    const config = (() => {
+        return {
+            "API_SERVER": {{ .Values.ingress.hosts.apiServer | quote }},
+            "EMAIL_FROM_NAME": {{ .Values.emailFromName | quote }},
+            "EMAIL_FROM": {{ .Values.emailFrom | quote }},
+            "EMAIL_DEBUG": {{ .Values.emailDebug }},
+            "EMAIL_TO": {{ .Values.emailTo | quote }},
+            };
+    })();

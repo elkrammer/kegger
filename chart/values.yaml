@@ -1,0 +1,138 @@
+nameOverride: ""
+fullnameOverride: ""
+
+# API Configuration
+runMigrations: false
+sendgridApiKey: abc-def123
+# jwtSecret: supersecret # if unset the chart will autogenerate a secure 10 character alphanumeric secret
+
+# Frontend Configuration
+emailDebug: true
+emailFrom: kegger@kegger-rsp-.io
+emailTo: your@email.com
+emailFromName: Kegger
+
+frontend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: elkrammer/kegger
+    pullPolicy: IfNotPresent
+    tag: "frontend-0.0.4"
+    ports:
+      containerPort: 80
+  service:
+    type: LoadBalancer
+    port: 80
+    httpsPort: 443
+    httpsTargetPort: https
+    nodePorts:
+      http: ""
+      https: ""
+    loadBalancerSourceRanges: []
+    externalTrafficPolicy: Cluster
+    annotations: {}
+
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: kegger-frontend.local
+        paths:
+        - path: /
+          backend:
+            serviceName: kegger-frontend.local
+            servicePort: 80
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  resources: {}
+
+
+backend:
+  enabled: false
+  replicaCount: 1
+  image:
+    repository: elkrammer/kegger
+    pullPolicy: IfNotPresent
+    tag: "backend-0.0.3"
+  service:
+    type: ClusterIP
+    port: 4040
+    externalPort: 4040
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: kegger-backend.local
+        paths:
+        - path: /
+          backend:
+            serviceName: kegger-backend.local
+            servicePort: 80
+  resources: {}
+
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+postgresql:
+  enabled: true
+  postgresqlUsername: postgres
+  postgresqlDatabase: kegger
+  postgresqlPassword: postgres
+  service:
+    port: 5432
+
+
+ingress:
+  hosts:
+    apiServer: http://api.kegger
+    frontendHost: http:///kegger

@@ -1,0 +1,35 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "frontend-service.fullname" . }}-test-connection"
+  labels:
+    {{- include "kegger.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "frontend-service.fullname" . }}:{{ .Values.frontend.service.port }}']
+  restartPolicy: Never
+{{- end }}
+---
+{{- if .Values.backend.enabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "backend-service.fullname" . }}-test-connection"
+  labels:
+    {{- include "kegger.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "backend-service.fullname" . }}:{{ .Values.backend.service.port }}']
+  restartPolicy: Never
+{{- end }}
