@@ -22,7 +22,7 @@ frontend:
     ports:
       containerPort: 80
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
     httpsPort: 443
     httpsTargetPort: https
