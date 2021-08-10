@@ -9,8 +9,7 @@
           <b-input
             placeholder="Party Name"
             v-model="party.name"
-            required>
-          </b-input>
+            required />
         </b-field>
 
         <b-field label="Host">
@@ -26,7 +25,7 @@
         </b-field>
 
         <b-field label="Comments">
-          <b-input maxlength="200" rows="2" v-model="party.comments" type="textarea"></b-input>
+          <b-input maxlength="200" rows="2" v-model="party.comments" type="textarea" />
         </b-field>
 
       </section>
@@ -49,6 +48,16 @@
       return {
         party: [],
       }
+    },
+    computed: {
+      ...mapGetters({
+        parties: "party/parties",
+        users: "users/users"
+      })
+    },
+    created() {
+      this.getParty();
+      this.getHosts();
     },
     methods: {
       async getParty() {
@@ -89,16 +98,6 @@
             console.log(error);
         }
       }
-    },
-    computed: {
-      ...mapGetters({
-        parties: "party/parties",
-        users: "users/users"
-      })
-    },
-    created() {
-      this.getParty();
-      this.getHosts();
     },
   }
 </script>

@@ -33,7 +33,6 @@
       <div class="buttons">
         <b-button @click="createUserActive = true" type="is-success" style="margin-left: 10px;" icon-left="user-plus">Create User</b-button>
       </div>
-      <p>
 
       <div v-for="user in users" :key="user.id" class="userlist">
         <ul>
@@ -49,10 +48,10 @@
 
               <div class="level-right">
                 <div class="level-item">
-                  <b-button @click="editUser(user.id)" type="is-info" icon-left="user-edit" size="is-small"></b-button>
+                  <b-button @click="editUser(user.id)" type="is-info" icon-left="user-edit" size="is-small" />
                 </div>
                 <div class="level-item">
-                  <b-button @click="deleteUser(user.id, user.name)" type="is-danger" icon-left="trash-alt" size="is-small"></b-button>
+                  <b-button @click="deleteUser(user.id, user.name)" type="is-danger" icon-left="trash-alt" size="is-small" />
                 </div>
               </div>
 
@@ -75,11 +74,6 @@
   export default {
     name: "settings_user",
     components: { CreateUser, EditUser, DeleteUser, },
-    computed: {
-      ...mapGetters({
-        users: "users/users",
-      })
-    },
     data() {
       return {
         createUserActive: false,
@@ -90,6 +84,14 @@
           name: '',
         },
       }
+    },
+    computed: {
+      ...mapGetters({
+        users: "users/users",
+      })
+    },
+    created() {
+      this.getUsers();
     },
     methods: {
       async getUsers() {
@@ -110,9 +112,6 @@
         this.deleteUserActive = true;
       }
     },
-    created() {
-      this.getUsers();
-    }
   }
 </script>
 

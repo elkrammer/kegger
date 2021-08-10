@@ -7,17 +7,17 @@
           src="@/assets/logo-small.png"
           alt="Kegger Logo"
           class="logo"
-          >
+          />
       </b-navbar-item>
     </template>
 
     <template slot="start">
       <b-navbar-item tag="router-link" :to="{ name: 'list_parties' }">
-        <b-icon pack="fas" icon="sitemap"></b-icon>
+        <b-icon pack="fas" icon="sitemap" />
         <span class="item-text">Parties</span>
       </b-navbar-item>
       <b-navbar-item tag="router-link" :to="{ name: 'invites' }">
-        <b-icon pack="fas" icon="envelope"></b-icon>
+        <b-icon pack="fas" icon="envelope" />
         <span class="item-text">Invites</span>
       </b-navbar-item>
     </template>

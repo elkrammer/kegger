@@ -9,12 +9,12 @@
       <div class="columns is-multiline" v-if="Object.entries(this.invite).length > 0">
         <div class="column is-half">
           <figure class="image">
-            <img :src="invite.invite_image" @click="isModalActive = true" class="is-shady">
+            <img :src="invite.invite_image" @click="isModalActive = true" class="is-shady" />
           </figure>
 
           <b-modal :active.sync="isModalActive">
             <p class="image is-4by5">
-            <img :src="invite.invite_image">
+            <img :src="invite.invite_image" />
             </p>
           </b-modal>
 
@@ -23,43 +23,43 @@
         <!-- English -->
         <div v-if="invite.invite_lang == 'en'" class="column is-half">
           <div class="box is-shady">
-            <p>Hi {{ invite.guest.first_name }}, <br><br>
+            <p>Hi {{ invite.guest.first_name }}, <br/><br/>
 
             The wedding will be on {{ invite.event_date }} at {{ invite.event_location }}.
-            <br><br>
+            <br/><br/>
 
             For more information please visit our website at: <a :href="invite.wedding_website" alt="Wedding Website">{{ invite.wedding_website }}</a>
 
-            <br><br>
+            <br/><br/>
 
-            Love,<br>
-            {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
-            <img class="signature-img" :src="invite.signature_image">
+            Love,<br/>
+            {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br/><br/>
+            <img class="signature-img" :src="invite.signature_image" />
             </p>
           </div>
 
           <div class="box is-shady" v-if="!this.isModal && !this.confirmed">
             <h1 class="title">RSVP</h1>
             <span>Are you planning to attend our wedding?</span>
-            <br><br>
+            <br/><br/>
 
             <div class="rsvp">
               <b-select icon="calendar-check" v-model="attending" rounded placeholder="Select an option">
                 <option :value="true">Yes</option>
                 <option :value="false">No</option>
               </b-select>
-              <br>
+              <br/>
 
               <div v-if="this.invite.guest.plus_one">
                 <span>Plus One?</span>
-                <br><br>
+                <br/><br/>
                 <b-select icon="plus" v-model="plus_one" rounded placeholder="Select an option">
                   <option :value="true">Yes</option>
                   <option :value="false">No</option>
                 </b-select>
               </div>
 
-              <br>
+              <br/>
               <b-button @click="saveChanges" rounded class="confirm-btn" type="is-success">
                 Confirm
               </b-button>
@@ -67,8 +67,8 @@
           </div>
 
           <div class="box is-shady" v-if="this.confirmed">
-            Thanks for your confirmation. <br>
-            See you on {{ invite.event_date }} <br>
+            Thanks for your confirmation. <br/>
+            See you on {{ invite.event_date }} <br/>
           </div>
 
         </div>
@@ -77,43 +77,43 @@
         <!-- Spanish -->
         <div v-if="invite.invite_lang == 'es'" class="column is-half">
           <div class="box is-shady">
-            <p>Hola {{ invite.guest.first_name }}, <br><br>
+            <p>Hola {{ invite.guest.first_name }}, <br/><br/>
             El matrimonio será el día {{ invite.event_date }} en {{ invite.event_location }}.
-            <br><br>
+            <br/><br/>
 
             Para más información revisa nuestra página web: <a :href="invite.wedding_website" alt="Wedding Website">{{ invite.wedding_website }}</a>
 
-            <br><br>
+            <br/><br/>
 
-            Love,<br>
-            {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br><br>
-            <img class="signature-img" :src="invite.signature_image">
+            Love,<br/>
+            {{ invite.bride_name }} &amp; {{ invite.groom_name }}<br/><br/>
+            <img class="signature-img" :src="invite.signature_image" />
             </p>
           </div>
 
           <div class="box is-shady" v-if="!this.isModal && !this.confirmed">
             <h1 class="title">RSVP</h1>
             <span>Estas planeando venir a nuestro matrimonio?</span>
-            <br><br>
+            <br/><br/>
 
             <b-select icon="calendar-check" v-model="attending" rounded placeholder="Select an option">
               <option :value="true">Si</option>
               <option :value="false">No</option>
             </b-select>
-            <br>
+            <br/>
 
             <div v-if="this.invite.guest.plus_one">
               <span>Vendrás con alguien?</span>
-              <br><br>
+              <br/><br/>
 
               <b-select icon="plus" v-model="plus_one" rounded placeholder="Select an option">
                 <option :value="true">Si</option>
                 <option :value="false">No</option>
               </b-select>
-              <br>
+              <br/>
             </div>
 
-            <br>
+            <br/>
             <div class="has-text-centered">
               <b-button @click="saveChanges" rounded class="confirm-btn" type="is-success">
                 Confirmar
@@ -122,8 +122,8 @@
           </div>
 
           <div class="box is-shady" v-if="this.confirmed">
-            Gracias por confirmar. <br>
-            Nos vemos el {{ invite.event_date }} <br>
+            Gracias por confirmar. <br/>
+            Nos vemos el {{ invite.event_date }} <br/>
           </div>
 
         </div>
@@ -153,6 +153,9 @@ export default {
       invite: "invite/invite",
       user: "user/user",
     }),
+  },
+  created() {
+    this.getInvite();
   },
   methods: {
     async getInvite() {
@@ -213,9 +216,6 @@ export default {
         console.log(error);
       }
     },
-  },
-  created() {
-    this.getInvite();
   },
 }
 </script>
