@@ -59,7 +59,7 @@
       <div class="columns">
         <div class="column is-half">
           <b-field>
-            <b-input placeholder="Party Name" v-model="search" icon="search"></b-input>
+            <b-input placeholder="Party Name" v-model="search" icon="search" />
             <p class="control">
             <b-button @click="search = ''" v-if="search !== ''" type="is-warning">Clear</b-button>
             <b-button @click="unSelect" v-if="selected !== null" style="margin-left: 50px;" type="is-warning">Unselect</b-button>
@@ -69,7 +69,7 @@
       </div>
 
       <b-message v-if="this.parties.length < 1" type="is-info">
-        Welcome to Kegger!<br>
+        Welcome to Kegger!<br/>
         Create a new Party to get started.
       </b-message>
 
@@ -103,20 +103,17 @@
         <b-table-column field="isPartyAttending" label="Attending" width="100" visible sortable>
           <div class="has-text-success" v-if="props.row.isPartyAttending === 'true'">
             <span class="icon-text">Yes</span>
-            <b-icon pack="fas" icon="thumbs-up">
-            </b-icon>
+            <b-icon pack="fas" icon="thumbs-up" />
           </div>
 
           <div class="has-text-warning" v-if="props.row.isPartyAttending === 'partial'">
             <span class="icon-text">Partial</span>
-            <b-icon pack="fas" icon="exclamation-triangle">
-            </b-icon>
+            <b-icon pack="fas" icon="exclamation-triangle" />
           </div>
 
           <div class="has-text-danger" v-if="props.row.isPartyAttending === 'false'">
             <span class="icon-text">No</span>
-            <b-icon pack="fas" icon="thumbs-down">
-            </b-icon>
+            <b-icon pack="fas" icon="thumbs-down" />
           </div>
         </b-table-column>
 
@@ -134,19 +131,17 @@
 
         <template slot="detail" slot-scope="props">
           <tr v-for="guest in props.row.Guests" :key=" 'A' + guest.id">
-            <td></td>
+            <td/>
             <td style="padding-left: 30px;">{{ guest.first_name }} {{ guest.last_name }}</td>
-            <td></td>
+            <td/>
             <td>
               <div class="has-text-success" v-if="guest.is_attending === true">
                 <span class="icon-text">Yes</span>
-                <b-icon pack="fas" icon="thumbs-up">
-                </b-icon>
+                <b-icon pack="fas" icon="thumbs-up" />
               </div>
               <div class="has-text-danger" v-else>
                 <span class="icon-text">No</span>
-                <b-icon pack="fas" icon="thumbs-down">
-                </b-icon>
+                <b-icon pack="fas" icon="thumbs-down" />
               </div>
             </td>
 
@@ -159,7 +154,7 @@
               </div>
             </td>
 
-            <td></td>
+            <td/>
           </tr>
         </template>
 
@@ -198,6 +193,19 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters({
+      parties: "party/parties"
+    }),
+    filteredPartyList() {
+      return this.parties.filter(party => {
+        return party.name.toLowerCase().includes(this.search.toLowerCase())
+      })
+    },
+  },
+  created() {
+    this.loadParties();
+  },
   methods: {
     async loadParties() {
       try {
@@ -213,19 +221,6 @@ export default {
     unSelect() {
       this.selected = null;
     },
-  },
-  computed: {
-    ...mapGetters({
-      parties: "party/parties"
-    }),
-    filteredPartyList() {
-      return this.parties.filter(party => {
-        return party.name.toLowerCase().includes(this.search.toLowerCase())
-      })
-    },
-  },
-  created() {
-    this.loadParties();
   },
 };
 </script>

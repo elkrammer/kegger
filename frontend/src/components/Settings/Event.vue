@@ -4,14 +4,13 @@
 
     <div v-for="setting in settings" :key="setting.name">
       <b-field :label="setting.description">
-        <b-input v-if="setting.description != 'Event Date'" :value="setting.value" v-model="setting.value"></b-input>
+        <b-input v-if="setting.description != 'Event Date'" :value="setting.value" v-model="setting.value" />
         <b-datetimepicker
           placeholder="Click to select..."
           icon="calendar-alt"
           v-model="eventDate"
           v-if="setting.description === 'Event Date'"
-          >
-        </b-datetimepicker>
+          />
       </b-field>
     </div>
 
@@ -36,6 +35,13 @@ export default {
     ...mapGetters({
       settings: "settings/eventSettings",
     }),
+  },
+  created() {
+    this.getEventSettings();
+    if (this.settings.length > 0) {
+      let date = this.settings.find(s => s.name === 'event_date');
+      this.eventDate = new Date(date.value);
+    }
   },
   methods: {
     async getEventSettings() {
@@ -71,12 +77,5 @@ export default {
       }
     }
   },
-  created() {
-    this.getEventSettings();
-    if (this.settings.length > 0) {
-      let date = this.settings.find(s => s.name === 'event_date');
-      this.eventDate = new Date(date.value);
-    }
-  }
 }
 </script>

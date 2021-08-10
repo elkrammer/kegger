@@ -20,6 +20,11 @@
   export default {
     name: 'delete_party',
     props: ['party_id', 'party_name'],
+    computed: {
+      ...mapGetters({
+        parties: "party/parties"
+      })
+    },
     methods: {
       async deleteParty() {
         try {
@@ -43,11 +48,6 @@
             console.log(error);
         }
       },
-    },
-    computed: {
-      ...mapGetters({
-        parties: "party/parties"
-      })
     },
   }
 </script>

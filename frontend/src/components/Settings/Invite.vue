@@ -7,28 +7,28 @@
       <div class="columns is-multiline">
         <div class="column is-two-thirds">
           <b-field :label="setting.description">
-            <b-input :value="setting.value" v-model="setting.value"></b-input>
+            <b-input :value="setting.value" v-model="setting.value" />
           </b-field>
 
           <b-field>
 
             <b-upload v-if="setting.name == 'invite_image_en'" v-model="invite_image_en">
               <a class="button is-info is-rounded">
-                <b-icon icon="upload"></b-icon>
+                <b-icon icon="upload"/>
                 <span>Change</span>
               </a>
             </b-upload>
 
             <b-upload v-if="setting.name == 'invite_image_es'" v-model="invite_image_es">
               <a class="button is-info is-rounded">
-                <b-icon icon="upload"></b-icon>
+                <b-icon icon="upload" />
                 <span>Change</span>
               </a>
             </b-upload>
 
             <b-upload v-if="setting.name == 'signature_image'" v-model="signature_image">
               <a class="button is-info is-rounded">
-                <b-icon icon="upload"></b-icon>
+                <b-icon icon="upload" />
                 <span>Change</span>
               </a>
             </b-upload>
@@ -50,22 +50,22 @@
 
         <div class="column">
           <figure class="image">
-            <img v-if="setting.name == 'invite_image_es'" :src="es_Invite_url" class="is-shady " @click="modal(es_Invite_url)">
-            <img v-if="setting.name == 'invite_image_en'" :src="en_Invite_url" class="is-shady " @click="modal(en_Invite_url)">
-            <img v-if="setting.name == 'signature_image'" :src="signature_image_url" class="is-shady " @click="modal(signature_image_url)">
+            <img v-if="setting.name == 'invite_image_es'" :src="es_Invite_url" class="is-shady " @click="modal(es_Invite_url)" />
+            <img v-if="setting.name == 'invite_image_en'" :src="en_Invite_url" class="is-shady " @click="modal(en_Invite_url)" />
+            <img v-if="setting.name == 'signature_image'" :src="signature_image_url" class="is-shady " @click="modal(signature_image_url)" />
           </figure>
         </div>
 
         <b-modal :active.sync="isModalActive">
           <p class="image is-4by5">
-          <img :src="selected">
+          <img :src="selected" />
           </p>
         </b-modal>
 
       </div>
     </div>
 
-    <br><br>
+    <br/><br/>
     <b-button is-rounded :disabled="!saveEnabled" @click="saveChanges" class="is-success">
       Save
     </b-button>
@@ -112,6 +112,11 @@ export default {
       }
       return false;
     },
+  },
+  created() {
+    if (!this.settings) {
+      this.getInviteSettings();
+    }
   },
   methods: {
     async getInviteSettings() {
@@ -163,11 +168,6 @@ export default {
     modal(img) {
       this.selected = img;
       this.isModalActive = true;
-    }
-  },
-  created() {
-    if (!this.settings) {
-      this.getInviteSettings();
     }
   },
 }

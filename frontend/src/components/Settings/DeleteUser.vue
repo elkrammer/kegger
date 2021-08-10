@@ -20,6 +20,11 @@
   export default {
     name: 'delete_user',
     props: ['user_id', 'user_name'],
+    computed: {
+      ...mapGetters({
+        users: "users/users",
+      })
+    },
     methods: {
       async deleteUser() {
         try {
@@ -43,11 +48,6 @@
             console.log(error);
         }
       },
-    },
-    computed: {
-      ...mapGetters({
-        users: "users/users",
-      })
     },
   }
 </script>

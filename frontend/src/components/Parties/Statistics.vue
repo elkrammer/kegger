@@ -55,6 +55,26 @@ export default {
       totalGuests: 0,
     };
   },
+  computed: {
+    ...mapGetters({
+      parties: "party/parties"
+    }),
+  },
+  watch: {
+    parties() {
+      this.statistics();
+    },
+  },
+  mounted() {
+    if (this.parties.length > 1 && this.totalGuests < 1) {
+      this.statistics();
+    }
+  },
+  created() {
+    if (!this.parties) {
+      this.loadParties();
+    }
+  },
   methods: {
     statistics() {
 
@@ -95,26 +115,6 @@ export default {
         console.log(error);
       }
     },
-  },
-  computed: {
-    ...mapGetters({
-      parties: "party/parties"
-    }),
-  },
-  watch: {
-    parties() {
-      this.statistics();
-    },
-  },
-  created() {
-    if (!this.parties) {
-      this.loadParties();
-    }
-  },
-  mounted() {
-    if (this.parties.length > 1 && this.totalGuests < 1) {
-      this.statistics();
-    }
   },
 };
 

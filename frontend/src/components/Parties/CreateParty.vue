@@ -12,8 +12,7 @@
               placeholder="Party Name"
               v-model="formProps.name"
               :use-html5-validation="false"
-              required>
-            </b-input>
+              required />
           </b-field>
 
           <b-field label="Host">
@@ -31,15 +30,14 @@
 
         <div class="columns">
           <div class="column guests is-two-fifths">
-            <b-field label="Guests"></b-field>
+            <b-field label="Guests" />
 
             <b-field label="First Name">
               <b-input
                 placeholder="First Name"
                 v-model="formProps.guest.first_name"
                 :use-html5-validation="false"
-                required>
-              </b-input>
+                required />
             </b-field>
 
             <b-field label="Last Name">
@@ -47,8 +45,7 @@
                 placeholder="Last Name"
                 v-model="formProps.guest.last_name"
                 :use-html5-validation="false"
-                required>
-              </b-input>
+                required />
             </b-field>
 
             <b-field label="Email">
@@ -57,8 +54,7 @@
                 placeholder="e.g. john@doe.com"
                 v-model.trim="formProps.guest.email"
                 :use-html5-validation="false"
-                required>
-              </b-input>
+                required />
             </b-field>
 
             <nav class="level">
@@ -97,7 +93,7 @@
               <h3>Party Guests:</h3>
               <ul>
                 <li class="guest" v-for="(guest, index) in formProps.guests" :key="index">
-                  <b-icon icon="user"></b-icon>
+                  <b-icon icon="user" />
                   {{ guest.first_name }} {{ guest.last_name }}
 
                   <span v-if="guest.plus_one" class="has-text-success">
@@ -112,7 +108,7 @@
         </div>
 
         <b-field label="Comments">
-          <b-input maxlength="200" rows="2" v-model="formProps.comments" type="textarea"></b-input>
+          <b-input maxlength="200" rows="2" v-model="formProps.comments" type="textarea" />
         </b-field>
 
         <footer class="modal-card-foot">
@@ -146,6 +142,31 @@ export default {
       },
       selectedHost: null,
     }
+  },
+  computed: {
+    ...mapGetters({
+      users: "users/users",
+      user: "user/user",
+    }),
+    isGuestFormValid () {
+      if (
+        this.formProps.guest.first_name !== '' &&
+        this.formProps.guest.last_name !== '' &&
+        this.isValidEmail(this.formProps.guest.email)
+      ) {
+        return true;
+      }
+      return false;
+    },
+  },
+  watch: {
+    selectedHost() {
+      this.formProps.host_id = this.selectedHost;
+    },
+  },
+  created() {
+    this.getHosts();
+    this.selectedHost = this.user.sub;
   },
   methods: {
     async getHosts() {
@@ -210,31 +231,6 @@ export default {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     }
-  },
-  computed: {
-    ...mapGetters({
-      users: "users/users",
-      user: "user/user",
-    }),
-    isGuestFormValid () {
-      if (
-        this.formProps.guest.first_name !== '' &&
-        this.formProps.guest.last_name !== '' &&
-        this.isValidEmail(this.formProps.guest.email)
-      ) {
-        return true;
-      }
-      return false;
-    },
-  },
-  created() {
-    this.getHosts();
-    this.selectedHost = this.user.sub;
-  },
-  watch: {
-    selectedHost() {
-      this.formProps.host_id = this.selectedHost;
-    },
   },
 };
 </script>

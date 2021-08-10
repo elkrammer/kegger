@@ -10,15 +10,15 @@
         <form v-on:submit.prevent>
 
           <b-field label="Name">
-            <b-input placeholder="Name" icon="id-card" v-model="user.name"></b-input>
+            <b-input placeholder="Name" icon="id-card" v-model="user.name" />
           </b-field>
 
           <b-field label="Email">
-            <b-input placeholder="Email" icon="envelope" v-model="user.email"></b-input>
+            <b-input placeholder="Email" icon="envelope" v-model="user.email" />
           </b-field>
 
           <b-field label="Password">
-            <b-input type="password" icon="lock" placeholder="Password" v-model="password"></b-input>
+            <b-input type="password" icon="lock" placeholder="Password" v-model="password" />
           </b-field>
 
         </form>
@@ -49,6 +49,9 @@
       ...mapGetters({
         users: "user/users",
       })
+    },
+    created() {
+      this.getUser();
     },
     methods: {
       async getUser() {
@@ -85,9 +88,6 @@
             console.log(error);
         }
       },
-    },
-    created() {
-      this.getUser();
     },
   }
 </script>

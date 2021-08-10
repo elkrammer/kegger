@@ -4,22 +4,22 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Create User</p>
-        <b-icon icon="user-plus" class="is-pulled-right" size="is-large"></b-icon>
+        <b-icon icon="user-plus" class="is-pulled-right" size="is-large" />
       </header>
       <section class="modal-card-body">
 
         <form ref="form" @submit.prevent="createUser">
 
           <b-field label="Name">
-            <b-input placeholder="Name" icon="id-card" v-model="user.name" required></b-input>
+            <b-input placeholder="Name" icon="id-card" v-model="user.name" required />
           </b-field>
 
           <b-field label="Email">
-            <b-input placeholder="Email" type="email" icon="envelope" v-model="user.email" required></b-input>
+            <b-input placeholder="Email" type="email" icon="envelope" v-model="user.email" required />
           </b-field>
 
           <b-field label="Password">
-            <b-input placeholder="Password" type="password" icon="lock" v-model="user.password" required></b-input>
+            <b-input placeholder="Password" type="password" icon="lock" v-model="user.password" required />
           </b-field>
 
         </form>

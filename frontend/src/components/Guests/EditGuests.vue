@@ -26,23 +26,21 @@
             {{ guest.first_name }} {{ guest.last_name }}
             </p>
           <a class="card-header-icon">
-            <b-icon
-              :icon="props.open ? 'caret-up' : 'caret-down'">
-            </b-icon>
+            <b-icon :icon="props.open ? 'caret-up' : 'caret-down'" />
           </a>
           </div>
           <div class="card-content">
             <div class="content">
               <b-field label="First Name">
-                <b-input placeholder="First Name" v-model="guest.first_name"></b-input>
+                <b-input placeholder="First Name" v-model="guest.first_name" />
               </b-field>
 
               <b-field label="Last Name">
-                <b-input placeholder="Last Name" v-model="guest.last_name"></b-input>
+                <b-input placeholder="Last Name" v-model="guest.last_name" />
               </b-field>
 
               <b-field label="Email">
-                <b-input placeholder="Email" v-model="guest.email"></b-input>
+                <b-input placeholder="Email" v-model="guest.email" />
               </b-field>
 
 
@@ -89,6 +87,14 @@ export default {
       guest: [],
       isOpen: null,
     }
+  },
+  computed: {
+    ...mapGetters({
+      guests: "guest/guests",
+    })
+  },
+  created() {
+    this.getGuests();
   },
   methods: {
     async getGuests() {
@@ -137,18 +143,10 @@ export default {
       this.$delete(this.guests, index);
     },
   },
-  computed: {
-    ...mapGetters({
-      guests: "guest/guests",
-    })
-  },
   getters: {
     guests(state) {
       return state.guests;
     }
-  },
-  created() {
-    this.getGuests();
   },
 }
 </script>

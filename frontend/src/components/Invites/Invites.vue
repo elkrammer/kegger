@@ -38,7 +38,7 @@
       </div>
 
       <b-message v-if="this.guests.length < 1" type="is-info">
-        Welcome to Kegger!<br>
+        Welcome to Kegger!<br/>
         Create a new Party to get started.
       </b-message>
 
@@ -96,6 +96,20 @@ export default {
       selected: null,
       viewInviteActive: false,
     }
+  },
+  computed: {
+    ...mapGetters({
+      parties: "party/parties"
+    }),
+  },
+  updated() {
+    if (this.guests.length < 1) {
+      this.mapData();
+    }
+  },
+  created() {
+    this.loadParties();
+    this.mapData();
   },
   methods: {
     async loadParties() {
@@ -158,20 +172,6 @@ export default {
         }
       }
     },
-  },
-  computed: {
-    ...mapGetters({
-      parties: "party/parties"
-    }),
-  },
-  created() {
-    this.loadParties();
-    this.mapData();
-  },
-  updated() {
-    if (this.guests.length < 1) {
-      this.mapData();
-    }
   },
 }
 </script>

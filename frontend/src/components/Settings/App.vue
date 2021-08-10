@@ -5,7 +5,7 @@
     <div v-for="setting in settings" :key="setting.name">
 
       <b-field :label="setting.description">
-        <b-input :value="setting.value" v-model="setting.value"></b-input>
+        <b-input :value="setting.value" v-model="setting.value" />
       </b-field>
 
     </div>
@@ -29,6 +29,11 @@ export default {
     ...mapGetters({
       settings: "settings/appSettings",
     }),
+  },
+  created() {
+    if (!this.settings) {
+      this.getAppSettings();
+    }
   },
   methods: {
     async getAppSettings() {
@@ -60,11 +65,6 @@ export default {
         })
         console.log(error);
       }
-    }
-  },
-  created() {
-    if (!this.settings) {
-      this.getAppSettings();
     }
   },
 }

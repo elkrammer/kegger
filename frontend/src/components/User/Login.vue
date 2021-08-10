@@ -17,10 +17,9 @@
                   <b-input type="email"
                            placeholder="e.g. john@doe.com"
                            v-model.trim="email"
-                           required>
-                  </b-input>
+                           required />
                   <span class="icon is-small is-left">
-                    <i class="fa fa-envelope"></i>
+                    <i class="fa fa-envelope" />
                   </span>
                 </div>
               </b-field>
@@ -31,10 +30,9 @@
                            placeholder="*******"
                            v-model.trim="password"
                            minlength="4"
-                           required>
-                  </b-input>
+                           required />
                   <span class="icon is-small is-left">
-                    <i class="fa fa-lock"></i>
+                    <i class="fa fa-lock" />
                   </span>
                 </div>
               </b-field>
@@ -48,11 +46,11 @@
           </div>
         </div>
 
-        <br><br><br><br><br><br><br><br>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
         <div class="content has-text-centered has-text-primary">
           <p>
           <a href="https://github.com/elkrammer/kegger">Kegger</a> - RSVP Manager<br />
-          © 2020 <a href="https://github.com/elkrammer">Mauricio Bahamonde</a><br /><br />
+          © 2021 <a href="https://github.com/elkrammer">elkrammer</a><br /><br />
           The source code is licensed under <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
           </p>
         </div>
