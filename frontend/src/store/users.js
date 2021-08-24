@@ -3,7 +3,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "@/common/axios";
-import { setAuthorizationHeader } from "@/common/utilities";
+import { setAuthorizationHeader } from "@/common/auth";
 
 Vue.use(Vuex);
 

@@ -203,7 +203,7 @@ export default {
       })
     },
   },
-  created() {
+  mounted() {
     this.loadParties();
   },
   methods: {

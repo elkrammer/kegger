@@ -2,7 +2,7 @@
   <b-navbar shadow>
 
     <template slot="brand">
-      <b-navbar-item tag="router-link" :to="{ path: '/parties' }">
+      <b-navbar-item tag="router-link" :to="{name: 'list_parties' }">
         <img
           src="@/assets/logo-small.png"
           alt="Kegger Logo"
@@ -46,8 +46,6 @@ export default {
   methods: {
     async logout() {
       await this.$store.dispatch("user/userLogout");
-      this.$router.push({ name: "login" }).catch(err => {console.log(err)});
-      document.location.href = "/";
     }
   }
 };

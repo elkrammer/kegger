@@ -47,7 +47,7 @@ func UserLogin(c echo.Context) error {
 
 func GenRefreshToken(c echo.Context) error {
 	type tokenReqBody struct {
-		RefreshToken string `json:"refresh_token"`
+		AccessToken string `json:"access_token"`
 	}
 
 	tokenReq := tokenReqBody{}
@@ -56,7 +56,7 @@ func GenRefreshToken(c echo.Context) error {
 	db := db.DbManager()
 
 	signature := []byte(os.Getenv("JWT_SECRET"))
-	token, err := jwt.Parse(tokenReq.RefreshToken, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(tokenReq.AccessToken, func(token *jwt.Token) (interface{}, error) {
 		// validate the algorithm is our expected type:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
