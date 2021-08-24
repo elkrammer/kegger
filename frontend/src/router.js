@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 
+import store from "@/store/";
+
 Vue.use(Router);
 
 import Login from "@/components/User/Login.vue";
@@ -46,34 +48,32 @@ const router = new Router({
         },
         {
             path: "*",
-            redirect: "/login"
+            redirect: "/parties",
+            meta: { requiresAuth: true },
         }
     ]
 });
 
-router.beforeEach((to, from, next) => {
-    document.title = to.meta.title; //set title of each route
-    let isLoggedIn = router.app.$options.store.getters["user/user"]
+// verify if user is authenticated
+router.beforeEach(async (to, from, next) => {
     let accessToken = localStorage.getItem("accessToken");
-    let refreshToken = localStorage.getItem("refreshToken");
 
-    if (isLoggedIn || to.meta.requiresAuth) {
-        // user is logged in
+    if (!to.meta.requiresAuth) {
+      next();
+    }
+
+    else if (to.meta.requiresAuth && (accessToken || store.state.user.isLoggedIn)) {
+        // user is already authenticated - validate existing access token
+        await store.dispatch("user/validateToken", accessToken);
         next();
-    } else if (accessToken && refreshToken && !isLoggedIn) {
-        // user has data in our store but somehow isn't logged in
-        // console.log("user has data in our store but somehow isn't logged in");
-        router.app.$options.store.dispatch("user/setUserAndTokens", {
-            accessToken: accessToken,
-            refreshToken: refreshToken
-        });
-        next();
-    } else if (!isLoggedIn && !to.meta.requiresAuth) {
-        // user is not logged in but the page doesn't require authentication
-        next();
-    } else {
-        // this user needs to authenticate
-        next({ name: "login" });
+    }
+
+    else if (to.meta.requiresAuth && (!accessToken || !store.state.user.isLoggedIn)) {
+      next({ name: "login" });
+    }
+
+    else {
+      next();
     }
 });
 

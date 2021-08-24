@@ -10,7 +10,7 @@
               {{ loginError }}
             </b-message>
 
-            <form ref="form" class="box" @submit.prevent="submit" autocomplete="off">
+            <form ref="form" v-on:submit.prevent="submit()" class="box" @submit.prevent="submit" autocomplete="off">
 
               <b-field label="Email">
                 <div class="control has-icons-left">
@@ -38,7 +38,7 @@
               </b-field>
 
               <div class="field">
-                <button v-on:click="submit()" :disabled="!isFormValid()" class="button is-success">
+                <button v-on:click.prevent="submit()" :disabled="!isFormValid()" class="button is-success">
                   Login
                 </button>
               </div>
@@ -71,8 +71,10 @@ export default {
       email: "",
       password: "",
       loginError: "",
-      submitted: false,
     };
+  },
+  mounted() {
+    this.validateToken();
   },
   methods: {
     async submit() {
@@ -83,14 +85,11 @@ export default {
 
       try {
         await this.$store.dispatch("user/userLogin", credentials);
-        this.submitted = true;
-        this.$router.push({ name: "list_parties" });
       } catch (error) {
         this.loginError = "Invalid Login Credentials";
       }
 
       // reset vars
-      this.loginError = "";
       this.email= "";
       this.password = "";
     },
@@ -99,7 +98,18 @@ export default {
         return true;
       }
       return false;
-    }
+    },
+    async validateToken() {
+      try {
+        let accessToken = localStorage.getItem("refreshToken");
+        if (accessToken) {
+          console.log("Attempting to revalidate existing token: " + accessToken);
+          await this.$store.dispatch("user/validateToken", accessToken);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

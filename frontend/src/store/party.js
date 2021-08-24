@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 import axios from "@/common/axios";
-import { setAuthorizationHeader } from "@/common/utilities";
+import { setAuthorizationHeader } from "@/common/auth";
 
 const GET_PARTY = "GET_PARTY";
 const GET_PARTIES = "GET_PARTIES";
