@@ -15,6 +15,8 @@ ENV GO111MODULE=on \
 COPY go.mod .
 COPY go.sum .
 
+COPY ./assets /app/assets
+
 # expose echo http service
 EXPOSE 4040
 
