@@ -41,7 +41,7 @@ jobs:
           file: api/Dockerfile
           push: true
           tags: |
-            elkrammer/frontend:${{ steps.prep.outputs.BUILD_ID }}
+            elkrammer/kegger:backend-${{ steps.prep.outputs.BUILD_ID }}
 
     - name: Build and publish FrontEnd image with tag
       uses: docker/build-push-action@v2
@@ -50,4 +50,4 @@ jobs:
           file: frontend/Dockerfile
           push: true
           tags: |
-            elkrammer/backend:${{ steps.prep.outputs.BUILD_ID }}
+            elkrammer/kegger:frontend-${{ steps.prep.outputs.BUILD_ID }}
