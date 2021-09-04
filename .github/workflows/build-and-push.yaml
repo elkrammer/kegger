@@ -33,7 +33,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
           context: ./api
-          file: ./api/Dockerfile
+          file: api/Dockerfile
           push: true
           tags: |
             frontend:${{ steps.prep.outputs.BUILD_ID }}
@@ -41,7 +41,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
           context: ./frontend
-          file: ./frontend/Dockerfile
+          file: frontend/Dockerfile
           push: true
           tags: |
             backend:${{ steps.prep.outputs.BUILD_ID }}
