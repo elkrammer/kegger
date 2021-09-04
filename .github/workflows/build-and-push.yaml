@@ -7,10 +7,12 @@ on:
 
 jobs:
   build-push:
-    env:
-        IMAGE: elkrammer/kegger
     runs-on: ubuntu-latest
     steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Generate build ID
       id: prep
       run: |
@@ -22,13 +24,16 @@ jobs:
     # These are prerequisites for the docker build step
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: Build and publish API image with tag
       uses: docker/build-push-action@v2
       with:
@@ -37,6 +42,7 @@ jobs:
           push: true
           tags: |
             frontend:${{ steps.prep.outputs.BUILD_ID }}
+
     - name: Build and publish FrontEnd image with tag
       uses: docker/build-push-action@v2
       with:
