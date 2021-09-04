@@ -117,10 +117,15 @@ spec:
             - name: config-volume
               mountPath: /usr/share/nginx/html/config.js
               subPath: config.js
+            - name: kegger-persistent-storage
+              mountPath: /app/assets
       volumes:
         - name: config-volume
           configMap:
             name: {{ include "frontend-deployment.fullname" . }}-config
+        - name: kegger-persistent-storage
+          persistentVolumeClaim:
+            claimName: kegger-pv-claim
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
