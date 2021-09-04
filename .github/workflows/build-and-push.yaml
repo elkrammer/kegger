@@ -31,12 +31,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       uses: docker/build-push-action@v2
     - name: Build and publish container image with tag
+      uses: docker/build-push-action@v2
       with:
           context: ./api
           push: true
           tags: |
             frontend:${{ steps.prep.outputs.BUILD_ID }}
     - name: Build and publish container image with tag
+      uses: docker/build-push-action@v2
       with:
           context: ./frontend
           push: true
