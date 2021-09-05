@@ -12,19 +12,10 @@ ENV GO111MODULE=on \
     GOOS=linux \
     GOARCH=amd64
 
-COPY go.mod .
-COPY go.sum .
-
-COPY ./assets /app/assets
-
-# expose echo http service
-EXPOSE 4040
+COPY . .
 
 # fetch go dependencies
 RUN go mod download
-
-COPY . .
-
 RUN go build -o kegger
 
 # step 2 - build compact image
@@ -39,11 +30,11 @@ COPY --from=builder /etc/passwd /etc/passwd
 WORKDIR /app
 COPY --from=builder /app/kegger /app/kegger
 COPY --from=builder /app/templates /app/templates
+COPY --from=builder /app/assets /app/assets
 
 # use an unprivileged user
 USER appuser
 
-# expose echo http service
 EXPOSE 4040
 
 # run our app binary.

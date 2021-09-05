@@ -79,7 +79,7 @@ func UploadInviteImage(c echo.Context) error {
 	defer src.Close()
 
 	// destination
-	filePath := "/app/assets/uploads/" + file.Filename
+	filePath := "./assets/uploads/" + file.Filename
 	dst, err := os.Create(filePath)
 	if err != nil {
 		return err
