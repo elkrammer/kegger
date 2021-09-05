@@ -1,0 +1,72 @@
+{{- if .Values.backend.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backend-deployment.fullname" . }}
+  labels:
+    {{- include "kegger.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "backend.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "backend.fullname" . }}
+    spec:
+      securityContext:
+        fsGroup: 2000
+      serviceAccountName: {{ include "kegger.serviceAccountName" . }}
+      containers:
+        - name: {{ include "backend.fullname" . }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4040
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4040
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4040
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
+          volumeMounts:
+            - name: kegger-persistent-storage
+              mountPath: /app/assets/uploads
+          env:
+            - name: RUN_MIGRATIONS
+              value: {{ .Values.runMigrations | quote }}
+            - name: DB_HOST
+              value: {{ include "kegger.databaseHost" . | quote }}
+            - name: DB_USERNAME
+              value: {{ include "kegger.databaseUser" . | quote }}
+            - name: DB_PORT
+              value: {{ include "kegger.databasePort" . | quote }}
+            - name: DB_NAME
+              value: {{ include "kegger.databaseName" . | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kegger
+                  key: postgres-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kegger
+                  key: jwt-secret
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kegger
+                  key: sendgrid-api-key
+      volumes:
+        - name: kegger-persistent-storage
+          persistentVolumeClaim:
+            claimName: kegger-pv-claim
+{{- end }}
