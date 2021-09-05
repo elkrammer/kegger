@@ -15,6 +15,8 @@ spec:
       labels:
         app: {{ include "backend.fullname" . }}
     spec:
+      securityContext:
+        fsGroup: 2000
       serviceAccountName: {{ include "kegger.serviceAccountName" . }}
       containers:
         - name: {{ include "backend.fullname" . }}
@@ -118,7 +120,7 @@ spec:
               mountPath: /usr/share/nginx/html/config.js
               subPath: config.js
             - name: kegger-persistent-storage
-              mountPath: /app/assets
+              mountPath: /app/assets/uploads
       volumes:
         - name: config-volume
           configMap:
