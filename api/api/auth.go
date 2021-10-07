@@ -10,7 +10,7 @@ import (
 	"github.com/elkrammer/kegger/api/internal/helper"
 	"github.com/elkrammer/kegger/api/model"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 

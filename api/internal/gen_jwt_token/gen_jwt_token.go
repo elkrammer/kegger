@@ -1,7 +1,7 @@
 package jwttoken
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"os"
 	"time"
 )
