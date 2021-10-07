@@ -196,7 +196,7 @@ func FindInviteId(c echo.Context) error {
 
 	// attempt to fetch invite id
 	var inviteId string
-	q := `SELECT invitation_id FROM guests WHERE email = $1`
+	q := `SELECT invitation_id FROM guests WHERE UPPER(email) = UPPER($1)`
 	row := db.QueryRowx(q, email)
 	err := row.Scan(&inviteId)
 	if err != nil {
