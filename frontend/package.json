@@ -12,7 +12,7 @@
     "buefy": "^0.8.20",
     "core-js": "^3.6.5",
     "jwt-decode": "^2.2.0",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "sass": "^1.37.0",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.14",
